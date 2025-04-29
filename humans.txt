@@ -1,0 +1,12 @@
+/* TEAM */
+Developer: Ahadizapto
+Site: https://hadymaggot.github.io
+Twitter: @hadymaggot
+
+/* THANKS */
+Font Awesome: https://fontawesome.com
+Google Fonts: https://fonts.google.com
+Boxicons: https://boxicons.com
+
+/* TECHNOLOGY */
+HTML5, CSS3, JavaScript
