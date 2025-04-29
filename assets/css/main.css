@@ -235,7 +235,7 @@ body {
 .terminal {
     width: 90%;
     max-width: 850px;
-    height: 500px; /* Tambahkan fixed height */
+    height: 500px;
     background-color: var(--terminal-bg);
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -247,7 +247,7 @@ body {
     padding: 1.5rem;
     font-family: 'JetBrains Mono', monospace;
     overflow-y: auto;
-    height: calc(500px - 60px); /* Sesuaikan dengan tinggi terminal */
+    height: calc(500px - 60px);
 }
 
 .terminal-header {
@@ -336,7 +336,7 @@ body {
 
 .profile-info {
     color: var(--secondary-color);
-    text-align: left !important; /* Tambahkan ini */
+    text-align: left !important;
 }
 
 .skill-list {
@@ -345,7 +345,7 @@ body {
     gap: 0.5rem;
     margin-top: 0.5rem;
     margin-bottom: 1rem;
-    text-align: left !important; /* Tambahkan ini */
+    text-align: left !important;
 }
 
 .skill-tag {
@@ -386,7 +386,7 @@ body {
 
 .floating-menu {
     position: fixed;
-    bottom: 6rem; /* Adjust this value as needed */
+    bottom: 6rem;
     right: 2rem;
     z-index: 100;
 }
@@ -492,43 +492,8 @@ body {
     }
 }
 
-/* Force desktop view pada mobile */
-/* @media screen and (max-width: 1024px) {
-    body {
-        min-width: 1024px;
-    }
-    
-    .container {
-        min-width: 1024px;
-    }
-
-    .navbar {
-        min-width: 1024px;
-    }
-
-    .nav-links {
-        display: flex !important;
-        gap: 2rem;
-    }
-
-    .terminal {
-        width: 850px !important;
-        margin-top: 2rem !important;
-    }
-
-    .terminal-content {
-        padding: 1.5rem !important;
-        font-size: 1rem !important;
-    }
-
-    .command-line {
-        flex-direction: row !important;
-        align-items: center !important;
-    }
-} */
-
 .mobile-notice {
-    display: none;  /* Default state adalah hidden */
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;
@@ -565,7 +530,7 @@ body {
 
 @media (max-width: 768px) {
     .mobile-notice {
-        display: flex;  /* Hanya tampilkan di mobile view */
+        display: flex; 
     }
 
     .navbar {
@@ -607,7 +572,7 @@ body {
         top: 0;
         right: -100%;
         height: 100vh;
-        width: 100%; /* Ubah dari 70% ke 100% untuk fullscreen */
+        width: 100%;
         background-color: var(--terminal-bg);
         display: flex !important;
         flex-direction: column;
@@ -615,11 +580,11 @@ body {
         align-items: center;
         gap: 2rem;
         transition: all 0.3s ease;
-        border-left: none; /* Hapus border kiri karena sekarang fullscreen */
+        border-left: none;
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
-        padding: 2rem; /* Tambah padding */
-        z-index: 1000; /* Pastikan z-index lebih rendah dari tombol */
+        padding: 2rem;
+        z-index: 1000;
     }
 
     .nav-links.active {
@@ -629,10 +594,10 @@ body {
     }
 
     .nav-links a {
-        font-size: 1.2rem; /* Perbesar ukuran font */
-        padding: 1rem 2rem; /* Tambah padding untuk area klik yang lebih besar */
-        width: 100%; /* Buat link memenuhi lebar layar */
-        text-align: center; /* Tengahkan teks */
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+        width: 100%;
+        text-align: center;
     }
 }
 
@@ -812,16 +777,6 @@ body {
     color: var(--primary-color);
     text-shadow: 0 0 5px var(--primary-color);
 }
-
-/* #user-ip {
-    color: var(--secondary-color);
-    font-weight: bold;
-}
-
-#user-location {
-    color: var(--secondary-color);
-    font-weight: bold;
-} */
 
 .logo a {
     transition: color 0.3s ease;
