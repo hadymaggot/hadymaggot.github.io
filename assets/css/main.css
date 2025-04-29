@@ -831,10 +831,13 @@ body {
 
 .logo a {
     transition: color 0.3s ease;
+    color: var(--secondary-color);
+    text-decoration: dotted;
 }
 
 .logo a:hover {
-    color: var(--primary-color);
+    color: var(--secondary-color);
+    text-decoration: underline;
 }
 
 .logo-text {
