@@ -845,3 +845,22 @@ body {
     font-size: 1.2rem;
     font-weight: 600;
 }
+.mobile-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.mobile-notice i.fa-desktop {
+    margin-right: 10px;
+}
+
+#mobile-notice-text {
+    flex-grow: 1;
+    margin: 0 10px;
+}
+
+.close-btn {
+    margin-left: auto;
+}
