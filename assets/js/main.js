@@ -279,3 +279,44 @@ window.addEventListener('load', function() {
     clearTimeout(locationFetchTimeout);
     locationFetchTimeout = setTimeout(getUserLocation, 1500);
 });
+
+
+function translateMobileNotice() {
+    // Mendapatkan bahasa dari browser dengan prioritas:
+    // 1. navigator.languages (array preferensi bahasa)
+    // 2. navigator.language
+    // 3. navigator.userLanguage (untuk IE)
+    const userLang = (navigator.languages && navigator.languages[0]) || 
+                    navigator.language || 
+                    navigator.userLanguage;
+
+    const noticeText = document.getElementById('mobile-notice-text');
+
+    const translations = {
+        'en': 'This website is optimized for desktop view',
+        'en-US': 'This website is optimized for desktop view',
+        'id': 'Situs web ini dioptimalkan untuk tampilan desktop',
+        'es': 'Este sitio web está optimizado para vista de escritorio',
+        'fr': 'Ce site web est optimisé pour la vue sur ordinateur',
+        'de': 'Diese Website ist für die Desktop-Ansicht optimiert',
+        'ja': 'このウェブサイトはデスクトップ表示用に最適化されています',
+        'zh': '本网站已针对桌面视图进行优化',
+        'ru': 'Этот сайт оптимизирован для просмотра на компьютере',
+        'ko': '이 웹사이트는 데스크톱 보기에 최적화되어 있습니다',
+        'ar': 'تم تحسين هذا الموقع لعرض سطح المكتب',
+        'zh-CN': '本网站已针对桌面视图进行优化'
+    };
+
+    // Ambil kode bahasa utama (2 karakter pertama)
+    const mainLang = userLang.split('-')[0].toLowerCase();
+    
+    // Cari terjemahan yang sesuai
+    noticeText.textContent = translations[userLang] || 
+                            translations[mainLang] || 
+                            translations['en'];
+}
+
+// Panggil fungsi ini saat halaman dimuat
+window.addEventListener('load', function() {
+    translateMobileNotice();
+});
