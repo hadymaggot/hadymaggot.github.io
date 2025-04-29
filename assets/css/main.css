@@ -401,7 +401,7 @@ body {
 } */
 
 .mobile-notice {
-    display: none;
+    display: none;  /* Default state adalah hidden */
     position: fixed;
     top: 0;
     left: 0;
@@ -414,7 +414,6 @@ body {
     border-bottom: 1px solid var(--primary-color);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -439,9 +438,7 @@ body {
 
 @media (max-width: 768px) {
     .mobile-notice {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex;  /* Hanya tampilkan di mobile view */
     }
 
     .navbar {
