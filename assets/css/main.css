@@ -28,9 +28,132 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.95)),
-        url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3') center/cover;
     position: relative;
+    background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.95));
+    overflow: hidden;
+}
+
+/* Efek Matrix Rain */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(to bottom,
+            rgba(18, 18, 18, 0.8) 0%,
+            rgba(18, 18, 18, 0.2) 100%),
+        repeating-linear-gradient(0deg,
+            transparent 0%,
+            rgba(122, 197, 90, 0.1) 1px,
+            transparent 2px,
+            transparent 40px
+        );
+    background-size: 100% 100%, 100px 100%;
+    animation: matrixRain 20s linear infinite;
+    z-index: 1;
+}
+
+/* Efek Grid Cyberpunk dengan Laser Lines */
+.container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(90deg,
+            rgba(122, 197, 90, 0.03) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            rgba(122, 197, 90, 0.03) 1px,
+            transparent 1px
+        ),
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(122, 197, 90, 0.1) 0%,
+            transparent 50%
+        );
+    background-size: 30px 30px, 30px 30px, 100% 100%;
+    animation: gridPulse 4s ease-in-out infinite;
+    z-index: 2;
+}
+
+/* Tambahkan Laser Lines */
+.laser-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.laser-line {
+    position: absolute;
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        rgba(122, 197, 90, 0.2) 50%,
+        transparent 100%
+    );
+    height: 1px;
+    width: 100%;
+    opacity: 0;
+    animation: laserScan 3s linear infinite;
+}
+
+.laser-line:nth-child(2) {
+    animation-delay: 1s;
+    top: 33%;
+}
+
+.laser-line:nth-child(3) {
+    animation-delay: 2s;
+    top: 66%;
+}
+
+@keyframes laserScan {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) scaleY(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0) scaleY(2);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(50%) scaleY(1);
+    }
+}
+
+@keyframes matrixRain {
+    0% {
+        background-position: 0 -1000px;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+@keyframes gridPulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Pastikan konten tetap di atas background */
+.hero, .navbar, .terminal, .social-links, .floating-menu {
+    position: relative;
+    z-index: 3;
 }
 
 .navbar {
@@ -506,5 +629,133 @@ body {
         padding: 1rem 2rem; /* Tambah padding untuk area klik yang lebih besar */
         width: 100%; /* Buat link memenuhi lebar layar */
         text-align: center; /* Tengahkan teks */
+    }
+}
+
+/* Progress Bar Effect */
+/* Loading Bar Effects */
+.loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(122, 197, 90, 0.1);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* Effect 1: Pulse Loading */
+.loading-progress {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(
+        90deg,
+        var(--primary-color) 0%,
+        var(--secondary-color) 50%,
+        var(--primary-color) 100%
+    );
+    box-shadow: 0 0 10px var(--primary-color);
+    animation: pulseLoading 2s ease-in-out infinite;
+    background-size: 200% 100%;
+    position: relative;
+}
+
+/* Effect 2: Glitch Effect */
+.loading-progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    animation: glitchEffect 0.5s ease-in-out infinite;
+}
+
+/* Effect 3: Glow Points */
+.loading-progress::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+    box-shadow: 
+        0 0 10px var(--primary-color),
+        0 0 20px var(--primary-color),
+        0 0 30px var(--primary-color);
+    animation: glowPoint 2s linear infinite;
+}
+
+@keyframes pulseLoading {
+    0% {
+        width: 0;
+        background-position: 100% 0;
+    }
+    50% {
+        width: 100%;
+        background-position: 0 0;
+    }
+    100% {
+        width: 100%;
+        background-position: -100% 0;
+    }
+}
+
+@keyframes glitchEffect {
+    0%, 100% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes glowPoint {
+    0% {
+        opacity: 0;
+        transform: translate(0%, -50%);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(50%, -50%);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(100%, -50%);
+    }
+}
+
+@keyframes progressAnimation {
+    0% {
+        width: 0;
+        background-position: 100% 0;
+    }
+    50% {
+        width: 100%;
+        background-position: 0 0;
+    }
+    100% {
+        width: 100%;
+        background-position: -100% 0;
+    }
+}
+
+@keyframes progressAnimation {
+    0% {
+        width: 0;
+        background-position: 100% 0;
+    }
+    50% {
+        width: 100%;
+        background-position: 0 0;
+    }
+    100% {
+        width: 100%;
+        background-position: -100% 0;
     }
 }
