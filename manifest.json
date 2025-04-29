@@ -1,0 +1,20 @@
+{
+  "name": "Ahadizapto Portfolio",
+  "short_name": "Ahadizapto",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#7AC55A",
+  "icons": [
+    {
+      "src": "/assets/images/ico2.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/ico2.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
