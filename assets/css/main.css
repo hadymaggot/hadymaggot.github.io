@@ -340,25 +340,19 @@ body {
 }
 
 @media (max-width: 768px) {
+    .mobile-notice {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .navbar {
+        top: 0;
         padding: 1rem 3%;
     }
 
-    .nav-links {
-        gap: 1rem;
-    }
-
-    .terminal {
-        width: 95%;
-        margin-top: 1rem;
-    }
-    .terminal-content {
-        padding: 0.8rem;
-        font-size: 0.9rem;
-    }
-    .command-line {
-        flex-direction: column;
-        align-items: flex-start;
+    .hero {
+        padding-top: 5rem;
     }
 }
 
@@ -368,5 +362,152 @@ body {
     }
     .menu-toggle {
         display: flex;
+    }
+}
+
+/* Force desktop view pada mobile */
+/* @media screen and (max-width: 1024px) {
+    body {
+        min-width: 1024px;
+    }
+    
+    .container {
+        min-width: 1024px;
+    }
+
+    .navbar {
+        min-width: 1024px;
+    }
+
+    .nav-links {
+        display: flex !important;
+        gap: 2rem;
+    }
+
+    .terminal {
+        width: 850px !important;
+        margin-top: 2rem !important;
+    }
+
+    .terminal-content {
+        padding: 1.5rem !important;
+        font-size: 1rem !important;
+    }
+
+    .command-line {
+        flex-direction: row !important;
+        align-items: center !important;
+    }
+} */
+
+.mobile-notice {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--terminal-bg);
+    color: var(--text-color);
+    padding: 10px;
+    text-align: center;
+    z-index: 1002;
+    border-bottom: 1px solid var(--primary-color);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-notice .close-btn {
+    position: absolute;
+    right: 10px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.mobile-notice .close-btn:hover {
+    color: var(--primary-color);
+}
+
+.mobile-notice i {
+    color: var(--primary-color);
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .mobile-notice {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .navbar {
+        top: 0;
+        padding: 1rem 3%;
+    }
+
+    .hero {
+        padding-top: 5rem;
+    }
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+    color: var(--primary-color);
+}
+
+.nav-links {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+        z-index: 1001;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 100%; /* Ubah dari 70% ke 100% untuk fullscreen */
+        background-color: var(--terminal-bg);
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transition: all 0.3s ease;
+        border-left: none; /* Hapus border kiri karena sekarang fullscreen */
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        padding: 2rem; /* Tambah padding */
+        z-index: 1000; /* Pastikan z-index lebih rendah dari tombol */
+    }
+
+    .nav-links.active {
+        right: 0;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem; /* Perbesar ukuran font */
+        padding: 1rem 2rem; /* Tambah padding untuk area klik yang lebih besar */
+        width: 100%; /* Buat link memenuhi lebar layar */
+        text-align: center; /* Tengahkan teks */
     }
 }
