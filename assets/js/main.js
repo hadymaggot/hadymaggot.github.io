@@ -201,3 +201,81 @@ navLinks.querySelectorAll('a').forEach(link => {
         body.style.overflow = '';
     });
 });
+
+
+// Get User IP Address
+// Cache IP and location data with expiration
+let cachedIP = {
+    value: null,
+    timestamp: null
+};
+let cachedLocation = {
+    value: null,
+    timestamp: null
+};
+const CACHE_EXPIRATION = 3600000; // 1 hour
+
+async function getUserIP() {
+    // Check cache validity
+    if (cachedIP.value && Date.now() - cachedIP.timestamp < CACHE_EXPIRATION) {
+        document.getElementById('user-ip').textContent = cachedIP.value;
+        return;
+    }
+    
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        cachedIP = {
+            value: data.ip,
+            timestamp: Date.now()
+        };
+        document.getElementById('user-ip').textContent = cachedIP.value;
+    } catch (error) {
+        document.getElementById('user-ip').textContent = 'Unknown';
+        console.error('Error fetching IP:', error);
+    }
+}
+
+async function getUserLocation() {
+    // Check cache validity
+    if (cachedLocation.value && Date.now() - cachedLocation.timestamp < CACHE_EXPIRATION) {
+        document.getElementById('user-location').textContent = cachedLocation.value;
+        return;
+    }
+    
+    try {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`);
+                const data = await response.json();
+                const city = data.address.city || data.address.town || data.address.village;
+                cachedLocation = {
+                    value: city,
+                    timestamp: Date.now()
+                };
+                document.getElementById('user-location').textContent = cachedLocation.value;
+            }, null, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: CACHE_EXPIRATION
+            });
+        } else {
+            document.getElementById('user-location').textContent = 'Unknown';
+        }
+    } catch (error) {
+        document.getElementById('user-location').textContent = 'Unknown';
+        console.error('Error fetching location:', error);
+    }
+}
+
+// Call these functions only once with debouncing
+let ipFetchTimeout;
+let locationFetchTimeout;
+
+window.addEventListener('load', function() {
+    clearTimeout(ipFetchTimeout);
+    ipFetchTimeout = setTimeout(getUserIP, 1000);
+    
+    clearTimeout(locationFetchTimeout);
+    locationFetchTimeout = setTimeout(getUserLocation, 1500);
+});
