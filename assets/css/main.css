@@ -318,10 +318,20 @@ body {
     text-align: left;
 }
 
+.output p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
 .output pre {
-    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
     white-space: pre-wrap;
-    text-align: left !important; /* Tambahkan ini */
+    margin: 0;
 }
 
 .profile-info {
@@ -376,7 +386,7 @@ body {
 
 .floating-menu {
     position: fixed;
-    bottom: 2rem;
+    bottom: 6rem; /* Adjust this value as needed */
     right: 2rem;
     z-index: 100;
 }
@@ -759,3 +769,62 @@ body {
         background-position: -100% 0;
     }
 }
+/* Cyberpunk Cursor */
+* {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="%237AC55A" stroke="%23C3DB65" stroke-width="2"/><line x1="12" y1="0" x2="12" y2="24" stroke="%23C3DB65" stroke-width="2"/><line x1="0" y1="12" x2="24" y2="12" stroke="%23C3DB65" stroke-width="2"/></svg>'), auto;
+}
+
+/* Cursor Animation */
+@keyframes cursorPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* Cyberpunk Footer */
+.cyberpunk-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background-color: rgba(18, 18, 18, 0.9);
+    border-top: 1px solid rgba(122, 197, 90, 0.2);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    z-index: 999;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    color: var(--text-color);
+}
+
+.glow-text {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* #user-ip {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+#user-location {
+    color: var(--secondary-color);
+    font-weight: bold;
+} */
