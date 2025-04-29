@@ -828,3 +828,17 @@ body {
     color: var(--secondary-color);
     font-weight: bold;
 } */
+
+.logo a {
+    transition: color 0.3s ease;
+}
+
+.logo a:hover {
+    color: var(--primary-color);
+}
+
+.logo-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
