@@ -1,3 +1,21 @@
+
+// Array teks untuk ticker
+const tickerTexts = [
+    "Web Developer",
+    "DevOps Engineer", 
+    "Security Operations"
+];
+
+let currentIndex = 0;
+
+function updateTitle() {
+    document.title = `Ahadizapto | ${tickerTexts[currentIndex]}`;
+    currentIndex = (currentIndex + 1) % tickerTexts.length;
+}
+
+// Update judul setiap 3 detik
+setInterval(updateTitle, 3000);
+
 // Typing effect
 const commands = [
     "kubectl get pods --all-namespaces",
@@ -170,11 +188,11 @@ mobileMenuBtn.addEventListener('click', () => {
     if (navLinks.classList.contains('active')) {
         icon.classList.remove('fa-bars');
         icon.classList.add('fa-times');
-        body.style.overflow = 'hidden'; // Mencegah scroll saat menu terbuka
+        body.style.overflow = 'hidden';
     } else {
         icon.classList.remove('fa-times');
         icon.classList.add('fa-bars');
-        body.style.overflow = ''; // Mengembalikan scroll
+        body.style.overflow = '';
     }
 });
 
@@ -213,7 +231,7 @@ let cachedLocation = {
     value: null,
     timestamp: null
 };
-const CACHE_EXPIRATION = 3600000; // 1 hour
+const CACHE_EXPIRATION = 3600000;
 
 async function getUserIP() {
     // Check cache validity
