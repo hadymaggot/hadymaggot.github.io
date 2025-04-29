@@ -241,7 +241,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(51, 61, 46, 0.4);
     overflow: hidden;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .terminal-content {
