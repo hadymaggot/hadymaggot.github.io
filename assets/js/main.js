@@ -150,3 +150,54 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         typeNavCommand();
     });
 });
+
+// Handle mobile notice close
+document.querySelector('.mobile-notice .close-btn').addEventListener('click', function() {
+    document.querySelector('.mobile-notice').style.display = 'none';
+});
+
+// Mobile menu handling
+// Menangani menu mobile
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const navLinks = document.querySelector('.nav-links');
+const body = document.body;
+
+mobileMenuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    const icon = mobileMenuBtn.querySelector('i');
+    
+    // Mengubah ikon menu
+    if (navLinks.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+        body.style.overflow = 'hidden'; // Mencegah scroll saat menu terbuka
+    } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+        body.style.overflow = ''; // Mengembalikan scroll
+    }
+});
+
+// Menutup menu saat mengklik di luar menu
+document.addEventListener('click', (e) => {
+    if (!navLinks.contains(e.target) && 
+        !mobileMenuBtn.contains(e.target) && 
+        navLinks.classList.contains('active')) {
+        navLinks.classList.remove('active');
+        const icon = mobileMenuBtn.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+        body.style.overflow = '';
+    }
+});
+
+// Menutup menu saat mengklik link navigasi
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        const icon = mobileMenuBtn.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+        body.style.overflow = '';
+    });
+});
