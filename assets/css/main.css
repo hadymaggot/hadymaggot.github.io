@@ -42,6 +42,7 @@ body {
     align-items: center;
     padding: 1.2rem 5%;
     background-color: rgba(18, 18, 18, 0.9);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     z-index: 1000;
     border-bottom: 1px solid rgba(122, 197, 90, 0.2);
@@ -191,7 +192,7 @@ body {
     padding-left: 1.5rem;
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 1.5rem;
-    text-align: left !important; /* Tambahkan ini */
+    text-align: left;
 }
 
 .output pre {
