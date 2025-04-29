@@ -18,25 +18,51 @@ setInterval(updateTitle, 3000);
 
 // Typing effect
 const commands = [
-    "kubectl get pods --all-namespaces",
-    "terraform apply -auto-approve",
-    "docker-compose up -d",
-    "sudo rm -rf /",
     "nmap -sS -sV --script vuln target.com",
-    "aws ec2 describe-instances",
     "tcpdump -i eth0 'tcp[tcpflags] & (tcp-syn) != 0'",
     "netstat -n | grep SYN_RECV | wc -l",
     "fail2ban-client status",
     "waf-log-analysis.sh | grep 'HTTP flood'",
-    "iptables -L INPUT | grep DROP"
+    "iptables -L INPUT | grep DROP",
+    "wapiti3 -u https://example.com -f html -o wapiti_report.html",
+    "nikto -h example.com -o nikto_scan.txt",
+    "sqlmap -u 'http://example.com/page?id=1' --batch --dump-all",
+    "metasploit-framework -x 'use exploit/windows/smb/ms17_010_eternalblue'",
+    "ansible-playbook deploy.yml --tags 'security' --check",
+    "kubectl apply -f security-policy.yaml --dry-run=server",
+    "terraform plan -var-file=prod.tfvars -out=plan.out",
+    "docker scan --file Dockerfile --json --severity HIGH",
+    "aws ec2 describe-security-groups --filters Name=group-name,Values=default",
+    "gcloud compute firewall-rules list --format=json",
+    "az network nsg list --query '[].{Name:name, Rules:securityRules[].name}'"
 ];
 let currentCommand = 0;
 let i = 0;
 const typingElement = document.getElementById("typing");
 
+// Tambahkan variabel untuk melacak timeout
+let currentTypingTimeout = null;
+let currentCommandTimeout = null;
+
+// Fungsi untuk membersihkan timeout yang sedang berjalan
+function clearTypingTimeouts() {
+    if (currentTypingTimeout) {
+        clearTimeout(currentTypingTimeout);
+        currentTypingTimeout = null;
+    }
+    if (currentCommandTimeout) {
+        clearTimeout(currentCommandTimeout);
+        currentCommandTimeout = null;
+    }
+}
+
+let isTyping = false;
+
 function typeWriter() {
+    if (!typingElement) return;
+    
     if (i < commands[currentCommand].length) {
-        typingElement.textContent += commands[currentCommand].charAt(i);
+        typingElement.textContent = commands[currentCommand].substring(0, i + 1);
         i++;
         setTimeout(typeWriter, Math.random() * 100 + 50);
     } else {
@@ -49,12 +75,21 @@ function typeWriter() {
     }
 }
 
-setTimeout(typeWriter, 1000);
+// Mulai typing setelah DOM loaded
+document.addEventListener('DOMContentLoaded', () => {
+    if (typingElement) {
+        setTimeout(typeWriter, 1000);
+    }
+});
 
 // Add event listeners for navigation links
 document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
+
+        // Hentikan semua typing yang sedang berjalan
+        clearTypingTimeouts();
+        
         const target = this.getAttribute('href').substring(1);
         let command = '';
         let output = '';
@@ -145,26 +180,28 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         terminalContent.innerHTML = `
             <div class="command-line">
                 <span class="prompt">ahadi@zapto:~$</span>
-                <span class="command" id="typing-nav"></span><span class="blink">█</span>
+                <span class="command" id="typing-nav"></span>
             </div>
         `;
 
         // Typing effect for navigation commands
         let i = 0;
         const typingElement = document.getElementById('typing-nav');
-        function typeNavCommand() {
-            if (i < command.length) {
-                typingElement.textContent += command.charAt(i);
-                i++;
-                setTimeout(typeNavCommand, Math.random() * 100 + 50);
-            } else {
-                // Add output after typing completes
-                const outputDiv = document.createElement('div');
-                outputDiv.className = 'output';
-                outputDiv.innerHTML = output;
-                terminalContent.appendChild(outputDiv);
-            }
-        }
+        
+
+// Typing effect for navigation commands
+function typeNavCommand() {
+    if (i < command.length) {
+        typingElement.innerHTML = command.substring(0, i + 1) + '<span class="blink">█</span>';
+        i++;
+        currentTypingTimeout = setTimeout(typeNavCommand, Math.random() * 100 + 50);
+    } else {
+        const outputDiv = document.createElement('div');
+        outputDiv.className = 'output';
+        outputDiv.innerHTML = output;
+        terminalContent.appendChild(outputDiv);
+    }
+}
         typeNavCommand();
     });
 });

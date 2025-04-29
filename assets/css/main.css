@@ -249,7 +249,7 @@ body {
     font-family: 'JetBrains Mono', monospace;
     overflow-y: auto;
     height: calc(500px - 60px);
-    max-height: 400px;
+    max-height: 500px;
 }
 
 .terminal-header {
@@ -303,6 +303,9 @@ body {
 }
 
 .command {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
     color: var(--text-color);
 }
 
@@ -440,8 +443,11 @@ body {
     transform: translateY(-3px);
 }
 
-@keyframes blink {
+.blink {
+    animation: blink 1s step-end infinite;
+}
 
+@keyframes blink {
     0%,
     100% {
         opacity: 1;
