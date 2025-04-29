@@ -80,14 +80,45 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                         onmouseover="this.style.borderBottom='1px dotted #fff'"
                         onmouseout="this.style.borderBottom='none'">linkedin.com</a>`;
                 break;
-            case 'home':
-                command = 'whoami && cat about.txt';
+            case '!':
+                command = 'whoami';
+                output = `<pre class="profile-info">
+                 █████╗ ██╗  ██╗ █████╗ ██████╗ ██╗███████╗ █████╗ ██████╗ ████████╗ ██████╗ 
+                ██╔══██╗██║  ██║██╔══██╗██╔══██╗██║╚══███╔╝██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗
+                ███████║███████║███████║██║  ██║██║  ███╔╝ ███████║██████╔╝   ██║   ██║   ██║
+                ██╔══██║██╔══██║██╔══██║██║  ██║██║ ███╔╝  ██╔══██║██╔═══╝    ██║   ██║   ██║
+                ██║  ██║██║  ██║██║  ██║██████╔╝██║███████╗██║  ██║██║        ██║   ╚██████╔╝
+                ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝╚══════╝╚═╝  ╚═╝╚═╝        ╚═╝    ╚═════╝ 
+                            Web Developer | DevOps Engineer | Security Operations
+                </pre>`;
+                break;
+            case 'ahadizapto':
+                command = 'history | grep "http" | sort | uniq -c | sort -nr | head -n 5';
                 output = `
-                        <pre class="profile-info">Ahadizapto - Web Developer | DevOps Engineer | Security Operations</pre>
-                        <p>Welcome to my digital workspace! I'm a passionate technologist specializing in web
-                            development, DevOps automation, and security operations.</p>
-                        <p>With a strong foundation in infrastructure as code and CI/CD pipelines, I help organizations
-                            build secure, scalable, and resilient systems.</p>
+                        86 <a href="https://ahadizapto.tech" target="_blank"
+                        style="color: inherit; text-decoration: none; border-bottom: none;"
+                        onmouseover="this.style.borderBottom='1px dotted #fff'"
+                        onmouseout="this.style.borderBottom='none'">ahadizapto.tech</a>
+                        <br>
+                        24 <a href="https://wahanarekatekindo.co.id" target="_blank"
+                        style="color: inherit; text-decoration: none; border-bottom: none;"
+                        onmouseover="this.style.borderBottom='1px dotted #fff'"
+                        onmouseout="this.style.borderBottom='none'">wahanarekatekindo.co.id</a>
+                        <br>
+                        22 <a href="https://gisliner.atrbpn.go.id" target="_blank"
+                        style="color: inherit; text-decoration: none; border-bottom: none;"
+                        onmouseover="this.style.borderBottom='1px dotted #fff'"
+                        onmouseout="this.style.borderBottom='none'">gisliner.atrbpn.go.id</a>
+                        <br>
+                        20 <a href="https://ditjenpptr.atrbpn.go.id" target="_blank"
+                        style="color: inherit; text-decoration: none; border-bottom: none;"
+                        onmouseover="this.style.borderBottom='1px dotted #fff'"
+                        onmouseout="this.style.borderBottom='none'">ditjenpptr.atrbpn.go.id</a>
+                        <br>
+                        18 <a href="https://sirus.perumahan.pu.go.id" target="_blank"
+                        style="color: inherit; text-decoration: none; border-bottom: none;"
+                        onmouseover="this.style.borderBottom='1px dotted #fff'"
+                        onmouseout="this.style.borderBottom='none'">sirus.perumahan.pu.go.id</a>
                 `;
                 break;
         }
