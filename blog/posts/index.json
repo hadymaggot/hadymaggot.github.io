@@ -1,0 +1,12 @@
+{
+  "posts": [
+    {
+      "file": "2025-01-15-welcome-to-my-blog.json",
+      "featured": true
+    },
+    {
+      "file": "2025-01-10-kubernetes-best-practices.json",
+      "featured": false
+    }
+  ]
+}
