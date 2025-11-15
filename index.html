@@ -178,12 +178,35 @@
                         <h3>Layer Controls</h3>
                         <div class="layer-control">
                             <input type="checkbox" id="provinces-layer" checked>
-                            <label for="provinces-layer">Provinces</label>
+                            <label for="provinces-layer">Provinsi</label>
                         </div>
                         <div class="layer-control">
                             <input type="checkbox" id="districts-layer">
-                            <label for="districts-layer">Districts</label>
+                            <label for="districts-layer">Kabupaten/Kota</label>
                         </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="subdistricts-layer">
+                            <label for="subdistricts-layer">Kecamatan</label>
+                        </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="villages-layer">
+                            <label for="villages-layer">Kelurahan/Desa</label>
+                        </div>
+                    </div>
+                    <div class="control-panel" style="margin-top: 1rem;">
+                        <h3>Live Data</h3>
+                        <div class="layer-control">
+                            <input type="checkbox" id="weather-layer">
+                            <label for="weather-layer">Cuaca</label>
+                        </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="traffic-layer">
+                            <label for="traffic-layer">Traffic</label>
+                        </div>
+                    </div>
+                    <div class="breadcrumb-panel" id="breadcrumb-panel" style="margin-top: 1rem; display: none;">
+                        <h3>Navigation</h3>
+                        <div id="breadcrumb-trail"></div>
                     </div>
                 </div>
             </div>
@@ -213,7 +236,7 @@
     </script>
 
     <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/indonesia-map.js"></script>
+    <script src="/assets/js/indonesia-map-enhanced.js"></script>
 </body>
 
 </html>
