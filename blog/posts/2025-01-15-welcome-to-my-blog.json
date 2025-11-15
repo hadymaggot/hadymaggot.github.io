@@ -1,0 +1,10 @@
+{
+  "id": "welcome-to-my-blog",
+  "title": "Welcome to My Blog",
+  "date": "2025-01-15",
+  "author": "Ahadizapto",
+  "tags": ["DevOps", "Web Development", "Security"],
+  "readTime": 5,
+  "excerpt": "This blog is currently under construction. Soon, I'll be sharing insights about web development, DevOps practices, security operations, and my experiences building scalable systems.",
+  "content": "<p>Welcome to my technical blog! This is a space where I'll be sharing my experiences, insights, and learnings from the world of web development, DevOps, and security operations.</p><p>Over the coming weeks and months, I plan to write about:</p><ul><li><strong>DevOps Best Practices:</strong> CI/CD pipelines, infrastructure as code, and automation strategies</li><li><strong>Web Development:</strong> Modern frameworks, performance optimization, and design patterns</li><li><strong>Security Operations:</strong> Threat detection, incident response, and security hardening</li><li><strong>Cloud Architecture:</strong> Scalable system design and cloud-native technologies</li></ul><p>Stay tuned for more content!</p>"
+}

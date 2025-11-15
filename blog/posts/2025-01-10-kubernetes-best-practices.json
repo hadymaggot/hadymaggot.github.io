@@ -1,0 +1,10 @@
+{
+  "id": "kubernetes-best-practices",
+  "title": "Kubernetes Best Practices for Production",
+  "date": "2025-01-10",
+  "author": "Ahadizapto",
+  "tags": ["Kubernetes", "DevOps", "Cloud"],
+  "readTime": 8,
+  "excerpt": "A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.",
+  "content": "<p>Kubernetes has become the de facto standard for container orchestration, but running it in production requires careful planning and adherence to best practices.</p><h3>Key Considerations</h3><ul><li><strong>Resource Limits:</strong> Always set resource requests and limits for containers to prevent resource starvation</li><li><strong>Health Checks:</strong> Implement readiness and liveness probes for all services</li><li><strong>Security Policies:</strong> Use Pod Security Policies and Network Policies to enforce security boundaries</li><li><strong>Monitoring:</strong> Deploy comprehensive monitoring and logging solutions</li></ul><h3>Example Configuration</h3><pre><code>apiVersion: v1\nkind: Pod\nmetadata:\n  name: my-app\nspec:\n  containers:\n  - name: app\n    image: my-app:latest\n    resources:\n      requests:\n        memory: \"64Mi\"\n        cpu: \"250m\"\n      limits:\n        memory: \"128Mi\"\n        cpu: \"500m\"</code></pre><p>Following these practices will help ensure your Kubernetes deployments are reliable, secure, and performant.</p>"
+}
