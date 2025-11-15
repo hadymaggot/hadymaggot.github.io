@@ -105,9 +105,10 @@ document.querySelectorAll('.nav-links a').forEach(link => {
             case 'skills':
                 command = 'ls -la skills/';
                 const skills = [
-                    "Kubernetes", "Docker", "Linux", "Python", 
+                    "PHP", "VueJS", "Python", 
+                    "Kubernetes", "Docker", "Linux", 
                     "Git", "Ansible", "Monitoring", 
-                    "Penetration Testing", "SIEM"
+                    "Penetration Testing", "SIEM", "SRE"
                 ];
                 output = `total ${skills.length}\n` + 
                     `<div class="skill-list">` +
