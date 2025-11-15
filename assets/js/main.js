@@ -119,6 +119,14 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                 command = 'ls -la projects/';
                 output = 'Coming soon...';
                 break;
+            case 'blog':
+                command = 'cd /blog && ls -la';
+                output = `<p>Exploring my thoughts and technical experiences...</p>
+                    <p>Visit the full blog at: <a href="/blog.html" 
+                        style="color: var(--primary-color); text-decoration: none; border-bottom: 1px dotted var(--primary-color);"
+                        onmouseover="this.style.color='var(--secondary-color)'"
+                        onmouseout="this.style.color='var(--primary-color)'">blog.html</a></p>`;
+                break;
             case 'contact':
                 command = 'find . -type f -name "contact_info"';
                 output = `./contact/<a href="mailto:saptohadi@outlook.com" target="_blank"
