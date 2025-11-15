@@ -1,0 +1,6 @@
+{
+  "properties": {
+    "include": ["id", "name"],
+    "rename": {"name": "label"}
+  }
+}

@@ -1,0 +1,1 @@
+{"properties": {"include": ["id", "raw", "date"], "rename": {"raw": "code"}}, "transforms": {"regex": {"raw": {"pattern": "([A-Z])", "group": 1}}, "date": {"date": "%Y/%m/%d"}, "csv_lookup": {"raw": {"file": "/home/anak8awan9hs/Apps/hadymaggot.github.io/tools/sql_geojson/tests/sample_lookup.csv", "key": 0, "value": 1}}}}
