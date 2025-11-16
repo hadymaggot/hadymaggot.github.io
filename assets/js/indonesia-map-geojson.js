@@ -14,8 +14,8 @@ let map = {
         minZoom: 0.5,
         maxZoom: 10,
         step: 0.5,
-        currentViewBox: { x: 94, y: -12, width: 54, height: 22 },
-        defaultViewBox: { x: 94, y: -12, width: 54, height: 22 }
+        currentViewBox: { x: 94, y: -6, width: 54, height: 22 },
+        defaultViewBox: { x: 94, y: -6, width: 54, height: 22 }
     },
     layers: {
         provinces: true,
@@ -145,7 +145,7 @@ async function initIndonesiaMap() {
     map.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     map.svg.setAttribute('width', '100%');
     map.svg.setAttribute('height', '100%');
-    map.svg.setAttribute('viewBox', '94 -12 54 22');
+    map.svg.setAttribute('viewBox', '94 -6 54 22');
     map.svg.setAttribute('id', 'main-svg');
     map.svg.style.background = '#0a0a0a';
 
@@ -207,7 +207,7 @@ function addBasemapLayer() {
     // Ocean background
     const ocean = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     ocean.setAttribute('x', '94');
-    ocean.setAttribute('y', '-12');
+    ocean.setAttribute('y', '-6');
     ocean.setAttribute('width', '54');
     ocean.setAttribute('height', '22');
     ocean.setAttribute('fill', '#0a1520');
@@ -316,7 +316,7 @@ async function renderProvincesFromGeoJSON() {
         // Add label at center point
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('x', props.lng);
-        text.setAttribute('y', props.lat);
+        text.setAttribute('y', -props.lat);
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('fill', '#C3DB65');
         text.setAttribute('font-size', '0.4');
@@ -339,7 +339,7 @@ function geometryToPath(geometry) {
         geometry.coordinates.forEach((ring, ringIndex) => {
             ring.forEach((coord, i) => {
                 const [lng, lat] = coord;
-                pathData += (i === 0 ? 'M' : 'L') + lng + ',' + lat + ' ';
+                pathData += (i === 0 ? 'M' : 'L') + lng + ',' + (-lat) + ' ';
             });
             pathData += 'Z ';
         });
@@ -348,7 +348,7 @@ function geometryToPath(geometry) {
             polygon.forEach((ring, ringIndex) => {
                 ring.forEach((coord, i) => {
                     const [lng, lat] = coord;
-                    pathData += (i === 0 ? 'M' : 'L') + lng + ',' + lat + ' ';
+                    pathData += (i === 0 ? 'M' : 'L') + lng + ',' + (-lat) + ' ';
                 });
                 pathData += 'Z ';
             });
@@ -540,13 +540,14 @@ function zoomToFeature(feature) {
     const height = bounds.maxLat - bounds.minLat;
     const padding = Math.max(width, height) * 0.2;
 
-    const viewBox = `${bounds.minLng - padding} ${bounds.minLat - padding} ${width + 2 * padding} ${height + 2 * padding}`;
+    // Negate latitudes for correct orientation
+    const viewBox = `${bounds.minLng - padding} ${-bounds.maxLat - padding} ${width + 2 * padding} ${height + 2 * padding}`;
     map.svg.setAttribute('viewBox', viewBox);
     
     // Update zoom state
     map.zoom.currentViewBox = {
         x: bounds.minLng - padding,
-        y: bounds.minLat - padding,
+        y: -bounds.maxLat - padding,
         width: width + 2 * padding,
         height: height + 2 * padding
     };
@@ -554,7 +555,7 @@ function zoomToFeature(feature) {
 
 // Reset to full Indonesia view
 function resetView() {
-    map.svg.setAttribute('viewBox', '94 -12 54 22');
+    map.svg.setAttribute('viewBox', '94 -6 54 22');
     map.selectedProvince = null;
     map.selectedDistrict = null;
     map.selectedSubdistrict = null;
@@ -920,7 +921,7 @@ function toggleStreetsLayer(enabled) {
     // Add sample street lines for visualization
     map.geojsonData.provinces.features.forEach((feature) => {
         const props = feature.properties;
-        const center = [props.lng, props.lat];
+        const center = [props.lng, -props.lat];
         
         // Draw simple road network visualization
         const roadLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -959,7 +960,7 @@ function toggleTrafficLayer(enabled) {
         
         const trafficIndicator = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         trafficIndicator.setAttribute('cx', props.lng + 0.5);
-        trafficIndicator.setAttribute('cy', props.lat - 0.3);
+        trafficIndicator.setAttribute('cy', -props.lat - 0.3);
         trafficIndicator.setAttribute('r', '0.2');
         trafficIndicator.setAttribute('fill', colors[level]);
         trafficIndicator.setAttribute('opacity', '0.7');
@@ -967,7 +968,7 @@ function toggleTrafficLayer(enabled) {
         // Add traffic label
         const trafficLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         trafficLabel.setAttribute('x', props.lng + 0.8);
-        trafficLabel.setAttribute('y', props.lat - 0.25);
+        trafficLabel.setAttribute('y', -props.lat - 0.25);
         trafficLabel.setAttribute('font-size', '0.25');
         trafficLabel.setAttribute('fill', colors[level]);
         trafficLabel.textContent = level.toUpperCase();
