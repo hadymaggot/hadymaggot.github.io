@@ -9,13 +9,23 @@ let map = {
     selectedDistrict: null,
     selectedSubdistrict: null,
     breadcrumb: [],
+    zoom: {
+        level: 1,
+        minZoom: 0.5,
+        maxZoom: 10,
+        step: 0.5,
+        currentViewBox: { x: 94, y: -12, width: 54, height: 22 },
+        defaultViewBox: { x: 94, y: -12, width: 54, height: 22 }
+    },
     layers: {
         provinces: true,
         districts: false,
         subdistricts: false,
         villages: false,
         weather: false,
-        traffic: false
+        traffic: false,
+        basemap: true,
+        streets: false
     },
     geojsonData: {
         provinces: null,
@@ -151,8 +161,16 @@ async function initIndonesiaMap() {
 
     mapContainer.appendChild(map.svg);
 
+    // Add basemap layer
+    if (map.layers.basemap) {
+        addBasemapLayer();
+    }
+
     // Add map styles
     addMapStyles();
+    
+    // Create zoom controls
+    createZoomControls();
     
     // Load and render provinces
     await renderProvincesFromGeoJSON();
@@ -179,6 +197,73 @@ function addGridPattern() {
     pattern.appendChild(gridPath);
     defs.appendChild(pattern);
     map.svg.appendChild(defs);
+}
+
+// Add basemap layer (ocean/land background)
+function addBasemapLayer() {
+    const basemapGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    basemapGroup.setAttribute('id', 'basemap-group');
+    
+    // Ocean background
+    const ocean = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    ocean.setAttribute('x', '94');
+    ocean.setAttribute('y', '-12');
+    ocean.setAttribute('width', '54');
+    ocean.setAttribute('height', '22');
+    ocean.setAttribute('fill', '#0a1520');
+    ocean.setAttribute('opacity', '0.8');
+    
+    basemapGroup.appendChild(ocean);
+    map.svg.appendChild(basemapGroup);
+}
+
+// Zoom controls
+function zoomIn() {
+    if (map.zoom.level < map.zoom.maxZoom) {
+        map.zoom.level += map.zoom.step;
+        applyZoom();
+    }
+}
+
+function zoomOut() {
+    if (map.zoom.level > map.zoom.minZoom) {
+        map.zoom.level -= map.zoom.step;
+        applyZoom();
+    }
+}
+
+function applyZoom() {
+    const vb = map.zoom.currentViewBox;
+    const centerX = vb.x + vb.width / 2;
+    const centerY = vb.y + vb.height / 2;
+    
+    const newWidth = vb.width / map.zoom.level;
+    const newHeight = vb.height / map.zoom.level;
+    
+    const newX = centerX - newWidth / 2;
+    const newY = centerY - newHeight / 2;
+    
+    map.svg.setAttribute('viewBox', `${newX} ${newY} ${newWidth} ${newHeight}`);
+}
+
+// Create zoom control buttons
+function createZoomControls() {
+    const mapContainer = document.getElementById('indonesia-map');
+    
+    const zoomControls = document.createElement('div');
+    zoomControls.className = 'zoom-controls';
+    zoomControls.innerHTML = `
+        <button class="zoom-btn zoom-in" id="zoom-in-btn" title="Zoom In">+</button>
+        <button class="zoom-btn zoom-out" id="zoom-out-btn" title="Zoom Out">−</button>
+        <button class="zoom-btn zoom-reset" id="zoom-reset-btn" title="Reset View">⌂</button>
+    `;
+    
+    mapContainer.appendChild(zoomControls);
+    
+    // Add event listeners
+    document.getElementById('zoom-in-btn').addEventListener('click', zoomIn);
+    document.getElementById('zoom-out-btn').addEventListener('click', zoomOut);
+    document.getElementById('zoom-reset-btn').addEventListener('click', resetView);
 }
 
 // Render provinces from GeoJSON
@@ -457,6 +542,14 @@ function zoomToFeature(feature) {
 
     const viewBox = `${bounds.minLng - padding} ${bounds.minLat - padding} ${width + 2 * padding} ${height + 2 * padding}`;
     map.svg.setAttribute('viewBox', viewBox);
+    
+    // Update zoom state
+    map.zoom.currentViewBox = {
+        x: bounds.minLng - padding,
+        y: bounds.minLat - padding,
+        width: width + 2 * padding,
+        height: height + 2 * padding
+    };
 }
 
 // Reset to full Indonesia view
@@ -466,6 +559,8 @@ function resetView() {
     map.selectedDistrict = null;
     map.selectedSubdistrict = null;
     map.breadcrumb = [];
+    map.zoom.level = 1;
+    map.zoom.currentViewBox = { ...map.zoom.defaultViewBox };
     updateBreadcrumb();
 
     // Remove district/subdistrict groups
@@ -624,6 +719,61 @@ function addMapStyles() {
         .province-tooltip .info {
             color: #C3DB65;
         }
+
+        .zoom-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(18, 18, 18, 0.95);
+            border: 1px solid #7AC55A;
+            border-radius: 4px;
+            color: #7AC55A;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(122, 197, 90, 0.2);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(122, 197, 90, 0.2);
+            box-shadow: 0 0 20px rgba(122, 197, 90, 0.4);
+            transform: scale(1.05);
+        }
+
+        .zoom-btn:active {
+            transform: scale(0.95);
+        }
+
+        .zoom-reset {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .zoom-controls {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .zoom-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+        }
     `;
     document.head.appendChild(style);
 }
@@ -708,6 +858,8 @@ document.addEventListener('DOMContentLoaded', function() {
         districts: document.getElementById('districts-layer'),
         subdistricts: document.getElementById('subdistricts-layer'),
         villages: document.getElementById('villages-layer'),
+        basemap: document.getElementById('basemap-layer'),
+        streets: document.getElementById('streets-layer'),
         weather: document.getElementById('weather-layer'),
         traffic: document.getElementById('traffic-layer')
     };
@@ -731,15 +883,100 @@ function handleLayerToggle(layer, enabled) {
                 provincesGroup.style.display = enabled ? 'block' : 'none';
             }
             break;
+        case 'basemap':
+            const basemapGroup = document.getElementById('basemap-group');
+            if (basemapGroup) {
+                basemapGroup.style.display = enabled ? 'block' : 'none';
+            }
+            break;
+        case 'streets':
+            toggleStreetsLayer(enabled);
+            break;
         case 'weather':
             toggleWeatherLayer(enabled);
             break;
         case 'traffic':
-            console.log('Traffic layer coming soon');
+            toggleTrafficLayer(enabled);
             break;
         default:
             console.log(`Layer ${layer} toggled:`, enabled);
     }
+}
+
+// Toggle streets layer (OpenStreetMap overlay for traffic context)
+function toggleStreetsLayer(enabled) {
+    if (!enabled) {
+        const streetsGroup = document.getElementById('streets-group');
+        if (streetsGroup) streetsGroup.remove();
+        return;
+    }
+
+    if (!map.geojsonData.provinces) return;
+
+    const streetsGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    streetsGroup.setAttribute('id', 'streets-group');
+    streetsGroup.setAttribute('opacity', '0.3');
+
+    // Add sample street lines for visualization
+    map.geojsonData.provinces.features.forEach((feature) => {
+        const props = feature.properties;
+        const center = [props.lng, props.lat];
+        
+        // Draw simple road network visualization
+        const roadLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        roadLine.setAttribute('x1', center[0] - 0.3);
+        roadLine.setAttribute('y1', center[1]);
+        roadLine.setAttribute('x2', center[0] + 0.3);
+        roadLine.setAttribute('y2', center[1]);
+        roadLine.setAttribute('stroke', '#666');
+        roadLine.setAttribute('stroke-width', '0.05');
+        
+        streetsGroup.appendChild(roadLine);
+    });
+
+    map.svg.appendChild(streetsGroup);
+}
+
+// Toggle traffic layer with real-time data simulation
+function toggleTrafficLayer(enabled) {
+    if (!enabled) {
+        const trafficGroup = document.getElementById('traffic-group');
+        if (trafficGroup) trafficGroup.remove();
+        return;
+    }
+
+    if (!map.geojsonData.provinces) return;
+
+    const trafficGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    trafficGroup.setAttribute('id', 'traffic-group');
+
+    // Simulate traffic data for major cities
+    const trafficLevels = ['low', 'medium', 'high'];
+    map.geojsonData.provinces.features.forEach((feature) => {
+        const props = feature.properties;
+        const level = trafficLevels[Math.floor(Math.random() * trafficLevels.length)];
+        const colors = { low: '#00ff00', medium: '#ffaa00', high: '#ff0000' };
+        
+        const trafficIndicator = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        trafficIndicator.setAttribute('cx', props.lng + 0.5);
+        trafficIndicator.setAttribute('cy', props.lat - 0.3);
+        trafficIndicator.setAttribute('r', '0.2');
+        trafficIndicator.setAttribute('fill', colors[level]);
+        trafficIndicator.setAttribute('opacity', '0.7');
+        
+        // Add traffic label
+        const trafficLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        trafficLabel.setAttribute('x', props.lng + 0.8);
+        trafficLabel.setAttribute('y', props.lat - 0.25);
+        trafficLabel.setAttribute('font-size', '0.25');
+        trafficLabel.setAttribute('fill', colors[level]);
+        trafficLabel.textContent = level.toUpperCase();
+        
+        trafficGroup.appendChild(trafficIndicator);
+        trafficGroup.appendChild(trafficLabel);
+    });
+
+    map.svg.appendChild(trafficGroup);
 }
 
 // Open/close modal functions
