@@ -61,6 +61,7 @@
                 <a href="#projects">Projects</a>
                 <a href="#blog">Blog</a>
                 <a href="#contact">Contact</a>
+                <a href="#indonesia-map">+62</a>
                 <a href="#ahadizapto">[?]</a>
             </div>
         </nav>
@@ -156,6 +157,70 @@
             </div>
         </div>
     </div>
+    <!-- Indonesia Map Modal -->
+    <div id="indonesia-map-modal" class="map-modal">
+        <div class="map-modal-content">
+            <div class="map-modal-header">
+                <div class="terminal-buttons">
+                    <div class="term-btn red"></div>
+                    <div class="term-btn yellow"></div>
+                    <div class="term-btn green"></div>
+                </div>
+                <div class="terminal-title">Indonesia Interactive Map [+62]</div>
+                <button class="map-close-btn" title="Close map">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="map-container">
+                <div id="indonesia-map"></div>
+                <div class="map-controls">
+                    <div class="control-panel">
+                        <h3>Layer Controls</h3>
+                        <div class="layer-control">
+                            <input type="checkbox" id="provinces-layer" checked>
+                            <label for="provinces-layer">Provinsi</label>
+                        </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="districts-layer">
+                            <label for="districts-layer">Kabupaten/Kota</label>
+                        </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="subdistricts-layer">
+                            <label for="subdistricts-layer">Kecamatan</label>
+                        </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="villages-layer">
+                            <label for="villages-layer">Kelurahan/Desa</label>
+                        </div>
+                    </div>
+                    <div class="control-panel" style="margin-top: 1rem;">
+                        <h3>Live Data</h3>
+                        <div class="layer-control">
+                            <input type="checkbox" id="basemap-layer" checked>
+                            <label for="basemap-layer">Basemap</label>
+                        </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="streets-layer">
+                            <label for="streets-layer">Streets</label>
+                        </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="weather-layer">
+                            <label for="weather-layer">Cuaca</label>
+                        </div>
+                        <div class="layer-control">
+                            <input type="checkbox" id="traffic-layer">
+                            <label for="traffic-layer">Traffic</label>
+                        </div>
+                    </div>
+                    <div class="breadcrumb-panel" id="breadcrumb-panel" style="margin-top: 1rem; display: none;">
+                        <h3>Navigation</h3>
+                        <div id="breadcrumb-trail"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="cyberpunk-footer">
         <div class="footer-content">
             <p>
@@ -179,6 +244,7 @@
     </script>
 
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/indonesia-map-geojson.js"></script>
 </body>
 
 </html>
