@@ -60,6 +60,14 @@ def analyze_geojson_tree(root: Path) -> Tuple[Dict[str, int], Dict[str, Dict[str
             if not geometry:
                 summary["features_without_geometry"] += 1
                 level_stats["without_geometry"] += 1
+                props = feature.get("properties") or {}
+                issues.append({
+                    "file": str(relative_path),
+                    "feature": idx,
+                    "type": "missing_geometry",
+                    "kode": props.get("kode"),
+                    "nama": props.get("nama"),
+                })
                 continue
 
             summary["features_with_geometry"] += 1
@@ -98,6 +106,8 @@ def main() -> None:
     parser.add_argument("root", nargs="?", default="indonesian_boundaries/db_geojson", help="Root directory to scan")
     parser.add_argument("--max-issues", type=int, default=20, dest="max_issues", help="Maximum issues to display")
     parser.add_argument("--json", action="store_true", help="Print JSON output instead of text summary")
+    parser.add_argument("--report-missing", action="store_true", dest="report_missing",
+                        help="Also print features with missing/null geometry (kode and nama)")
     args = parser.parse_args()
 
     root = Path(args.root)
@@ -114,6 +124,7 @@ def main() -> None:
     }
 
     if args.json:
+        # In JSON mode, always include all issues so consumers can filter themselves.
         print(json.dumps(payload, indent=2))
         return
 
@@ -130,14 +141,27 @@ def main() -> None:
             f"invalid_geom={stats['invalid_geometries']}"
         )
 
-    if issues:
-        print(f"\nTop {min(args.max_issues, len(issues))} issues:")
-        for issue in issues[: args.max_issues]:
-            location = issue.get("file", "")
-            feature = issue.get("feature")
-            if feature is not None:
-                location = f"{location}#feature={feature}"
-            print(f"  - {issue['type']} @ {location}: {issue['error']}")
+    # When --report-missing is not set, exclude missing_geometry issues from display.
+    displayable_issues = [
+        issue for issue in issues
+        if args.report_missing or issue.get("type") != "missing_geometry"
+    ]
+
+    if displayable_issues:
+        print(f"\nTop {min(args.max_issues, len(displayable_issues))} issues:")
+        for issue in displayable_issues[: args.max_issues]:
+            if issue.get("type") == "missing_geometry":
+                location = issue.get("file", "")
+                feature = issue.get("feature")
+                if feature is not None:
+                    location = f"{location}#feature={feature}"
+                print(f"  - missing_geometry @ {location}: kode={issue.get('kode')}, nama={issue.get('nama')}")
+            else:
+                location = issue.get("file", "")
+                feature = issue.get("feature")
+                if feature is not None:
+                    location = f"{location}#feature={feature}"
+                print(f"  - {issue['type']} @ {location}: {issue['error']}")
     else:
         print("\nNo issues detected.")
 

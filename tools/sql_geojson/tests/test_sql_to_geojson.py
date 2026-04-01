@@ -23,6 +23,11 @@ class TestSQLToGeoJSON(unittest.TestCase):
         coords = [tuple(feat['geometry']['coordinates']) for feat in fc['features']]
         self.assertIn((100.0, 0.0), coords)
 
+    def test_multi_row_values(self):
+        sql = "INSERT INTO t (id, geom) VALUES (1, ST_GeomFromText('POINT(1 2)',4326)), (2, ST_GeomFromText('POINT(3 4)',4326));"
+        fc = sql_to_geojson(sql)
+        self.assertEqual(len(fc['features']), 2)
+
     def test_wkb_hex(self):
         # generate WKB hex of a point and embed in a fake INSERT
         p = Point(10.0, 20.0)
