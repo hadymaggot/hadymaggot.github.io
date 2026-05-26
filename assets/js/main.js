@@ -312,13 +312,13 @@ async function getUserLocation() {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`);
                 const data = await response.json();
-                const city = data.address.city || data.address.town || data.address.village;
+                const city = data.address.city || data.address.town || data.address.village || 'Unknown';
                 cachedLocation = {
                     value: city,
                     timestamp: Date.now()
                 };
                 document.getElementById('user-location').textContent = cachedLocation.value;
-            }, null, {
+            }, (err) => { document.getElementById('user-location').textContent = 'Unknown'; }, {
                 enableHighAccuracy: true,
                 timeout: 5000,
                 maximumAge: CACHE_EXPIRATION
