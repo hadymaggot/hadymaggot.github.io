@@ -103,16 +103,75 @@ def check_blog_build():
     import build_blog
 
     posts = build_blog.load_posts()
-    for post in posts:
-        page = ROOT / "blog" / post["id"] / "index.html"
-        if not page.is_file():
-            fail(f"blog/{post['id']}/index.html belum dibangun (jalankan scripts/build_blog.py)")
-        elif page.read_text(encoding="utf-8") != build_blog.render_page(post):
-            fail(f"blog/{post['id']}/index.html tidak sama dengan sumbernya (jalankan scripts/build_blog.py)")
-    for name, expected in (("feed.xml", build_blog.render_feed(posts)), ("sitemap.xml", build_blog.render_sitemap(posts))):
-        target = ROOT / name
-        if not target.is_file() or target.read_text(encoding="utf-8") != expected:
-            fail(f"{name} tidak sama dengan hasil build (jalankan scripts/build_blog.py)")
+    hint = "(jalankan scripts/build_blog.py)"
+    for rel, expected in build_blog.generated_files(posts).items():
+        target = ROOT / rel
+        if not target.is_file():
+            fail(f"{rel} belum dibangun {hint}")
+        elif target.read_text(encoding="utf-8") != expected:
+            fail(f"{rel} tidak sama dengan hasil build {hint}")
+    for rel in build_blog.INJECTIONS:
+        current = (ROOT / rel).read_text(encoding="utf-8")
+        try:
+            if build_blog.injected_text(rel, posts) != current:
+                fail(f"{rel}: bagian otomatis tidak sama dengan hasil build {hint}")
+        except ValueError as exc:
+            fail(f"{rel}: {exc}")
+    for p in posts:
+        if not (ROOT / build_blog.og_path(p)).is_file():
+            fail(f"{build_blog.og_path(p)} belum dibuat {hint}")
+    if not (ROOT / build_blog.OG_DEFAULT).is_file():
+        fail(f"{build_blog.OG_DEFAULT} belum dibuat {hint}")
+
+
+def meta_content(html, attr, name):
+    m = re.search(rf'<meta\s+{attr}="{re.escape(name)}"\s+content="([^"]*)"', html)
+    return m.group(1) if m else None
+
+
+def check_seo():
+    """Judul, deskripsi, h1, canonical, Open Graph, dan JSON-LD untuk setiap halaman yang diindeks."""
+    import html as htmllib
+
+    pages = [ROOT / "index.html", ROOT / "blog.html"]
+    pages += sorted((ROOT / "blog").glob("*/index.html")) + sorted((ROOT / "blog" / "tag").glob("*/index.html"))
+    titles, descs = {}, {}
+    for page in pages:
+        rel = page.relative_to(ROOT).as_posix()
+        text = page.read_text(encoding="utf-8")
+        title = re.search(r"<title>(.*?)</title>", text, re.S)
+        title = htmllib.unescape(title.group(1).strip()) if title else ""
+        desc = htmllib.unescape(meta_content(text, "name", "description") or "")
+        if not (10 <= len(title) <= 70):
+            fail(f"{rel}: panjang title {len(title)} (harus 10 sampai 70)")
+        if not (70 <= len(desc) <= 165):
+            fail(f"{rel}: panjang meta description {len(desc)} (harus 70 sampai 165)")
+        if titles.setdefault(title, rel) != rel:
+            fail(f"{rel}: title sama dengan {titles[title]}")
+        if descs.setdefault(desc, rel) != rel:
+            fail(f"{rel}: meta description sama dengan {descs[desc]}")
+        if len(re.findall(r"<h1[\s>]", text)) != 1:
+            fail(f"{rel}: harus memiliki tepat satu h1")
+        canonical = re.search(r'<link rel="canonical" href="([^"]+)"', text)
+        expected = BASE_URL + "/" + ("" if rel == "index.html" else rel.replace("/index.html", "/"))
+        if not canonical or canonical.group(1) != expected:
+            fail(f"{rel}: canonical harus {expected}")
+        for prop in ("og:title", "og:description", "og:url", "og:image", "og:type"):
+            if not meta_content(text, "property", prop):
+                fail(f"{rel}: meta {prop} tidak ada")
+        if not meta_content(text, "name", "twitter:image"):
+            fail(f"{rel}: meta twitter:image tidak ada")
+        for raw in re.findall(r'<script type="application/ld\+json">(.*?)</script>', text, re.S):
+            try:
+                json.loads(raw)
+            except ValueError as exc:
+                fail(f"{rel}: JSON-LD tidak valid ({exc})")
+        if '<script type="application/ld+json">' not in text:
+            fail(f"{rel}: JSON-LD tidak ada")
+        image = meta_content(text, "property", "og:image") or ""
+        target = local_target(image)
+        if target is not None and not target.exists():
+            fail(f"{rel}: og:image {image} tidak ada berkasnya")
 
 
 def check_post_safety():
@@ -150,7 +209,7 @@ def check_cloudflare():
         fail("build_dist.py gagal atau melewati batas free tier")
         return
     dist = build_dist.DIST
-    pages = [dist / "index.html", dist / "blog.html", dist / "404.html"] + sorted((dist / "blog").glob("*/index.html"))
+    pages = [dist / "index.html", dist / "blog.html", dist / "404.html"] + sorted((dist / "blog").rglob("index.html"))
     pattern = re.compile(r'(?:href|src)="([^"]+)"')
     for page in pages:
         for ref in pattern.findall(page.read_text(encoding="utf-8")):
@@ -169,6 +228,7 @@ def main():
     check_robots_and_sitemap()
     check_security_txt()
     check_blog_build()
+    check_seo()
     check_post_safety()
     check_cloudflare()
     if errors:

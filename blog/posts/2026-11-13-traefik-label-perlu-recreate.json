@@ -1,6 +1,6 @@
 {
   "id": "traefik-label-perlu-recreate",
-  "title": "Traefik: Menambah Route Perlu Recreate Container, Bukan Restart",
+  "title": "Traefik: Route Baru Perlu Recreate Container",
   "date": "2026-11-13",
   "author": "Ahadizapto",
   "tags": [

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | Ahadizapto</title>
+    <title>Blog Security, Operations, dan GIS | Ahadizapto</title>
     <!-- Favicon -->
     <link rel="icon" href="/assets/images/ico2.png" type="image/png">
     <!-- Font Awesome Icons -->
@@ -21,19 +21,26 @@
     <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
     <link rel="manifest" href="/meta/manifest.json">
     <meta name="theme-color" content="#7AC55A">
-    <meta name="description" content="Blog - Technical insights and experiences from Ahadizapto">
-    <meta name="keywords" content="Blog, DevOps, Security, Web Development, Cloud Infrastructure">
-    <meta name="author" content="Ahadizapto">
-    <meta name="robots" content="index, follow">
+    <meta name="description" content="Catatan teknis Sapto Hadi (Ahadizapto): troubleshooting Docker dan Redis, keamanan aplikasi web, PostGIS, dan praktik DevOps dari pekerjaan nyata.">
+    <meta name="keywords" content="cybersecurity, security testing, DevOps, SRE, GIS, WebGIS, PostGIS, Docker, Laravel, blog teknis">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
     <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
-    <meta property="og:title" content="Blog | Ahadizapto">
-    <meta property="og:description" content="Technical blog by Ahadizapto">
+    <meta property="og:title" content="Blog Security, Operations, dan GIS | Ahadizapto">
+    <meta property="og:description" content="Catatan teknis Sapto Hadi (Ahadizapto): troubleshooting Docker dan Redis, keamanan aplikasi web, PostGIS, dan praktik DevOps dari pekerjaan nyata.">
     <meta property="og:url" content="https://hadymaggot.github.io/blog.html">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og-default.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ahadizapto: Security, Operations, dan GIS">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@hadymaggot">
     <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Blog Security, Operations, dan GIS | Ahadizapto">
+    <meta name="twitter:description" content="Catatan teknis Sapto Hadi (Ahadizapto): troubleshooting Docker dan Redis, keamanan aplikasi web, PostGIS, dan praktik DevOps dari pekerjaan nyata.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og-default.png">
     <style>
         /* Beranda mengunci tinggi 100vh untuk terminal satu layar. Blog memuat konten panjang, jadi tinggi dilepas supaya bisa di-scroll. */
         body {
@@ -237,7 +244,13 @@
                 padding-right: 1rem;
             }
         }
+        .blog-prompt { font-family: 'JetBrains Mono', monospace; color: var(--secondary-color); margin-bottom: 0.5rem; }
+        a.blog-tag { text-decoration: none; }
+        .blog-topics { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
     </style>
+    <!--JSONLD:START-->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Blog", "@id": "https://hadymaggot.github.io/blog.html#blog", "name": "Blog Ahadizapto", "description": "Catatan teknis seputar cybersecurity, operations, GIS, dan web development.", "url": "https://hadymaggot.github.io/blog.html", "inLanguage": "id", "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "blogPost": [{"@type": "BlogPosting", "headline": "Security Headers di GitHub Pages: Apa yang Bisa dan Tidak", "url": "https://hadymaggot.github.io/blog/security-headers-github-pages/", "datePublished": "2026-11-16", "description": "GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.", "image": "https://hadymaggot.github.io/assets/images/og/security-headers-github-pages.png"}, {"@type": "BlogPosting", "headline": "Dari Temuan Pentest ke Test Otomatis di CI", "url": "https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/", "datePublished": "2026-11-16", "description": "Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.", "image": "https://hadymaggot.github.io/assets/images/og/pentest-ke-test-otomatis.png"}, {"@type": "BlogPosting", "headline": "Checklist Ops Sebelum Deploy ke Produksi", "url": "https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/", "datePublished": "2026-11-16", "description": "Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.", "image": "https://hadymaggot.github.io/assets/images/og/checklist-ops-sebelum-deploy.png"}, {"@type": "BlogPosting", "headline": "Traefik: Route Baru Perlu Recreate Container", "url": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/", "datePublished": "2026-11-13", "description": "Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.", "image": "https://hadymaggot.github.io/assets/images/og/traefik-label-perlu-recreate.png"}, {"@type": "BlogPosting", "headline": "Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB", "url": "https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/", "datePublished": "2026-11-12", "description": "Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.", "image": "https://hadymaggot.github.io/assets/images/og/ekspor-smart-dbf-utf8-dan-file-besar.png"}, {"@type": "BlogPosting", "headline": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED", "url": "https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/", "datePublished": "2026-11-08", "description": "Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.", "image": "https://hadymaggot.github.io/assets/images/og/import-track-postgis-detoast-materialized.png"}, {"@type": "BlogPosting", "headline": "Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent", "url": "https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/", "datePublished": "2026-11-06", "description": "Data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak hasil run pertama.", "image": "https://hadymaggot.github.io/assets/images/og/backup-dan-idempotent-bulk-update.png"}, {"@type": "BlogPosting", "headline": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime", "url": "https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/", "datePublished": "2026-10-30", "description": "Prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau.", "image": "https://hadymaggot.github.io/assets/images/og/type-check-hijau-bukan-bukti-runtime.png"}, {"@type": "BlogPosting", "headline": "Redis Crash-Loop karena AOF Korup Setelah Reboot", "url": "https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/", "datePublished": "2026-10-30", "description": "Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file AOF rusak.", "image": "https://hadymaggot.github.io/assets/images/og/redis-aof-korup-setelah-reboot.png"}, {"@type": "BlogPosting", "headline": "Gitleaks Melewatkan Secret pada Commit Rename", "url": "https://hadymaggot.github.io/blog/gitleaks-celah-rename-detection/", "datePublished": "2026-10-23", "description": "Peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak dipindai.", "image": "https://hadymaggot.github.io/assets/images/og/gitleaks-celah-rename-detection.png"}, {"@type": "BlogPosting", "headline": "Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode", "url": "https://hadymaggot.github.io/blog/daftar-tugas-adalah-petunjuk/", "datePublished": "2026-10-17", "description": "Butir belum dikerjakan pada daftar tugas atau ringkasan sesi belum tentu benar. Satu grep dapat menghemat seluruh pekerjaan.", "image": "https://hadymaggot.github.io/assets/images/og/daftar-tugas-adalah-petunjuk.png"}, {"@type": "BlogPosting", "headline": "Migrasi Legacy: Handler JS Belum Berarti Aturan Hidup", "url": "https://hadymaggot.github.io/blog/legacy-handler-js-bukan-aturan-hidup/", "datePublished": "2026-10-14", "description": "Saat memetakan kondisional form legacy, keberadaan handler JavaScript tidak membuktikan bahwa aturannya masih aktif.", "image": "https://hadymaggot.github.io/assets/images/og/legacy-handler-js-bukan-aturan-hidup.png"}, {"@type": "BlogPosting", "headline": "Zombie Process di Container: Mengapa PID 1 Perlu init", "url": "https://hadymaggot.github.io/blog/container-zombie-process-init/", "datePublished": "2026-10-02", "description": "Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.", "image": "https://hadymaggot.github.io/assets/images/og/container-zombie-process-init.png"}, {"@type": "BlogPosting", "headline": "Basemap Tile: Watermark CARTO dan Larangan Google vt", "url": "https://hadymaggot.github.io/blog/basemap-tile-carto-dan-google-vt/", "datePublished": "2026-09-29", "description": "Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak boleh dipakai.", "image": "https://hadymaggot.github.io/assets/images/og/basemap-tile-carto-dan-google-vt.png"}, {"@type": "BlogPosting", "headline": "Mutex Scheduler Laravel yang Tertahan di Redis", "url": "https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/", "datePublished": "2026-09-26", "description": "Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.", "image": "https://hadymaggot.github.io/assets/images/og/mutex-scheduler-tertahan-redis.png"}, {"@type": "BlogPosting", "headline": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null", "url": "https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/", "datePublished": "2026-09-24", "description": "Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.", "image": "https://hadymaggot.github.io/assets/images/og/docker-windows-crlf-dan-devnull.png"}, {"@type": "BlogPosting", "headline": "Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa", "url": "https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/", "datePublished": "2026-09-23", "description": "Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.", "image": "https://hadymaggot.github.io/assets/images/og/kode-wilayah-kemendagri-vs-bps.png"}, {"@type": "BlogPosting", "headline": "Cakupan Dependabot: Image di docker-compose Luput Dipantau", "url": "https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/", "datePublished": "2026-09-04", "description": "Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.", "image": "https://hadymaggot.github.io/assets/images/og/cakupan-dependabot-image-compose.png"}, {"@type": "BlogPosting", "headline": "Koordinat DMS dan Validasi Lintang di Luar Bounding Box", "url": "https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/", "datePublished": "2026-08-28", "description": "Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.", "image": "https://hadymaggot.github.io/assets/images/og/koordinat-dms-dan-validasi-lintang.png"}, {"@type": "BlogPosting", "headline": "Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi", "url": "https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/", "datePublished": "2026-07-23", "description": "Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.", "image": "https://hadymaggot.github.io/assets/images/og/crosswalk-kode-kabupaten-legacy.png"}, {"@type": "BlogPosting", "headline": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan", "url": "https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/", "datePublished": "2026-04-22", "description": "Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.", "image": "https://hadymaggot.github.io/assets/images/og/sql-ke-geojson-geometri-kosong.png"}, {"@type": "BlogPosting", "headline": "Welcome to My Blog", "url": "https://hadymaggot.github.io/blog/welcome-to-my-blog/", "datePublished": "2025-01-15", "description": "Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.", "image": "https://hadymaggot.github.io/assets/images/og/welcome-to-my-blog.png"}, {"@type": "BlogPosting", "headline": "Kubernetes Best Practices for Production", "url": "https://hadymaggot.github.io/blog/kubernetes-best-practices/", "datePublished": "2025-01-10", "description": "A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.", "image": "https://hadymaggot.github.io/assets/images/og/kubernetes-best-practices.png"}]}</script>
+<!--JSONLD:END-->
 </head>
 
 <body>
@@ -278,16 +291,252 @@
 
         <div class="blog-container" id="main" tabindex="-1">
             <div class="blog-header">
-                <h1>$ cat /blog/index.txt</h1>
+                <p class="blog-prompt" aria-hidden="true">$ cat blog/index.txt</p>
+                <h1>Blog Ahadizapto: Security, Operations, dan GIS</h1>
                 <p>Technical insights, experiences, and thoughts from my journey</p>
             </div>
+
+            <!--TAGS:START-->
+<nav class="blog-topics" aria-label="Topik"><a class="blog-tag" href="/blog/tag/gis/">GIS (7)</a><a class="blog-tag" href="/blog/tag/data/">Data (5)</a><a class="blog-tag" href="/blog/tag/docker/">Docker (5)</a><a class="blog-tag" href="/blog/tag/security/">Security (5)</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting (5)</a><a class="blog-tag" href="/blog/tag/operations/">Operations (4)</a><a class="blog-tag" href="/blog/tag/devops/">DevOps (3)</a><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi (3)</a><a class="blog-tag" href="/blog/tag/ci-cd/">CI/CD (2)</a><a class="blog-tag" href="/blog/tag/engineering/">Engineering (2)</a><a class="blog-tag" href="/blog/tag/python/">Python (2)</a><a class="blog-tag" href="/blog/tag/redis/">Redis (2)</a><a class="blog-tag" href="/blog/tag/web/">Web (2)</a></nav>
+<!--TAGS:END-->
 
             <div id="loading-indicator">
                 <i class="fas fa-spinner fa-spin"></i> Loading posts...
             </div>
 
             <div class="blog-posts" id="blog-posts">
-                <!-- Blog posts will be loaded dynamically here -->
+                <!--POSTS:START-->
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/security-headers-github-pages/">Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</a></h2>
+    <div class="blog-post-excerpt"><p>GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><a class="blog-tag" href="/blog/tag/web/">Web</a><span class="blog-tag">Cloudflare</span></div>
+    <a href="/blog/security-headers-github-pages/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/pentest-ke-test-otomatis/">Dari Temuan Pentest ke Test Otomatis di CI</a></h2>
+    <div class="blog-post-excerpt"><p>Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><span class="blog-tag">DevSecOps</span><a class="blog-tag" href="/blog/tag/ci-cd/">CI/CD</a></div>
+    <a href="/blog/pentest-ke-test-otomatis/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/checklist-ops-sebelum-deploy/">Checklist Ops Sebelum Deploy ke Produksi</a></h2>
+    <div class="blog-post-excerpt"><p>Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">SRE</span><a class="blog-tag" href="/blog/tag/operations/">Operations</a></div>
+    <a href="/blog/checklist-ops-sebelum-deploy/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-13">13 November 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/traefik-label-perlu-recreate/">Traefik: Route Baru Perlu Recreate Container</a></h2>
+    <div class="blog-post-excerpt"><p>Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.</p></div>
+    <div class="blog-post-tags"><span class="blog-tag">Traefik</span><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
+    <a href="/blog/traefik-label-perlu-recreate/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-12">12 November 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a></h2>
+    <div class="blog-post-excerpt"><p>Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><a class="blog-tag" href="/blog/tag/python/">Python</a></div>
+    <a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-08">8 November 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/import-track-postgis-detoast-materialized/">Mempercepat Import Track PostGIS dengan CTE MATERIALIZED</a></h2>
+    <div class="blog-post-excerpt"><p>Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><span class="blog-tag">PostGIS</span><span class="blog-tag">Performance</span></div>
+    <a href="/blog/import-track-postgis-detoast-materialized/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-06">6 November 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/backup-dan-idempotent-bulk-update/">Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</a></h2>
+    <div class="blog-post-excerpt"><p>Data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak hasil run pertama.</p></div>
+    <div class="blog-post-tags"><span class="blog-tag">Database</span><a class="blog-tag" href="/blog/tag/operations/">Operations</a><a class="blog-tag" href="/blog/tag/data/">Data</a></div>
+    <a href="/blog/backup-dan-idempotent-bulk-update/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-30">30 Oktober 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/type-check-hijau-bukan-bukti-runtime/">Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime</a></h2>
+    <div class="blog-post-excerpt"><p>Prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau.</p></div>
+    <div class="blog-post-tags"><span class="blog-tag">Frontend</span><span class="blog-tag">Vue</span><span class="blog-tag">Testing</span></div>
+    <a href="/blog/type-check-hijau-bukan-bukti-runtime/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-30">30 Oktober 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/redis-aof-korup-setelah-reboot/">Redis Crash-Loop karena AOF Korup Setelah Reboot</a></h2>
+    <div class="blog-post-excerpt"><p>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file AOF rusak.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/redis/">Redis</a><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
+    <a href="/blog/redis-aof-korup-setelah-reboot/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-23">23 Oktober 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/gitleaks-celah-rename-detection/">Gitleaks Melewatkan Secret pada Commit Rename</a></h2>
+    <div class="blog-post-excerpt"><p>Peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak dipindai.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><a class="blog-tag" href="/blog/tag/ci-cd/">CI/CD</a><span class="blog-tag">Gitleaks</span></div>
+    <a href="/blog/gitleaks-celah-rename-detection/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-17">17 Oktober 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/daftar-tugas-adalah-petunjuk/">Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode</a></h2>
+    <div class="blog-post-excerpt"><p>Butir belum dikerjakan pada daftar tugas atau ringkasan sesi belum tentu benar. Satu grep dapat menghemat seluruh pekerjaan.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/engineering/">Engineering</a><span class="blog-tag">Workflow</span></div>
+    <a href="/blog/daftar-tugas-adalah-petunjuk/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-14">14 Oktober 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/legacy-handler-js-bukan-aturan-hidup/">Migrasi Legacy: Handler JS Belum Berarti Aturan Hidup</a></h2>
+    <div class="blog-post-excerpt"><p>Saat memetakan kondisional form legacy, keberadaan handler JavaScript tidak membuktikan bahwa aturannya masih aktif.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a><span class="blog-tag">Legacy</span><a class="blog-tag" href="/blog/tag/engineering/">Engineering</a></div>
+    <a href="/blog/legacy-handler-js-bukan-aturan-hidup/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-02">2 Oktober 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/container-zombie-process-init/">Zombie Process di Container: Mengapa PID 1 Perlu init</a></h2>
+    <div class="blog-post-excerpt"><p>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/operations/">Operations</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
+    <a href="/blog/container-zombie-process-init/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-29">29 September 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/basemap-tile-carto-dan-google-vt/">Basemap Tile: Watermark CARTO dan Larangan Google vt</a></h2>
+    <div class="blog-post-excerpt"><p>Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak boleh dipakai.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/web/">Web</a><a class="blog-tag" href="/blog/tag/operations/">Operations</a></div>
+    <a href="/blog/basemap-tile-carto-dan-google-vt/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-26">26 September 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/mutex-scheduler-tertahan-redis/">Mutex Scheduler Laravel yang Tertahan di Redis</a></h2>
+    <div class="blog-post-excerpt"><p>Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.</p></div>
+    <div class="blog-post-tags"><span class="blog-tag">Laravel</span><a class="blog-tag" href="/blog/tag/redis/">Redis</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
+    <a href="/blog/mutex-scheduler-tertahan-redis/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-24">24 September 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/docker-windows-crlf-dan-devnull/">Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</a></h2>
+    <div class="blog-post-excerpt"><p>Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/docker/">Docker</a><span class="blog-tag">Windows</span><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
+    <a href="/blog/docker-windows-crlf-dan-devnull/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-23">23 September 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/kode-wilayah-kemendagri-vs-bps/">Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa</a></h2>
+    <div class="blog-post-excerpt"><p>Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><span class="blog-tag">Indonesia</span></div>
+    <a href="/blog/kode-wilayah-kemendagri-vs-bps/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-04">4 September 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/cakupan-dependabot-image-compose/">Cakupan Dependabot: Image di docker-compose Luput Dipantau</a></h2>
+    <div class="blog-post-excerpt"><p>Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><span class="blog-tag">Dependabot</span><a class="blog-tag" href="/blog/tag/docker/">Docker</a></div>
+    <a href="/blog/cakupan-dependabot-image-compose/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-08-28">28 Agustus 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/koordinat-dms-dan-validasi-lintang/">Koordinat DMS dan Validasi Lintang di Luar Bounding Box</a></h2>
+    <div class="blog-post-excerpt"><p>Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a></div>
+    <a href="/blog/koordinat-dms-dan-validasi-lintang/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-07-23">23 Juli 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/crosswalk-kode-kabupaten-legacy/">Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi</a></h2>
+    <div class="blog-post-excerpt"><p>Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a><a class="blog-tag" href="/blog/tag/data/">Data</a></div>
+    <a href="/blog/crosswalk-kode-kabupaten-legacy/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-04-22">22 April 2026</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+    </div>
+    <h2><a href="/blog/sql-ke-geojson-geometri-kosong/">Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan</a></h2>
+    <div class="blog-post-excerpt"><p>Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/python/">Python</a><span class="blog-tag">Tooling</span></div>
+    <a href="/blog/sql-ke-geojson-geometri-kosong/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2025-01-15">15 Januari 2025</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 5 menit baca</span>
+    </div>
+    <h2><a href="/blog/welcome-to-my-blog/">Welcome to My Blog</a></h2>
+    <div class="blog-post-excerpt"><p>Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.</p></div>
+    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">Web Development</span><a class="blog-tag" href="/blog/tag/security/">Security</a></div>
+    <a href="/blog/welcome-to-my-blog/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<article class="blog-post">
+    <div class="blog-post-meta">
+        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2025-01-10">10 Januari 2025</time></span>
+        <span><i class="far fa-clock" aria-hidden="true"></i> 8 menit baca</span>
+    </div>
+    <h2><a href="/blog/kubernetes-best-practices/">Kubernetes Best Practices for Production</a></h2>
+    <div class="blog-post-excerpt"><p>A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.</p></div>
+    <div class="blog-post-tags"><span class="blog-tag">Kubernetes</span><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">Cloud</span></div>
+    <a href="/blog/kubernetes-best-practices/" class="read-more">Baca selengkapnya &rarr;</a>
+</article>
+<!--POSTS:END-->
             </div>
         </div>
     </div>
@@ -324,21 +573,6 @@
         </div>
     </footer>
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "Ahadizapto Blog",
-        "description": "Technical blog about DevOps, Security, and Web Development",
-        "url": "https://hadymaggot.github.io/blog.html",
-        "author": {
-            "@type": "Person",
-            "name": "Ahadizapto",
-            "jobTitle": "WebDev, DevOps & Security Engineer",
-            "url": "https://hadymaggot.github.io"
-        }
-    }
-    </script>
 
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/blog.js"></script>

@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 
-FILES = ["index.html", "blog.html", "404.html", "robots.txt", "sitemap.xml", "feed.xml", "llms.txt"]
+FILES = ["index.html", "blog.html", "404.html", "robots.txt", "sitemap.xml", "feed.xml", "llms.txt", "llms-full.txt"]
 DIRS = ["assets", "blog", "meta", ".well-known"]
 SKIP_NAMES = {"README.md"}
 

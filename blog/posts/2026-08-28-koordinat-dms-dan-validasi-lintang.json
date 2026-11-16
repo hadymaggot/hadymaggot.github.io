@@ -1,6 +1,6 @@
 {
   "id": "koordinat-dms-dan-validasi-lintang",
-  "title": "Koordinat DMS dan Desimal dalam Satu Kolom: Validasi Tidak Cukup dengan Bounding Box",
+  "title": "Koordinat DMS dan Validasi Lintang di Luar Bounding Box",
   "date": "2026-08-28",
   "author": "Ahadizapto",
   "tags": [

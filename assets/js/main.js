@@ -1,21 +1,4 @@
 
-// Array teks untuk ticker
-const tickerTexts = [
-    "Web Developer",
-    "DevOps Engineer", 
-    "Security Operations",
-    "GIS Engineer"
-];
-
-let currentIndex = 0;
-
-function updateTitle() {
-    document.title = `Ahadizapto | ${tickerTexts[currentIndex]}`;
-    currentIndex = (currentIndex + 1) % tickerTexts.length;
-}
-
-// Update judul setiap 3 detik
-setInterval(updateTitle, 3000);
 
 // Typing effect
 const commands = [

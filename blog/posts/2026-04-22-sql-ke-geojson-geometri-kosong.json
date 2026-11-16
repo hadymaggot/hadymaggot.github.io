@@ -1,6 +1,6 @@
 {
   "id": "sql-ke-geojson-geometri-kosong",
-  "title": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis",
+  "title": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan",
   "date": "2026-04-22",
   "author": "Ahadizapto",
   "tags": [

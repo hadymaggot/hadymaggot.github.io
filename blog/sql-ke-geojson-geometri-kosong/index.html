@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis | Ahadizapto</title>
+    <title>Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan | Ahadizapto</title>
+    <meta name="description" content="Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/index.md">
     <link rel="icon" href="/assets/images/ico2.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -14,36 +17,57 @@
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/">
     <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
     <meta name="theme-color" content="#7AC55A">
-    <meta name="description" content="Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.">
-    <meta name="author" content="Ahadizapto">
-    <meta name="robots" content="index, follow">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="GIS, Python, Tooling">
     <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis">
+    <meta property="og:title" content="Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan">
     <meta property="og:description" content="Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.">
     <meta property="og:url" content="https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/">
-    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/sql-ke-geojson-geometri-kosong.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan">
+    <meta property="article:published_time" content="2026-04-22">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="GIS">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Tooling">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan">
+    <meta name="twitter:description" content="Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/sql-ke-geojson-geometri-kosong.png">
     <style>
-        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
         .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
-        .post-nav a, .post-body a { color: var(--primary-color); }
-        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
-        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
-        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
         .post-body { line-height: 1.8; }
         .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
         .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
     </style>
-    <script type="application/ld+json">
-    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis", "datePublished": "2026-04-22", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/", "keywords": "GIS, Python, Tooling"}
-    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/#article", "headline": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan", "description": "Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.", "image": ["https://hadymaggot.github.io/assets/images/og/sql-ke-geojson-geometri-kosong.png"], "datePublished": "2026-04-22", "dateModified": "2026-04-22", "inLanguage": "id", "wordCount": 135, "keywords": "GIS, Python, Tooling", "articleSection": "GIS", "url": "https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan", "item": "https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/"}]}</script>
 </head>
 
 <body>
@@ -53,18 +77,25 @@
             <a href="/blog.html">/blog</a>
             <a href="/feed.xml">rss</a>
         </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan</nav>
         <article>
-            <h1>Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis</h1>
+            <h1>Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan</h1>
             <div class="post-meta">
-                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-04-22</span>
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-04-22">22 April 2026</time></span>
                 <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
-                <span class="post-tags"><span>GIS</span><span>Python</span><span>Tooling</span></span>
             </div>
+            <div class="post-tags"><a href="/blog/tag/gis/">GIS</a><a href="/blog/tag/python/">Python</a><span>Tooling</span></div>
             <div class="post-body">
                 <p>Data batas wilayah sering didistribusikan sebagai dump SQL berisi <code>INSERT</code> dengan <code>ST_GeomFromText</code> atau <code>ST_GeomFromGeoJSON</code>. Untuk menampilkannya di peta web, data itu perlu dikonversi menjadi GeoJSON. Tool <a href="https://github.com/hadymaggot/hadymaggot.github.io/tree/main/tools/sql_geojson" target="_blank" rel="noopener noreferrer">sql_geojson</a> melakukan konversi dua arah dan ditest di CI.</p><h3>Geometri kosong</h3><p>Sebagian baris memuat geometri kosong. Baris itu tidak dapat digambar, dan pada beberapa library membuat seluruh FeatureCollection gagal dimuat. Opsi <code>--drop-empty-geometry</code> membuangnya, dan <code>report_geojson_stats.py --report-missing</code> mendaftar kode dan nama fitur yang tidak memiliki geometri, agar kekurangan data dapat dilaporkan ke sumbernya.</p><h3>Geometri tidak valid</h3><p>Poligon dengan self-intersection atau cincin yang tidak tertutup membuat operasi seperti intersect dan union gagal. Opsi <code>--repair-geometries</code> memperbaikinya dengan shapely sebelum disimpan.</p><pre><code>python tools/sql_geojson/sql_to_geojson.py --in-dir sql --out-dir geojson \
   --drop-empty-geometry --repair-geometries --skip-errors --recursive</code></pre><p>Dump dengan <code>VALUES</code> multi-baris juga didukung. Setelah konversi, jalankan laporan statistik untuk memastikan jumlah fitur dan cakupan geometri sesuai harapan.</p>
             </div>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a><span>Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor…</span></li><li><a href="/blog/import-track-postgis-detoast-materialized/">Mempercepat Import Track PostGIS dengan CTE MATERIALIZED</a><span>Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE…</span></li><li><a href="/blog/basemap-tile-carto-dan-google-vt/">Basemap Tile: Watermark CARTO dan Larangan Google vt</a><span>Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak…</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/welcome-to-my-blog/" rel="prev">&larr; Welcome to My Blog</a><a href="/blog/crosswalk-kode-kabupaten-legacy/" rel="next">Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi &rarr;</a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

@@ -1,6 +1,6 @@
 {
   "id": "redis-aof-korup-setelah-reboot",
-  "title": "Redis Crash-Loop karena AOF Korup Setelah Reboot Tidak Bersih",
+  "title": "Redis Crash-Loop karena AOF Korup Setelah Reboot",
   "date": "2026-10-30",
   "author": "Ahadizapto",
   "tags": [
