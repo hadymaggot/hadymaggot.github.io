@@ -52,9 +52,13 @@
         .breadcrumb a { text-decoration: none; }
         .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
         .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
-        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
+        .post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .post-tags a, .post-tags span { color: var(--primary-color); padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; }
         .post-body { line-height: 1.8; }
-        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body p, .post-body ul, .post-body ol { margin: 0 0 1rem; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; }
+        .post-body li { margin-bottom: 0.35rem; }
+        .post-body h3 { margin: 2rem 0 0.75rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
         .post-body code { font-family: 'JetBrains Mono', monospace; }
         .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
@@ -117,7 +121,7 @@ SELECT t.id
 FROM titik t, prov p
 WHERE ST_Intersects(t.geom, p.geom);</code></pre><h3>Geometri dari WKB</h3><p>Pembentukan LineString dari titik-titik diganti dengan geometri yang dibangun dari WKB melalui shapely, dan file DBF dibaca satu kali dengan hasilnya di-cache selama proses. Hasilnya, pada data setahun dengan 514 garis dan 1,83 juta titik, waktu turun dari 59 detik menjadi 19 detik, dan dari 45–48 detik menjadi 15–16 detik di server dev.</p><p>Pengujian terhadap alat pembanding yang menulis langsung ke PostGIS menunjukkan bahwa selisih waktu sebagian berasal dari tahap ekspor di aplikasi sumber, bukan dari proses import. Ukur dulu di mana waktu habis sebelum mengoptimalkan.</p>
             </div>
-            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), full-stack developer dan DevOps engineer dengan fokus pada security dan WebGIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
         <section class="post-related">
             <h2>Artikel terkait</h2>

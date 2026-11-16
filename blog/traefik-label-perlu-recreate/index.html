@@ -52,9 +52,13 @@
         .breadcrumb a { text-decoration: none; }
         .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
         .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
-        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
+        .post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .post-tags a, .post-tags span { color: var(--primary-color); padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; }
         .post-body { line-height: 1.8; }
-        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body p, .post-body ul, .post-body ol { margin: 0 0 1rem; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; }
+        .post-body li { margin-bottom: 0.35rem; }
+        .post-body h3 { margin: 2rem 0 0.75rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
         .post-body code { font-family: 'JetBrains Mono', monospace; }
         .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
@@ -116,7 +120,7 @@ docker compose exec -T &lt;service&gt; curl -s -o /tmp/out -w "%{http_code}\n" h
 # lewat Traefik: 401 berarti route ada, menggantung berarti label belum terbaca
 timeout 15 curl -s -o /dev/null -w "%{http_code}\n" http://localhost:&lt;port-traefik&gt;/api/&lt;endpoint&gt;</code></pre><p>Setelah service dibuat ulang, tunggu sampai Traefik juga berstatus sehat sebelum menyimpulkan hasilnya.</p>
             </div>
-            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), full-stack developer dan DevOps engineer dengan fokus pada security dan WebGIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
         <section class="post-related">
             <h2>Artikel terkait</h2>

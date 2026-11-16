@@ -331,6 +331,28 @@ body {
     margin: 0;
 }
 
+/* Banner ASCII tidak boleh di-wrap; di layar kecil ukurannya mengikuti lebar layar,
+   sedangkan caption di bawahnya tetap berukuran normal agar terbaca */
+.output pre.profile-info {
+    white-space: pre;
+    overflow: hidden;
+}
+
+.output .profile-caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    text-align: center;
+    margin: 0.5rem 0 0;
+}
+
+@media (max-width: 900px) {
+    .output pre.profile-info {
+        font-size: 1.25vw;
+        line-height: 1.2;
+    }
+}
+
 .skill-list {
     display: flex;
     flex-wrap: wrap;
