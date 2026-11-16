@@ -83,27 +83,26 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         switch(target) {
             case 'about':
                 command = 'cat about.txt';
-                output = `<p>Saya Sapto Hadi (Ahadizapto), engineer di bidang security dan operations. Fokus saya pada pengujian
-                            keamanan aplikasi web, pengelolaan infrastruktur berbasis container, dan otomasi pipeline CI/CD.</p>
+                output = `<p>Saya Sapto Hadi (Ahadizapto), full-stack developer dan DevOps engineer dengan fokus pada security dan WebGIS.</p>
+                        <p>Bahasa yang saya pakai adalah PHP, JavaScript dan TypeScript, Python, SQL, Bash, PowerShell, dan R. Framework
+                            utamanya Laravel di sisi backend, Vue (termasuk Quasar) di frontend, dan Django untuk layanan berbasis Python.</p>
+                        <p>Di sisi operations, pekerjaan saya meliputi container dan Kubernetes, infrastructure as code, CI/CD, serta
+                            monitoring dan observability.</p>
                         <p>Pengujian keamanan mencakup access control, kebocoran data di sisi client, header dan TLS, serta dependency
                             yang memiliki CVE. Setiap temuan dijadikan test otomatis, sehingga celah yang sama terdeteksi jika muncul
                             kembali.</p>
-                        <p>Di sisi operations, pekerjaan saya meliputi container dan Kubernetes, infrastructure as code, serta monitoring
-                            dan observability.</p>
                         <p>Di bidang GIS, pekerjaan saya mencakup pengolahan data spasial (GeoJSON, shapefile, PostGIS) dan aplikasi peta
                             interaktif dengan MapLibre, Leaflet, dan OpenLayers, termasuk pengelolaan basemap tile dan kode wilayah administrasi.</p>
-                        <p>Bahasa yang saya pakai adalah PHP, JavaScript dan TypeScript, Python, SQL, serta Bash, dengan Laravel dan Vue
-                            sebagai framework utama.</p>
-                        <p>Catatan teknis dari pekerjaan sehari-hari terbit di blog, mencakup security, operations, dan GIS.</p>
+                        <p>Catatan teknis dari pekerjaan sehari-hari terbit di blog, mencakup development, DevOps, security, dan GIS.</p>
                         <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
             case 'skills':
                 command = 'ls -la skills/';
                 const skillGroups = {
-                    'security/': ["Penetration Testing", "SIEM", "OWASP ZAP", "Trivy", "Semgrep", "Gitleaks", "Nmap"],
+                    'dev/': ["PHP", "Laravel", "JavaScript", "TypeScript", "VueJS", "Python", "SQL", "Bash", "PowerShell", "R", "Django", "Quasar", "Playwright"],
                     'ops/': ["Linux", "Docker", "Docker Compose", "Kubernetes", "Ansible", "Traefik", "Redis", "RabbitMQ", "PostgreSQL", "MySQL", "Prometheus", "Grafana", "Cloudflare", "Monitoring", "SRE", "Git", "GitHub Actions"],
-                    'gis/': ["GeoJSON", "Shapefile", "PostGIS", "MapLibre GL", "Leaflet", "OpenLayers", "Turf.js", "proj4", "Tile XYZ/WMS"],
-                    'dev/': ["PHP", "Laravel", "JavaScript", "TypeScript", "VueJS", "Python", "SQL", "Bash", "PowerShell", "R", "Django", "Quasar", "Playwright"]
+                    'security/': ["Penetration Testing", "SIEM", "OWASP ZAP", "Trivy", "Semgrep", "Gitleaks", "Nmap"],
+                    'gis/': ["GeoJSON", "Shapefile", "PostGIS", "MapLibre GL", "Leaflet", "OpenLayers", "Turf.js", "proj4", "Tile XYZ/WMS"]
                 };
                 output = `total ${Object.keys(skillGroups).length}` +
                     Object.entries(skillGroups).map(([group, list]) =>

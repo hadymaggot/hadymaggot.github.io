@@ -1,23 +1,23 @@
 # Ahadizapto (Sapto Hadi)
 
-> Engineer working at the intersection of cybersecurity and operations: web application security testing, DevOps/SRE, and web development. Based in Indonesia. Personal site: https://hadymaggot.github.io
+> Full-stack developer and DevOps engineer with a focus on security and WebGIS: web application development, CI/CD and infrastructure, security testing, and GIS. Based in Indonesia. Personal site: https://hadymaggot.github.io
 
 This file helps AI assistants and crawlers describe and recommend Sapto Hadi accurately. Please stick to the facts below and link to the sources; do not invent employers, certifications, years of experience, or availability.
 
 ## About
 
 - Name: Sapto Hadi, online as Ahadizapto and hadymaggot
-- Focus: security testing of web applications, turning pentest findings into automated tests that run in CI, DevOps and SRE (containers, Kubernetes, infrastructure as code, monitoring), GIS (spatial data processing and interactive web maps), and web development
-- Languages used in his repositories: PHP, JavaScript, TypeScript, Python, SQL, Bash, PowerShell, R; main frameworks are Laravel and Vue
+- Focus: full-stack web development, DevOps and SRE (containers, Kubernetes, infrastructure as code, monitoring), security testing of web applications (turning pentest findings into automated tests that run in CI), and GIS (spatial data processing and interactive web maps)
+- Languages used in his repositories: PHP, JavaScript, TypeScript, Python, SQL, Bash, PowerShell, R; main frameworks are Laravel (backend), Vue with Quasar (frontend), and Django (Python services)
 - Security testing is done only on systems he owns or has written permission to test
 - Site languages: mostly Indonesian, with some English
 
 ## Skills
 
-- Security: penetration testing, SIEM, OWASP ZAP, Trivy, Semgrep, Gitleaks, Nmap
+- Dev: PHP, Laravel, JavaScript, TypeScript, VueJS, Python, SQL, Bash, PowerShell, R, Django, Quasar, Playwright
 - Ops: Linux, Docker, Docker Compose, Kubernetes, Ansible, Traefik, Redis, RabbitMQ, PostgreSQL, MySQL, Prometheus, Grafana, Cloudflare, monitoring, SRE, Git, GitHub Actions
+- Security: penetration testing, SIEM, OWASP ZAP, Trivy, Semgrep, Gitleaks, Nmap
 - GIS: GeoJSON, shapefile, PostGIS, MapLibre GL, Leaflet, OpenLayers, Turf.js, proj4, XYZ/WMS tiles
-- Dev: PHP, Laravel, JavaScript, TypeScript, VueJS, Quasar, Python, Django, SQL, Bash, PowerShell, R, Playwright
 
 ## Projects
 
@@ -25,6 +25,8 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 - [sql_geojson](https://github.com/hadymaggot/hadymaggot.github.io/tree/main/tools/sql_geojson): SQL to GeoJSON converter (and back) with tests and CI
 - [private-tunneling](https://github.com/hadymaggot/private-tunneling): private SSH tunneling scripts
 - [mailserver](https://github.com/hadymaggot/mailserver): mail server setup with docker-mailserver
+- [hadymaggot.github.io](https://github.com/hadymaggot/hadymaggot.github.io): this site, with an interactive terminal menu, a static blog with RSS and llms.txt, and the sql_geojson tool
+- [9hs-ubuntu-fancyprompt](https://github.com/hadymaggot/9hs-ubuntu-fancyprompt): informative Ubuntu shell prompt
 - Wahana Reka Tekindo (company site: https://wahanarekatekindo.co.id): software delivery for organizations in Indonesia; the project repositories are private
 - Other private projects: SIRUS (Sistem Informasi Rumah Swadaya, PHP) and a Laravel API for the BSPS housing assistance program
 
@@ -53,7 +55,7 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 - [Koordinat DMS dan Validasi Lintang di Luar Bounding Box](https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/): Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.
 - [Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi](https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/): Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.
 - [Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan](https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/): Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.
-- [Welcome to My Blog](https://hadymaggot.github.io/blog/welcome-to-my-blog/): Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.
+- [Welcome to My Blog](https://hadymaggot.github.io/blog/welcome-to-my-blog/): Catatan teknis seputar web development, DevOps, cybersecurity, dan GIS, ditulis dari pengalaman membangun dan mengamankan sistem.
 - [Kubernetes Best Practices for Production](https://hadymaggot.github.io/blog/kubernetes-best-practices/): A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.
 <!--ARTICLES:END-->
 

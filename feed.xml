@@ -4,7 +4,7 @@
     <title>Blog Ahadizapto</title>
     <link>https://hadymaggot.github.io/blog.html</link>
     <atom:link href="https://hadymaggot.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <description>Catatan teknis seputar cybersecurity, operations, GIS, dan web development.</description>
+    <description>Catatan teknis seputar development, DevOps, security, dan GIS.</description>
     <language>id</language>
     <lastBuildDate>Mon, 16 Nov 2026 00:00:00 +0000</lastBuildDate>
     <item>
@@ -294,7 +294,7 @@ WHERE NOT ST_Contains(w.geom, ST_SetSRID(ST_MakePoint(u.bujur, u.lintang), 4326)
       <category>DevOps</category>
       <category>Web Development</category>
       <category>Security</category>
-      <description>Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.</description>
+      <description>Catatan teknis seputar web development, DevOps, cybersecurity, dan GIS, ditulis dari pengalaman membangun dan mengamankan sistem.</description>
       <content:encoded><![CDATA[<p>Welcome to my technical blog! This is a space where I'll be sharing my experiences, insights, and learnings from the world of web development, DevOps, and security operations.</p><p>Over the coming weeks and months, I plan to write about:</p><ul><li><strong>DevOps Best Practices:</strong> CI/CD pipelines, infrastructure as code, and automation strategies</li><li><strong>Web Development:</strong> Modern frameworks, performance optimization, and design patterns</li><li><strong>Security Operations:</strong> Threat detection, incident response, and security hardening</li><li><strong>Cloud Architecture:</strong> Scalable system design and cloud-native technologies</li></ul><p>Tulisan baru akan ditambahkan secara berkala.</p>]]></content:encoded>
     </item>
     <item>
