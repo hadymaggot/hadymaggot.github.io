@@ -105,7 +105,11 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                             yang memiliki CVE. Setiap temuan dijadikan test otomatis, sehingga celah yang sama terdeteksi jika muncul
                             kembali.</p>
                         <p>Di sisi operations, pekerjaan saya meliputi container dan Kubernetes, infrastructure as code, serta monitoring
-                            dan observability. Aplikasi dikembangkan dengan PHP/Laravel dan Vue, dengan Python untuk otomasi.</p>
+                            dan observability.</p>
+                        <p>Di bidang GIS, pekerjaan saya mencakup pengolahan data spasial (GeoJSON, shapefile, PostGIS) dan aplikasi peta
+                            interaktif dengan MapLibre, Leaflet, dan OpenLayers, termasuk pengelolaan basemap tile dan kode wilayah administrasi.</p>
+                        <p>Bahasa yang saya pakai adalah PHP, JavaScript dan TypeScript, Python, SQL, serta Bash, dengan Laravel dan Vue
+                            sebagai framework utama.</p>
                         <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
             case 'skills':
@@ -113,7 +117,8 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                 const skillGroups = {
                     'security/': ["Penetration Testing", "SIEM", "OWASP ZAP", "Trivy", "Semgrep", "Gitleaks", "Nmap"],
                     'ops/': ["Linux", "Docker", "Kubernetes", "Ansible", "Monitoring", "SRE", "Bash", "Git", "GitHub Actions"],
-                    'dev/': ["PHP", "Laravel", "VueJS", "Python"]
+                    'gis/': ["GeoJSON", "Shapefile", "PostGIS", "MapLibre GL", "Leaflet", "OpenLayers", "Tile XYZ/WMS"],
+                    'dev/': ["PHP", "Laravel", "JavaScript", "TypeScript", "VueJS", "Python", "SQL", "Bash", "PowerShell", "R", "Kotlin", "Dart"]
                 };
                 output = `total ${Object.keys(skillGroups).length}` +
                     Object.entries(skillGroups).map(([group, list]) =>
