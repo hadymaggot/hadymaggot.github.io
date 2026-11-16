@@ -1,0 +1,14 @@
+{
+  "id": "security-headers-github-pages",
+  "title": "Security Headers di GitHub Pages: Apa yang Bisa dan Tidak",
+  "date": "2026-11-16",
+  "author": "Ahadizapto",
+  "tags": [
+    "Security",
+    "Web",
+    "Cloudflare"
+  ],
+  "readTime": 4,
+  "excerpt": "GitHub Pages tidak mengizinkan header HTTP kustom. Ini yang tetap bisa dilakukan, dan kapan perlu menaruh proxy di depannya.",
+  "content": "<p>GitHub Pages praktis untuk situs statis, tapi Anda tidak bisa mengatur header respons sendiri. Itu membatasi kontrol keamanan yang bisa dipasang.</p><h3>Yang tetap bisa dilakukan</h3><ul><li><strong>HTTPS dipaksa</strong> lewat pengaturan Pages.</li><li><strong>CSP lewat tag meta</strong> (<code>&lt;meta http-equiv=\"Content-Security-Policy\"&gt;</code>). Berguna, tapi tidak mendukung <code>frame-ancestors</code>, <code>report-uri</code>, maupun <code>sandbox</code>.</li><li><strong>Hindari inline script dan style</strong> supaya CSP yang ketat bisa dipasang kelak.</li><li><strong>SRI</strong> (<code>integrity</code>) pada script dan stylesheet dari CDN.</li><li><strong><code>/.well-known/security.txt</code></strong> berisi kontak pelaporan kerentanan dan tanggal <code>Expires</code> (RFC 9116).</li><li><strong><code>robots.txt</code> dan <code>sitemap.xml</code></strong> di root, bukan di subfolder.</li></ul><h3>Kalau butuh header sungguhan</h3><p>Pakai custom domain dan taruh proxy seperti Cloudflare di depannya, lalu tambahkan header (HSTS, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, CSP lengkap) lewat aturan transformasi respons.</p><h3>Verifikasi</h3><p>Jangan percaya konfigurasi, periksa responsnya. Audit header dan TLS dari luar secara berkala, dan catat hasilnya agar regresi terlihat.</p>"
+}
