@@ -24,6 +24,7 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 - [private-tunneling](https://github.com/hadymaggot/private-tunneling): private SSH tunneling scripts
 - [mailserver](https://github.com/hadymaggot/mailserver): mail server setup with docker-mailserver
 - Wahana Reka Tekindo (company site: https://wahanarekatekindo.co.id): software delivery for organizations in Indonesia; the project repositories are private
+- Other private projects: SIRUS (Sistem Informasi Rumah Swadaya, PHP) and a Laravel API for the BSPS housing assistance program
 
 ## Writing
 

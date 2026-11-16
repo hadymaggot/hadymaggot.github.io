@@ -149,13 +149,22 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                     { name: 'platform-bumdes-frontend', stack: 'Frontend', desc: 'Antarmuka platform BUMDes.' },
                     { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' }
                 ];
-                output = `total ${projects.length + wrtProjects.length}<ul class="project-list">` +
+                const otherProjects = [
+                    { name: 'sirus-2022', stack: 'PHP', desc: 'Sistem Informasi Rumah Swadaya (SIRUS).' },
+                    { name: 'bsps-api', stack: 'Laravel', desc: 'API Laravel untuk bantuan stimulan perumahan swadaya (BSPS), dengan koleksi Postman.' },
+                    { name: 'sisatker', stack: 'CodeIgniter', desc: 'Aplikasi web CodeIgniter dengan template Stisla.' },
+                    { name: 'stantek', stack: 'CodeIgniter', desc: 'Aplikasi web CodeIgniter dengan template Stisla.' }
+                ];
+                output = `total ${projects.length + wrtProjects.length + otherProjects.length}<ul class="project-list">` +
                     projects.map(p => `<li><a class="term-link" href="${p.url}" target="_blank" rel="noopener noreferrer">${p.name}</a>
                         <span class="project-tag project-tag-${p.tag}">${p.tag}</span><br>${p.desc}</li>`).join('') +
                     `</ul><div>drwxr-xr-x wahana-reka-tekindo/ (repo privat, tanpa tautan)</div><ul class="project-list">` +
                     wrtProjects.map(p => `<li>${p.name}
                         <span class="project-tag project-tag-private">${p.stack}</span><br>${p.desc}</li>`).join('') +
-                    `</ul><p>Perusahaan: <a class="term-link" href="https://wahanarekatekindo.co.id" target="_blank" rel="noopener noreferrer">wahanarekatekindo.co.id</a></p>` +
+                    `</ul><div>drwxr-xr-x lainnya/ (repo privat, tanpa tautan)</div><ul class="project-list">` +
+                    otherProjects.map(p => `<li>${p.name}
+                        <span class="project-tag project-tag-private">${p.stack}</span><br>${p.desc}</li>`).join('') +
+                    `</ul><p>Perusahaan:<a class="term-link" href="https://wahanarekatekindo.co.id" target="_blank" rel="noopener noreferrer">wahanarekatekindo.co.id</a></p>` +
                     `<p>Selengkapnya: <a class="term-link" href="https://github.com/hadymaggot/" target="_blank" rel="noopener noreferrer">github.com/hadymaggot</a></p>`;
                 break;
             case 'blog':
