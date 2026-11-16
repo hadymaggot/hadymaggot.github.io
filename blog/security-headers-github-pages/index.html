@@ -35,6 +35,7 @@
         .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
         .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
         .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
+        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
         .post-body { line-height: 1.8; }
         .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
@@ -63,6 +64,7 @@
                 <p>GitHub Pages praktis untuk situs statis, tapi Anda tidak bisa mengatur header respons sendiri. Itu membatasi kontrol keamanan yang bisa dipasang.</p><h3>Yang tetap bisa dilakukan</h3><ul><li><strong>HTTPS dipaksa</strong> lewat pengaturan Pages.</li><li><strong>CSP lewat tag meta</strong> (<code>&lt;meta http-equiv="Content-Security-Policy"&gt;</code>). Berguna, tapi tidak mendukung <code>frame-ancestors</code>, <code>report-uri</code>, maupun <code>sandbox</code>.</li><li><strong>Hindari inline script dan style</strong> supaya CSP yang ketat bisa dipasang kelak.</li><li><strong>SRI</strong> (<code>integrity</code>) pada script dan stylesheet dari CDN.</li><li><strong><code>/.well-known/security.txt</code></strong> berisi kontak pelaporan kerentanan dan tanggal <code>Expires</code> (RFC 9116).</li><li><strong><code>robots.txt</code> dan <code>sitemap.xml</code></strong> di root, bukan di subfolder.</li></ul><h3>Kalau butuh header sungguhan</h3><p>Pakai custom domain dan taruh proxy seperti Cloudflare di depannya, lalu tambahkan header (HSTS, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, CSP lengkap) lewat aturan transformasi respons.</p><h3>Verifikasi</h3><p>Jangan percaya konfigurasi, periksa responsnya. Audit header dan TLS dari luar secara berkala, dan catat hasilnya agar regresi terlihat.</p>
             </div>
         </article>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>
 
