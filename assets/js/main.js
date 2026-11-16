@@ -97,15 +97,15 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         switch(target) {
             case 'about':
                 command = 'cat about.txt';
-                output = `<p>Halo, saya Sapto Hadi (Ahadizapto). Saya bekerja di irisan cybersecurity dan operations:
-                            membangun sistem yang aman, mudah dioperasikan, dan bisa diaudit.</p>
-                        <p><strong>Security</strong> &mdash; menguji aplikasi web secara terukur (access control, kebocoran data
-                            di sisi klien, header dan TLS, dependensi rentan), lalu mengubah temuan pentest menjadi test otomatis
-                            yang berjalan terus di CI.</p>
-                        <p><strong>Ops</strong> &mdash; container dan Kubernetes, infrastructure as code, CI/CD, serta monitoring
-                            dan observability dengan prinsip SRE.</p>
-                        <p><strong>Dev</strong> &mdash; aplikasi web dengan PHP/Laravel dan Vue, serta Python untuk otomasi.</p>
-                        <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
+                output = `<p>Saya Sapto Hadi (Ahadizapto). Kerjaan saya di seputar security dan ops: bikin sistem yang aman,
+                            gampang dioperasikan, dan bisa dipertanggungjawabkan.</p>
+                        <p><strong>Security</strong> &mdash; saya nguji aplikasi web: access control, data yang bocor di sisi klien,
+                            header dan TLS, sampai dependensi yang punya CVE. Temuannya saya ubah jadi test otomatis yang jalan terus
+                            di CI, biar celah yang sama nggak balik lagi.</p>
+                        <p><strong>Ops</strong> &mdash; container dan Kubernetes, infrastructure as code, CI/CD, plus monitoring
+                            dan observability ala SRE.</p>
+                        <p><strong>Dev</strong> &mdash; aplikasinya saya bikin pakai PHP/Laravel dan Vue, dan Python buat otomasi.</p>
+                        <p>Semua pengujian cuma di sistem sendiri atau yang ada izin tertulisnya.</p>`;
                 break;
             case 'skills':
                 command = 'ls -la skills/';
