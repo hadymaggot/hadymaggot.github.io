@@ -1,6 +1,6 @@
 # Blog Ahadizapto: seluruh artikel
 
-Sumber: https://hadymaggot.github.io/blog.html. Penulis: Sapto Hadi (Ahadizapto), full-stack developer dan DevOps engineer. Setiap artikel juga tersedia sebagai Markdown pada alamat artikelnya ditambah index.md.
+Sumber: https://hadymaggot.github.io/blog.html. Penulis: Sapto Hadi (Ahadizapto), software engineer di bidang security dan operations. Setiap artikel juga tersedia sebagai Markdown pada alamat artikelnya ditambah index.md.
 
 ---
 
@@ -560,7 +560,7 @@ Dump dengan `VALUES` multi-baris juga didukung. Setelah konversi, jalankan lapor
 - Penulis: Sapto Hadi (Ahadizapto)
 - Tag: DevOps, Web Development, Security
 
-> Catatan teknis seputar web development, DevOps, cybersecurity, dan GIS, ditulis dari pengalaman membangun dan mengamankan sistem.
+> Catatan teknis seputar security, operations, dan software engineering, ditulis dari pengalaman membangun dan mengamankan sistem.
 
 Welcome to my technical blog! This is a space where I'll be sharing my experiences, insights, and learnings from the world of web development, DevOps, and security operations.
 

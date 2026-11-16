@@ -83,7 +83,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         switch(target) {
             case 'about':
                 command = 'cat about.txt';
-                output = `<p>Saya Sapto Hadi (Ahadizapto), full-stack developer dan DevOps engineer dengan fokus pada security dan WebGIS.</p>
+                output = `<p>Saya Sapto Hadi (Ahadizapto), software engineer di bidang security dan operations.</p>
                         <p>Bahasa yang saya pakai adalah PHP, JavaScript dan TypeScript, Python, SQL, Bash, PowerShell, dan R. Framework
                             utamanya Laravel di sisi backend, Vue (termasuk Quasar) di frontend, dan Django untuk layanan berbasis Python.</p>
                         <p>Di sisi operations, pekerjaan saya meliputi container dan Kubernetes, infrastructure as code, CI/CD, serta
@@ -93,7 +93,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                             kembali.</p>
                         <p>Di bidang GIS, pekerjaan saya mencakup pengolahan data spasial (GeoJSON, shapefile, PostGIS) dan aplikasi peta
                             interaktif dengan MapLibre, Leaflet, dan OpenLayers, termasuk pengelolaan basemap tile dan kode wilayah administrasi.</p>
-                        <p>Catatan teknis dari pekerjaan sehari-hari terbit di blog, mencakup development, DevOps, security, dan GIS.</p>
+                        <p>Catatan teknis dari pekerjaan sehari-hari terbit di blog, mencakup security, operations, dan software engineering.</p>
                         <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
             case 'skills':

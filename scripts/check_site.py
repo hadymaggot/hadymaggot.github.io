@@ -196,7 +196,11 @@ def check_code_blocks():
         fail("assets/js/vendor/highlight.min.js tidak ada")
 
 
-STALE_PHRASES = ("GIS Engineer", "engineer di bidang", "engineer security,", "Security, Operations, dan GIS")
+STALE_PHRASES = ("GIS Engineer", "engineer di bidang security, operations", "engineer security,", "Security, Operations, dan GIS",
+                 "Full-stack Developer", "full-stack developer dan DevOps", "Development, DevOps, Security",
+                 "development, DevOps, security", "web development, DevOps, cybersecurity")
+TAGLINE = "Security, Operations, dan Software Engineer"
+CAPTION = "Security | Operations | Software Engineer"
 
 
 def check_consistency():
@@ -209,6 +213,11 @@ def check_consistency():
                 fail(f"{rel}: masih memuat frasa jabatan lama \"{phrase}\"")
 
     js = (ROOT / "assets" / "js" / "main.js").read_text(encoding="utf-8")
+    if CAPTION not in js or CAPTION not in (ROOT / "index.html").read_text(encoding="utf-8"):
+        fail(f"caption banner harus sama di index.html dan main.js: {CAPTION}")
+    for rel in ("index.html", "blog.html"):
+        if TAGLINE not in (ROOT / rel).read_text(encoding="utf-8"):
+            fail(f"{rel}: tagline baku \"{TAGLINE}\" tidak ditemukan")
     llms = (ROOT / "llms.txt").read_text(encoding="utf-8")
     index = (ROOT / "index.html").read_text(encoding="utf-8")
     summary = index[index.index('id="ringkasan"'):]
