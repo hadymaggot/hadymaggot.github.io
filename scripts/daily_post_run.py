@@ -141,7 +141,8 @@ def draft_branches():
 
 
 def post_file_of(branch):
-    out = need(run(["git", "-C", str(ROOT), "diff", "--name-only", f"origin/main...{branch}", "--", "blog/posts"]), "git diff")
+    # artikel ada pada commit terakhir branch; bandingkan hanya dengan induknya
+    out = need(run(["git", "-C", str(ROOT), "diff-tree", "--no-commit-id", "--name-only", "-r", branch]), "git diff-tree")
     files = [f for f in out.split() if re.search(r"blog/posts/20\d\d-.*\.json$", f)]
     if len(files) != 1:
         raise RuntimeError(f"branch {branch} harus mengubah tepat satu artikel, ditemukan {len(files)}")
