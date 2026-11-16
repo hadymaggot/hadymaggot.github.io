@@ -14,11 +14,7 @@ TTL bawaan mutex adalah 1440 menit. Selama itu command tidak dijalankan lagi. Ti
 ### Diagnosis
 
 Gejala paling cepat terlihat di sisi queue: consumer berjumlah nol padahal seharusnya satu, atau tabel outbox penuh baris pending yang tidak pernah dipublikasikan. Setelah itu bandingkan `php artisan schedule:list`, yang menandai command dengan `Has Mutex`, dengan proses yang benar-benar berjalan.
-
-```
 docker exec <container> ps -eo etime,args | grep artisan
-```
-
 Mutex tanpa proses berarti tertahan. Mutex dengan proses yang hidup adalah kondisi normal untuk consumer yang berjalan terus, dan tidak boleh dihapus.
 
 ### Perbaikan permanen

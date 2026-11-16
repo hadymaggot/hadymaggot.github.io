@@ -45,13 +45,9 @@ Laporan pentest biasanya berakhir sebagai PDF. Celah diperbaiki, lalu beberapa r
 ### Satu temuan, satu test
 
 Setiap temuan diterjemahkan menjadi test yang gagal selama celahnya masih ada. Untuk IDOR, test login sebagai pengguna A, lalu mencoba membaca data milik pengguna B.
-
-```
 def test_user_a_tidak_bisa_baca_order_user_b(client_a, order_b):
     r = client_a.get(f"/api/orders/{order_b.id}")
     assert r.status_code in (403, 404)
-```
-
 Pola yang sama berlaku untuk lompat status (misalnya order yang melewati tahap pembayaran), header `X-Auth-*` palsu dari client yang harus diabaikan server, upload file berbahaya, dan CORS yang memantulkan origin sembarang.
 
 ### Dijalankan di CI terhadap staging
@@ -109,15 +105,11 @@ Menambah `PathPrefix` baru pada label Traefik sebuah service tidak berlaku denga
 Request menggantung, bukan 404. Router frontend memakai `Host(localhost)` tanpa batasan path, sehingga `/api/*` yang tidak cocok dengan router mana pun jatuh ke dev server frontend dan diam di sana sampai timeout. Jika endpoint API yang baru menggantung sementara endpoint lain pada service yang sama menjawab normal, curigai label lebih dulu sebelum kode.
 
 ### Memastikan tanpa menebak
-
-```
 # dari dalam container: 200 berarti kodenya benar
 docker compose exec -T <service> curl -s -o /tmp/out -w "%{http_code}\n" http://localhost:<port>/api/<endpoint>
 
 # lewat Traefik: 401 berarti route ada, menggantung berarti label belum terbaca
 timeout 15 curl -s -o /dev/null -w "%{http_code}\n" http://localhost:<port-traefik>/api/<endpoint>
-```
-
 Setelah service dibuat ulang, tunggu sampai Traefik juga berstatus sehat sebelum menyimpulkan hasilnya.
 
 ---
@@ -161,16 +153,12 @@ Sebuah proses import track patroli memerlukan sekitar satu menit untuk data seta
 ### Detoast per titik
 
 Geometri poligon provinsi berukuran besar disimpan sebagai TOAST. Pada query yang mengakses kolom itu untuk setiap titik, PostgreSQL men-detoast geometri yang sama berulang kali. Dengan 1,83 juta titik, biayanya terasa. Perbaikannya mengambil poligon sekali dalam CTE `MATERIALIZED`, lalu menyaring titik yang berada di provinsi kawasan sebelum pemeriksaan yang lebih mahal.
-
-```
 WITH prov AS MATERIALIZED (
   SELECT geom FROM provinsi WHERE kode = :kode
 )
 SELECT t.id
 FROM titik t, prov p
 WHERE ST_Intersects(t.geom, p.geom);
-```
-
 ### Geometri dari WKB
 
 Pembentukan LineString dari titik-titik diganti dengan geometri yang dibangun dari WKB melalui shapely, dan file DBF dibaca satu kali dengan hasilnya di-cache selama proses. Hasilnya, pada data setahun dengan 514 garis dan 1,83 juta titik, waktu turun dari 59 detik menjadi 19 detik, dan dari 45–48 detik menjadi 15–16 detik di server dev.
@@ -216,11 +204,7 @@ Kolom yang sedang diperbaiki bukan sumber kebenaran yang stabil. Gunakan sumber 
 Penambahan prop `open?: boolean` pada komponen collapsible yang dipakai di sekitar 20 tempat membuat semua pemakaian tanpa `v-model:open` tampil tertutup. `vue-tsc --noEmit` dan vitest hijau sebelum maupun sesudah bug, karena tipenya benar dan yang berubah hanya perilakunya.
 
 Penyebabnya, Vue meng-cast prop boolean yang tidak diberikan induk menjadi `false`, bukan `undefined`. Akibatnya ekspresi `props.open ?? internal.value` tidak pernah memilih nilai internal. Perbaikannya satu baris pada default prop.
-
-```
 const props = withDefaults(defineProps<{ open?: boolean }>(), { open: undefined })
-```
-
 ### Menyamar sebagai tes flaky
 
 Kelas bug ini sering terlihat sebagai tes E2E yang flaky. Elemen ada di DOM tetapi `display: none`, sehingga `fill()` atau `click()` menunggu sampai timeout. Jika sebuah langkah E2E tiba-tiba timeout pada elemen yang jelas ada, periksa visibilitasnya sebelum menyalahkan timing.
@@ -245,21 +229,13 @@ Reboot yang tidak bersih dapat memotong ekor file `appendonly.aof` di tengah pen
 ### Diagnosis
 
 Baca log container langsung dan cari pesan `Bad file format reading the append only file` beserta offset-nya. Pada kasus ini file rusak sekitar 3,5 KB sebelum ujung.
-
-```
 docker logs <container> 2>&1 | grep -i "append only"
-```
-
 ### Perbaikan
 
 Backup volume terlebih dahulu, lalu potong ekor yang rusak. Hanya perintah terakhir sebelum reboot yang hilang.
-
-```
 docker run --rm -v redis_data:/data alpine sh -c "cd /data && tar czf appendonlydir-backup.tgz appendonlydir"
 docker stop <container>
 docker run --rm -i -v redis_data:/data redis:8-alpine sh -c "echo y | redis-check-aof --fix /data/appendonlydir/appendonly.aof.manifest"
-```
-
 `redis-check-aof --fix` bersifat interaktif, sehingga `echo y |` diperlukan jika dijalankan tanpa TTY.
 
 ### Konfigurasi yang perlu diperiksa
@@ -284,22 +260,14 @@ Perubahan `redis.conf` yang di-bind mount baru berlaku setelah `docker compose u
 Gitleaks pada history sekitar 860 commit menampilkan peringatan `exhaustive rename detection was skipped due to too many files`. Peringatan itu tampak kosmetik, padahal berdampak pada hasil pemindaian.
 
 Ketika git membaca sebuah commit sebagai rename murni, tidak ada isi yang di-diff, sehingga gitleaks tidak memiliki apa pun untuk diperiksa pada commit itu. Secret yang masuk lewat commit semacam itu lolos begitu saja. Perbandingan pada repository yang sama:
-
-```
 tanpa flag      861 commit terpindai, 0 temuan
 --no-renames   862 commit terpindai, 1 temuan
-```
-
 Temuan satu-satunya adalah password lama yang sudah tidak aktif, pada commit yang memindahkan sebuah dokumen ke subfolder. Tidak berbahaya, tetapi cukup untuk membuktikan celahnya.
 
 ### Perbaikan
 
 Tambahkan `--no-renames` pada pemanggilan gitleaks di workflow. Rename lalu tampil sebagai hapus dan tambah, sehingga isinya ikut diperiksa dan peringatannya hilang.
-
-```
 gitleaks detect --log-opts="--no-renames"
-```
-
 Saran git untuk menaikkan `diff.renameLimit` juga menghilangkan peringatan, tetapi menambah deteksi rename sehingga celahnya melebar, bukan tertutup. Setelah perbaikan, hasilnya 858 commit terpindai tanpa temuan dan tanpa peringatan. Karena fingerprint temuan bergantung pada commit tempat isinya muncul, baseline atau allowlist yang sudah ada perlu diperiksa ulang.
 
 ---
@@ -320,12 +288,8 @@ Kasus kembarannya terjadi di sesi kerja lain pada hari yang sama. Ringkasan bert
 ### Aturan yang dipakai
 
 Perlakukan daftar tugas sebagai petunjuk, bukan keadaan. Sebelum merancang, cek simbol kuncinya di kode.
-
-```
 git log -S"NamaSimbol" --oneline
 grep -rn "NamaSimbol" src/
-```
-
 Jika butir tidak menyebut nama simbol, cari lewat gejalanya. Saat menutup sebuah butir, tulis tanggal dan buktinya agar pembaca berikutnya tidak mengulang penyelidikan yang sama. Aturan ini berlaku juga ke arah sebaliknya: sebelum melaporkan bahwa sesuatu rusak, verifikasi dulu keadaannya.
 
 ---
@@ -346,17 +310,9 @@ Jika sisa kode itu disalin apa adanya, aplikasi baru menghidupkan perilaku yang 
 ### Tiga pemeriksaan berurutan
 
 Pertama, cari nama field pada view dan pastikan ada baris yang merender field tersebut, bukan hanya referensi di blok JavaScript atau baris yang dikomentari.
-
-```
 grep -n "nama_field" view.php
-```
-
 Kedua, hitung pemakaiannya pada data legacy. Angka satu digit di antara puluhan ribu baris berarti praktis mati.
-
-```
 SELECT SUM(nama_kolom = 1), COUNT(*) FROM tabel_aktivitas;
-```
-
 Ketiga, putuskan apakah aturan itu dipindahkan, lalu catat keputusan beserta buktinya pada dokumen parity agar tidak diperiksa ulang.
 
 ---
@@ -381,22 +337,14 @@ Setelah limit tercapai, `posix_spawn()` menolak dengan `Resource temporarily una
 ### Diagnosis
 
 Hitung proses zombie di dalam container. Jumlah yang terus naik menunjukkan ada proses yang tidak dipanen.
-
-```
 docker exec <container> sh -c 'ps -eo stat | grep -c "^Z"'
 docker exec <container> ps -p 1 -o args
-```
-
 ### Perbaikan
 
 Aktifkan init pada Compose agar PID 1 adalah init kecil (tini) yang memanen anak yatim.
-
-```
 services:
   app:
     init: true
-```
-
 Opsi yang sama tersedia sebagai `docker run --init`. Untuk image sendiri, `tini` sebagai ENTRYPOINT memberi hasil yang sama. Setelah container dibuat ulang, jumlah zombie tetap nol.
 
 ---
@@ -423,13 +371,10 @@ Endpoint `mt1.google.com/vt/lyrs=...` adalah endpoint internal Google Maps: tanp
 ### Konfigurasi yang dipakai
 
 Pusatkan semua sumber tile pada satu modul, sehingga penggantian sumber tidak menyebar ke banyak komponen. Pilihan yang tidak memerlukan key adalah Esri (satelit, jalan, topografi, kanvas abu-abu), OpenStreetMap, dan OpenTopoMap, dengan memperhatikan kebijakan penggunaan masing-masing. Atur `maxZoom` per sumber, karena zoom di atas batas sumber menghasilkan tile kosong.
-
-```
 export const TILES = {
   satelit: { url: '.../World_Imagery/MapServer/tile/{z}/{y}/{x}', maxZoom: 19 },
   osm:     { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', maxZoom: 19 },
 }
-```
 
 ---
 
@@ -449,11 +394,7 @@ TTL bawaan mutex adalah 1440 menit. Selama itu command tidak dijalankan lagi. Ti
 ### Diagnosis
 
 Gejala paling cepat terlihat di sisi queue: consumer berjumlah nol padahal seharusnya satu, atau tabel outbox penuh baris pending yang tidak pernah dipublikasikan. Setelah itu bandingkan `php artisan schedule:list`, yang menandai command dengan `Has Mutex`, dengan proses yang benar-benar berjalan.
-
-```
 docker exec <container> ps -eo etime,args | grep artisan
-```
-
 Mutex tanpa proses berarti tertahan. Mutex dengan proses yang hidup adalah kondisi normal untuk consumer yang berjalan terus, dan tidak boleh dihapus.
 
 ### Perbaikan permanen
@@ -488,11 +429,8 @@ Menulis ulang file lewat skrip, misalnya `open(p, 'w')` di Python atau `Set-Cont
 Pada Git Bash, argumen `/dev/null` yang diteruskan ke `docker compose exec` terkena konversi path MSYS dan sampai di container sebagai `nul`, yaitu file biasa. Karena working directory container adalah bind mount ke repository, file `nul` muncul di dalam repository dan hampir ikut ter-commit.
 
 Buang output di sisi host, setelah perintah docker, bukan sebagai argumen yang menyeberang ke container. Periksa juga `git status --short | grep -i nul` sebelum commit. Untuk path absolut di dalam container, set `MSYS_NO_PATHCONV=1`.
-
-```
 docker compose exec -T app curl -s http://localhost:8000/health >/dev/null
 MSYS_NO_PATHCONV=1 docker compose exec -T app sh -c 'cd /app && ls'
-```
 
 ---
 
@@ -506,22 +444,14 @@ MSYS_NO_PATHCONV=1 docker compose exec -T app sh -c 'cd /app && ls'
 > Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.
 
 Master wilayah pada sebuah aplikasi ternyata memakai kode Kemendagri, bukan BPS, padahal komentar di kode menyebutnya kode BPS. Kesalahan itu bertahan lama karena kode provinsi dan kabupaten/kota kedua sistem kebetulan bernilai sama. Perbedaan baru terlihat di level desa.
-
-```
 Kemendagri   11.01.01.2001    bertitik, ekor 4 digit
 BPS          1101012001      10 digit, ekor 3 digit
-```
-
 Data yang dipakai berasal dari repository wilayah yang mengikuti Kepmendagri 300.2.2-2138 Tahun 2025. Hasilnya diverifikasi ke dokumen resmi, bukan hanya ke repository: 38 provinsi cocok pada lima kolom, dengan total 416 kabupaten, 98 kota, 7.285 kecamatan, 8.496 kelurahan, dan 75.266 desa. Kepmendagri 2430/2025 hanya mengubah data pulau di Aceh dan Sumatera Utara, sehingga kode administrasi tidak berubah.
 
 ### Tiga hal yang menjebak
 
 Pertama, ekor kode desa memiliki tiga seri, bukan dua: 1xxx untuk kelurahan, 2xxx untuk desa, dan 3xxx untuk desa adat. Desa adat berjumlah 14 baris dan seluruhnya berada di Kabupaten Jayapura. Menghitung desa dengan `LIKE '2%'` saja akan kurang 14 baris.
-
-```
 SELECT COUNT(*) FROM wilayah WHERE LENGTH(kode) = 13 AND RIGHT(kode, 4) >= '2000';
-```
-
 Kedua, perubahan nama atau pemekaran tidak selalu mengubah kode, dan sebaliknya. Ketiga, selalu cocokkan jumlah per tingkat ke dokumen sumber setelah import, karena selisih satu baris sering berarti satu seri kode yang terlewat.
 
 ---
@@ -538,13 +468,9 @@ Kedua, perubahan nama atau pemekaran tidak selalu mengubah kode, dan sebaliknya.
 Konfigurasi Dependabot untuk ekosistem docker yang hanya mencakup `/docker/*` memindai Dockerfile di direktori itu, tetapi tidak membaca `docker-compose.yml` di root. Pada repository ini, 23 deklarasi `image:` tidak terpantau sama sekali: message broker, reverse proxy, object storage, stack monitoring, dan lainnya. Dua image di antaranya tertinggal beberapa versi dari rilis stabil terbaru.
 
 Perbaikannya menambahkan `"/"` pada daftar `directories`.
-
-```
 - package-ecosystem: docker
   directories: ["/docker/*", "/"]
   target-branch: development
-```
-
 ### Tag latest dan digest
 
 Tag `:latest` yang dipatok dengan `@sha256:` tetap dapat diulang, karena digest yang menentukan isi image. Masalahnya bukan isi yang bergeser sendiri, melainkan digest yang tidak pernah diperbarui karena tidak ada yang memeriksanya.
@@ -577,11 +503,8 @@ Output MySQL pada sistem itu berencoding latin1. Simbol derajat (`0xb0`) menggag
 Validasi yang paling mudah adalah memeriksa bahwa titik berada dalam kotak Indonesia (lintang sekitar -11,5 sampai 6,5). Kotak itu mencakup lintang utara, sehingga sebuah titik di Balikpapan yang tertulis +1,1986 padahal seharusnya -1,1986 tetap lolos, meski posisinya meleset sekitar 265 km. Kesalahan tanda lintang adalah salah satu kesalahan input yang paling umum.
 
 Validasi yang lebih kuat menguji titik terhadap poligon wilayah yang seharusnya memuatnya, misalnya kabupaten/kota dari alamat unit. Titik yang jatuh di luar poligon itu ditandai untuk ditinjau, dan varian yang mungkin (tanda lintang dibalik, lintang dan bujur tertukar) dicoba satu per satu.
-
-```
 SELECT id FROM unit u JOIN wilayah w ON w.kode = u.kode_kabkota
 WHERE NOT ST_Contains(w.geom, ST_SetSRID(ST_MakePoint(u.bujur, u.lintang), 4326));
-```
 
 ---
 
@@ -624,12 +547,8 @@ Sebagian baris memuat geometri kosong. Baris itu tidak dapat digambar, dan pada 
 ### Geometri tidak valid
 
 Poligon dengan self-intersection atau cincin yang tidak tertutup membuat operasi seperti intersect dan union gagal. Opsi `--repair-geometries` memperbaikinya dengan shapely sebelum disimpan.
-
-```
 python tools/sql_geojson/sql_to_geojson.py --in-dir sql --out-dir geojson \
   --drop-empty-geometry --repair-geometries --skip-errors --recursive
-```
-
 Dump dengan `VALUES` multi-baris juga didukung. Setelah konversi, jalankan laporan statistik untuk memastikan jumlah fitur dan cakupan geometri sesuai harapan.
 
 ---
@@ -675,8 +594,6 @@ Kubernetes has become the de facto standard for container orchestration, but run
 - **Monitoring:** Deploy comprehensive monitoring and logging solutions
 
 ### Example Configuration
-
-```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -692,6 +609,4 @@ spec:
       limits:
         memory: "128Mi"
         cpu: "500m"
-```
-
 Following these practices will help ensure your Kubernetes deployments are reliable, secure, and performant.

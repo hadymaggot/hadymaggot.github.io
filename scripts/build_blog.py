@@ -59,8 +59,30 @@ STYLE = """    <style>
         .post-related ul { list-style: none; padding: 0; margin: 0; }
         .post-related li { margin-bottom: 0.7rem; }
         .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
-        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .post-pager a { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.8rem 1rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 8px; text-decoration: none; transition: border-color 0.2s ease; }
+        .post-pager a:hover, .post-pager a:focus-visible { border-color: var(--primary-color); }
+        .pager-next { text-align: right; align-items: flex-end; }
+        .pager-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--primary-color); }
+        .pager-title { color: var(--text-color); line-height: 1.4; }
+        @media (max-width: 600px) { .post-pager { grid-template-columns: 1fr; } .pager-next { text-align: left; align-items: flex-start; } }
         .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .code-block { margin: 1rem 0; border: 1px solid rgba(122, 197, 90, 0.25); border-radius: 8px; overflow: hidden; background: var(--terminal-bg); }
+        .code-head { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0.75rem; background: rgba(122, 197, 90, 0.1); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--secondary-color); }
+        .code-copy { background: transparent; color: var(--primary-color); border: 1px solid rgba(122, 197, 90, 0.4); border-radius: 4px; padding: 0.15rem 0.6rem; font: inherit; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+        .code-copy:hover, .code-copy:focus-visible { background: var(--primary-color); color: var(--dark-color); }
+        .code-block pre { margin: 0; border-radius: 0; background: transparent; font-size: 0.85rem; line-height: 1.6; }
+        .hljs { background: transparent; color: #e6e6e6; }
+        .hljs-comment, .hljs-quote { color: #7f8c8d; font-style: italic; }
+        .hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: #ff7b72; }
+        .hljs-string, .hljs-regexp, .hljs-addition { color: #e9c46a; }
+        .hljs-number, .hljs-symbol, .hljs-bullet { color: #f4a261; }
+        .hljs-title, .hljs-section, .hljs-function .hljs-title { color: #7aa2f7; }
+        .hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #bb9af7; }
+        .hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable, .hljs-params { color: #7dcfff; }
+        .hljs-meta, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #c3db65; }
+        .hljs-deletion { color: #ff7b72; background: rgba(255, 123, 114, 0.12); }
+        .hljs-addition { background: rgba(122, 197, 90, 0.12); }
     </style>"""
 
 
@@ -210,9 +232,13 @@ def render_page(p, posts):
         for q in related(p, posts))
     pager = ""
     if older or newer:
-        left = f'<a href="/blog/{older["id"]}/" rel="prev">&larr; {escape(older["title"])}</a>' if older else "<span></span>"
-        right = f'<a href="/blog/{newer["id"]}/" rel="next">{escape(newer["title"])} &rarr;</a>' if newer else "<span></span>"
+        left = (f'<a class="pager-prev" href="/blog/{older["id"]}/" rel="prev"><span class="pager-label">&larr; Sebelumnya</span>'
+                f'<span class="pager-title">{escape(older["title"])}</span></a>') if older else "<span></span>"
+        right = (f'<a class="pager-next" href="/blog/{newer["id"]}/" rel="next"><span class="pager-label">Berikutnya &rarr;</span>'
+                 f'<span class="pager-title">{escape(newer["title"])}</span></a>') if newer else "<span></span>"
         pager = f'        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah">{left}{right}</nav>\n'
+    code_scripts = ('    <script src="/assets/js/vendor/highlight.min.js" defer></script>\n'
+                    '    <script src="/assets/js/code.js" defer></script>\n') if "<pre" in p["content"] else ""
     tag_meta = "".join(f'    <meta property="article:tag" content="{escape(t, quote=True)}">\n' for t in p["tags"])
 
     return f"""<!DOCTYPE html>
@@ -246,7 +272,7 @@ def render_page(p, posts):
     <meta name="twitter:description" content="{escape(desc, quote=True)}">
     <meta name="twitter:image" content="{og_url(p)}">
 {STYLE}
-    <script type="application/ld+json">{ld(article_ld)}</script>
+{code_scripts}    <script type="application/ld+json">{ld(article_ld)}</script>
     <script type="application/ld+json">{ld(crumbs_ld)}</script>
 </head>
 

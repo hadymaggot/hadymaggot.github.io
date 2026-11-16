@@ -17,8 +17,6 @@ Kubernetes has become the de facto standard for container orchestration, but run
 - **Monitoring:** Deploy comprehensive monitoring and logging solutions
 
 ### Example Configuration
-
-```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -34,6 +32,4 @@ spec:
       limits:
         memory: "128Mi"
         cpu: "500m"
-```
-
 Following these practices will help ensure your Kubernetes deployments are reliable, secure, and performant.

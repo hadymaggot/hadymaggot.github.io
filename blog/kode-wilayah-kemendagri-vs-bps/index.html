@@ -63,9 +63,33 @@
         .post-related ul { list-style: none; padding: 0; margin: 0; }
         .post-related li { margin-bottom: 0.7rem; }
         .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
-        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .post-pager a { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.8rem 1rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 8px; text-decoration: none; transition: border-color 0.2s ease; }
+        .post-pager a:hover, .post-pager a:focus-visible { border-color: var(--primary-color); }
+        .pager-next { text-align: right; align-items: flex-end; }
+        .pager-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--primary-color); }
+        .pager-title { color: var(--text-color); line-height: 1.4; }
+        @media (max-width: 600px) { .post-pager { grid-template-columns: 1fr; } .pager-next { text-align: left; align-items: flex-start; } }
         .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .code-block { margin: 1rem 0; border: 1px solid rgba(122, 197, 90, 0.25); border-radius: 8px; overflow: hidden; background: var(--terminal-bg); }
+        .code-head { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0.75rem; background: rgba(122, 197, 90, 0.1); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--secondary-color); }
+        .code-copy { background: transparent; color: var(--primary-color); border: 1px solid rgba(122, 197, 90, 0.4); border-radius: 4px; padding: 0.15rem 0.6rem; font: inherit; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+        .code-copy:hover, .code-copy:focus-visible { background: var(--primary-color); color: var(--dark-color); }
+        .code-block pre { margin: 0; border-radius: 0; background: transparent; font-size: 0.85rem; line-height: 1.6; }
+        .hljs { background: transparent; color: #e6e6e6; }
+        .hljs-comment, .hljs-quote { color: #7f8c8d; font-style: italic; }
+        .hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: #ff7b72; }
+        .hljs-string, .hljs-regexp, .hljs-addition { color: #e9c46a; }
+        .hljs-number, .hljs-symbol, .hljs-bullet { color: #f4a261; }
+        .hljs-title, .hljs-section, .hljs-function .hljs-title { color: #7aa2f7; }
+        .hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #bb9af7; }
+        .hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable, .hljs-params { color: #7dcfff; }
+        .hljs-meta, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #c3db65; }
+        .hljs-deletion { color: #ff7b72; background: rgba(255, 123, 114, 0.12); }
+        .hljs-addition { background: rgba(122, 197, 90, 0.12); }
     </style>
+    <script src="/assets/js/vendor/highlight.min.js" defer></script>
+    <script src="/assets/js/code.js" defer></script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/#article", "headline": "Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa", "description": "Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.", "image": ["https://hadymaggot.github.io/assets/images/og/kode-wilayah-kemendagri-vs-bps.png"], "datePublished": "2026-09-23", "dateModified": "2026-09-23", "inLanguage": "id", "wordCount": 199, "keywords": "GIS, Data, Indonesia", "articleSection": "GIS", "url": "https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa", "item": "https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/"}]}</script>
 </head>
@@ -86,8 +110,8 @@
             </div>
             <div class="post-tags"><a href="/blog/tag/gis/">GIS</a><a href="/blog/tag/data/">Data</a><span>Indonesia</span></div>
             <div class="post-body">
-                <p>Master wilayah pada sebuah aplikasi ternyata memakai kode Kemendagri, bukan BPS, padahal komentar di kode menyebutnya kode BPS. Kesalahan itu bertahan lama karena kode provinsi dan kabupaten/kota kedua sistem kebetulan bernilai sama. Perbedaan baru terlihat di level desa.</p><pre><code>Kemendagri   11.01.01.2001    bertitik, ekor 4 digit
-BPS          1101012001      10 digit, ekor 3 digit</code></pre><p>Data yang dipakai berasal dari repository wilayah yang mengikuti Kepmendagri 300.2.2-2138 Tahun 2025. Hasilnya diverifikasi ke dokumen resmi, bukan hanya ke repository: 38 provinsi cocok pada lima kolom, dengan total 416 kabupaten, 98 kota, 7.285 kecamatan, 8.496 kelurahan, dan 75.266 desa. Kepmendagri 2430/2025 hanya mengubah data pulau di Aceh dan Sumatera Utara, sehingga kode administrasi tidak berubah.</p><h3>Tiga hal yang menjebak</h3><p>Pertama, ekor kode desa memiliki tiga seri, bukan dua: 1xxx untuk kelurahan, 2xxx untuk desa, dan 3xxx untuk desa adat. Desa adat berjumlah 14 baris dan seluruhnya berada di Kabupaten Jayapura. Menghitung desa dengan <code>LIKE '2%'</code> saja akan kurang 14 baris.</p><pre><code>SELECT COUNT(*) FROM wilayah WHERE LENGTH(kode) = 13 AND RIGHT(kode, 4) &gt;= '2000';</code></pre><p>Kedua, perubahan nama atau pemekaran tidak selalu mengubah kode, dan sebaliknya. Ketiga, selalu cocokkan jumlah per tingkat ke dokumen sumber setelah import, karena selisih satu baris sering berarti satu seri kode yang terlewat.</p>
+                <p>Master wilayah pada sebuah aplikasi ternyata memakai kode Kemendagri, bukan BPS, padahal komentar di kode menyebutnya kode BPS. Kesalahan itu bertahan lama karena kode provinsi dan kabupaten/kota kedua sistem kebetulan bernilai sama. Perbedaan baru terlihat di level desa.</p><pre><code class="language-plaintext">Kemendagri   11.01.01.2001    bertitik, ekor 4 digit
+BPS          1101012001      10 digit, ekor 3 digit</code></pre><p>Data yang dipakai berasal dari repository wilayah yang mengikuti Kepmendagri 300.2.2-2138 Tahun 2025. Hasilnya diverifikasi ke dokumen resmi, bukan hanya ke repository: 38 provinsi cocok pada lima kolom, dengan total 416 kabupaten, 98 kota, 7.285 kecamatan, 8.496 kelurahan, dan 75.266 desa. Kepmendagri 2430/2025 hanya mengubah data pulau di Aceh dan Sumatera Utara, sehingga kode administrasi tidak berubah.</p><h3>Tiga hal yang menjebak</h3><p>Pertama, ekor kode desa memiliki tiga seri, bukan dua: 1xxx untuk kelurahan, 2xxx untuk desa, dan 3xxx untuk desa adat. Desa adat berjumlah 14 baris dan seluruhnya berada di Kabupaten Jayapura. Menghitung desa dengan <code>LIKE '2%'</code> saja akan kurang 14 baris.</p><pre><code class="language-sql">SELECT COUNT(*) FROM wilayah WHERE LENGTH(kode) = 13 AND RIGHT(kode, 4) &gt;= '2000';</code></pre><p>Kedua, perubahan nama atau pemekaran tidak selalu mengubah kode, dan sebaliknya. Ketiga, selalu cocokkan jumlah per tingkat ke dokumen sumber setelah import, karena selisih satu baris sering berarti satu seri kode yang terlewat.</p>
             </div>
             <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
@@ -95,7 +119,7 @@ BPS          1101012001      10 digit, ekor 3 digit</code></pre><p>Data yang dip
             <h2>Artikel terkait</h2>
             <ul><li><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a><span>Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor…</span></li><li><a href="/blog/koordinat-dms-dan-validasi-lintang/">Koordinat DMS dan Validasi Lintang di Luar Bounding Box</a><span>Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak…</span></li><li><a href="/blog/crosswalk-kode-kabupaten-legacy/">Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi</a><span>Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di…</span></li></ul>
         </section>
-        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/cakupan-dependabot-image-compose/" rel="prev">&larr; Cakupan Dependabot: Image di docker-compose Luput Dipantau</a><a href="/blog/docker-windows-crlf-dan-devnull/" rel="next">Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null &rarr;</a></nav>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a class="pager-prev" href="/blog/cakupan-dependabot-image-compose/" rel="prev"><span class="pager-label">&larr; Sebelumnya</span><span class="pager-title">Cakupan Dependabot: Image di docker-compose Luput Dipantau</span></a><a class="pager-next" href="/blog/docker-windows-crlf-dan-devnull/" rel="next"><span class="pager-label">Berikutnya &rarr;</span><span class="pager-title">Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</span></a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

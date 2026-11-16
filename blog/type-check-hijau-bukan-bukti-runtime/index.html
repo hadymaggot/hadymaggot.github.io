@@ -63,9 +63,33 @@
         .post-related ul { list-style: none; padding: 0; margin: 0; }
         .post-related li { margin-bottom: 0.7rem; }
         .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
-        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .post-pager a { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.8rem 1rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 8px; text-decoration: none; transition: border-color 0.2s ease; }
+        .post-pager a:hover, .post-pager a:focus-visible { border-color: var(--primary-color); }
+        .pager-next { text-align: right; align-items: flex-end; }
+        .pager-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--primary-color); }
+        .pager-title { color: var(--text-color); line-height: 1.4; }
+        @media (max-width: 600px) { .post-pager { grid-template-columns: 1fr; } .pager-next { text-align: left; align-items: flex-start; } }
         .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .code-block { margin: 1rem 0; border: 1px solid rgba(122, 197, 90, 0.25); border-radius: 8px; overflow: hidden; background: var(--terminal-bg); }
+        .code-head { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0.75rem; background: rgba(122, 197, 90, 0.1); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--secondary-color); }
+        .code-copy { background: transparent; color: var(--primary-color); border: 1px solid rgba(122, 197, 90, 0.4); border-radius: 4px; padding: 0.15rem 0.6rem; font: inherit; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+        .code-copy:hover, .code-copy:focus-visible { background: var(--primary-color); color: var(--dark-color); }
+        .code-block pre { margin: 0; border-radius: 0; background: transparent; font-size: 0.85rem; line-height: 1.6; }
+        .hljs { background: transparent; color: #e6e6e6; }
+        .hljs-comment, .hljs-quote { color: #7f8c8d; font-style: italic; }
+        .hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: #ff7b72; }
+        .hljs-string, .hljs-regexp, .hljs-addition { color: #e9c46a; }
+        .hljs-number, .hljs-symbol, .hljs-bullet { color: #f4a261; }
+        .hljs-title, .hljs-section, .hljs-function .hljs-title { color: #7aa2f7; }
+        .hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #bb9af7; }
+        .hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable, .hljs-params { color: #7dcfff; }
+        .hljs-meta, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #c3db65; }
+        .hljs-deletion { color: #ff7b72; background: rgba(255, 123, 114, 0.12); }
+        .hljs-addition { background: rgba(122, 197, 90, 0.12); }
     </style>
+    <script src="/assets/js/vendor/highlight.min.js" defer></script>
+    <script src="/assets/js/code.js" defer></script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/#article", "headline": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime", "description": "Prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau.", "image": ["https://hadymaggot.github.io/assets/images/og/type-check-hijau-bukan-bukti-runtime.png"], "datePublished": "2026-10-30", "dateModified": "2026-10-30", "inLanguage": "id", "wordCount": 167, "keywords": "Frontend, Vue, Testing", "articleSection": "Frontend", "url": "https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime", "item": "https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/"}]}</script>
 </head>
@@ -86,7 +110,7 @@
             </div>
             <div class="post-tags"><span>Frontend</span><span>Vue</span><span>Testing</span></div>
             <div class="post-body">
-                <p>Penambahan prop <code>open?: boolean</code> pada komponen collapsible yang dipakai di sekitar 20 tempat membuat semua pemakaian tanpa <code>v-model:open</code> tampil tertutup. <code>vue-tsc --noEmit</code> dan vitest hijau sebelum maupun sesudah bug, karena tipenya benar dan yang berubah hanya perilakunya.</p><p>Penyebabnya, Vue meng-cast prop boolean yang tidak diberikan induk menjadi <code>false</code>, bukan <code>undefined</code>. Akibatnya ekspresi <code>props.open ?? internal.value</code> tidak pernah memilih nilai internal. Perbaikannya satu baris pada default prop.</p><pre><code>const props = withDefaults(defineProps&lt;{ open?: boolean }&gt;(), { open: undefined })</code></pre><h3>Menyamar sebagai tes flaky</h3><p>Kelas bug ini sering terlihat sebagai tes E2E yang flaky. Elemen ada di DOM tetapi <code>display: none</code>, sehingga <code>fill()</code> atau <code>click()</code> menunggu sampai timeout. Jika sebuah langkah E2E tiba-tiba timeout pada elemen yang jelas ada, periksa visibilitasnya sebelum menyalahkan timing.</p><h3>Cara memverifikasi</h3><p>Untuk perubahan prop pada komponen bersama, muat satu halaman nyata sebelum menyatakan bahwa perilaku lama tidak berubah. Hasil membaca kode bukan hasil verifikasi. Cara tercepat adalah spec Playwright sekali pakai yang membaca <code>getComputedStyle(...).display</code> pada elemen terkait, lalu dihapus setelah pertanyaannya terjawab.</p>
+                <p>Penambahan prop <code>open?: boolean</code> pada komponen collapsible yang dipakai di sekitar 20 tempat membuat semua pemakaian tanpa <code>v-model:open</code> tampil tertutup. <code>vue-tsc --noEmit</code> dan vitest hijau sebelum maupun sesudah bug, karena tipenya benar dan yang berubah hanya perilakunya.</p><p>Penyebabnya, Vue meng-cast prop boolean yang tidak diberikan induk menjadi <code>false</code>, bukan <code>undefined</code>. Akibatnya ekspresi <code>props.open ?? internal.value</code> tidak pernah memilih nilai internal. Perbaikannya satu baris pada default prop.</p><pre><code class="language-typescript">const props = withDefaults(defineProps&lt;{ open?: boolean }&gt;(), { open: undefined })</code></pre><h3>Menyamar sebagai tes flaky</h3><p>Kelas bug ini sering terlihat sebagai tes E2E yang flaky. Elemen ada di DOM tetapi <code>display: none</code>, sehingga <code>fill()</code> atau <code>click()</code> menunggu sampai timeout. Jika sebuah langkah E2E tiba-tiba timeout pada elemen yang jelas ada, periksa visibilitasnya sebelum menyalahkan timing.</p><h3>Cara memverifikasi</h3><p>Untuk perubahan prop pada komponen bersama, muat satu halaman nyata sebelum menyatakan bahwa perilaku lama tidak berubah. Hasil membaca kode bukan hasil verifikasi. Cara tercepat adalah spec Playwright sekali pakai yang membaca <code>getComputedStyle(...).display</code> pada elemen terkait, lalu dihapus setelah pertanyaannya terjawab.</p>
             </div>
             <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
@@ -94,7 +118,7 @@
             <h2>Artikel terkait</h2>
             <ul><li><a href="/blog/security-headers-github-pages/">Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</a><span>GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy…</span></li><li><a href="/blog/pentest-ke-test-otomatis/">Dari Temuan Pentest ke Test Otomatis di CI</a><span>Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama…</span></li><li><a href="/blog/checklist-ops-sebelum-deploy/">Checklist Ops Sebelum Deploy ke Produksi</a><span>Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.</span></li></ul>
         </section>
-        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/redis-aof-korup-setelah-reboot/" rel="prev">&larr; Redis Crash-Loop karena AOF Korup Setelah Reboot</a><a href="/blog/backup-dan-idempotent-bulk-update/" rel="next">Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent &rarr;</a></nav>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a class="pager-prev" href="/blog/redis-aof-korup-setelah-reboot/" rel="prev"><span class="pager-label">&larr; Sebelumnya</span><span class="pager-title">Redis Crash-Loop karena AOF Korup Setelah Reboot</span></a><a class="pager-next" href="/blog/backup-dan-idempotent-bulk-update/" rel="next"><span class="pager-label">Berikutnya &rarr;</span><span class="pager-title">Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</span></a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

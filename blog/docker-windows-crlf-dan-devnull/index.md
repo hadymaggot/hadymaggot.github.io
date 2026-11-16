@@ -18,8 +18,5 @@ Menulis ulang file lewat skrip, misalnya `open(p, 'w')` di Python atau `Set-Cont
 Pada Git Bash, argumen `/dev/null` yang diteruskan ke `docker compose exec` terkena konversi path MSYS dan sampai di container sebagai `nul`, yaitu file biasa. Karena working directory container adalah bind mount ke repository, file `nul` muncul di dalam repository dan hampir ikut ter-commit.
 
 Buang output di sisi host, setelah perintah docker, bukan sebagai argumen yang menyeberang ke container. Periksa juga `git status --short | grep -i nul` sebelum commit. Untuk path absolut di dalam container, set `MSYS_NO_PATHCONV=1`.
-
-```
 docker compose exec -T app curl -s http://localhost:8000/health >/dev/null
 MSYS_NO_PATHCONV=1 docker compose exec -T app sh -c 'cd /app && ls'
-```

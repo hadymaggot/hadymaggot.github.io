@@ -14,10 +14,6 @@ Kasus kembarannya terjadi di sesi kerja lain pada hari yang sama. Ringkasan bert
 ### Aturan yang dipakai
 
 Perlakukan daftar tugas sebagai petunjuk, bukan keadaan. Sebelum merancang, cek simbol kuncinya di kode.
-
-```
 git log -S"NamaSimbol" --oneline
 grep -rn "NamaSimbol" src/
-```
-
 Jika butir tidak menyebut nama simbol, cari lewat gejalanya. Saat menutup sebuah butir, tulis tanggal dan buktinya agar pembaca berikutnya tidak mengulang penyelidikan yang sama. Aturan ini berlaku juga ke arah sebaliknya: sebelum melaporkan bahwa sesuatu rusak, verifikasi dulu keadaannya.

@@ -63,9 +63,33 @@
         .post-related ul { list-style: none; padding: 0; margin: 0; }
         .post-related li { margin-bottom: 0.7rem; }
         .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
-        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .post-pager a { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.8rem 1rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 8px; text-decoration: none; transition: border-color 0.2s ease; }
+        .post-pager a:hover, .post-pager a:focus-visible { border-color: var(--primary-color); }
+        .pager-next { text-align: right; align-items: flex-end; }
+        .pager-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--primary-color); }
+        .pager-title { color: var(--text-color); line-height: 1.4; }
+        @media (max-width: 600px) { .post-pager { grid-template-columns: 1fr; } .pager-next { text-align: left; align-items: flex-start; } }
         .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .code-block { margin: 1rem 0; border: 1px solid rgba(122, 197, 90, 0.25); border-radius: 8px; overflow: hidden; background: var(--terminal-bg); }
+        .code-head { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0.75rem; background: rgba(122, 197, 90, 0.1); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--secondary-color); }
+        .code-copy { background: transparent; color: var(--primary-color); border: 1px solid rgba(122, 197, 90, 0.4); border-radius: 4px; padding: 0.15rem 0.6rem; font: inherit; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+        .code-copy:hover, .code-copy:focus-visible { background: var(--primary-color); color: var(--dark-color); }
+        .code-block pre { margin: 0; border-radius: 0; background: transparent; font-size: 0.85rem; line-height: 1.6; }
+        .hljs { background: transparent; color: #e6e6e6; }
+        .hljs-comment, .hljs-quote { color: #7f8c8d; font-style: italic; }
+        .hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: #ff7b72; }
+        .hljs-string, .hljs-regexp, .hljs-addition { color: #e9c46a; }
+        .hljs-number, .hljs-symbol, .hljs-bullet { color: #f4a261; }
+        .hljs-title, .hljs-section, .hljs-function .hljs-title { color: #7aa2f7; }
+        .hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #bb9af7; }
+        .hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable, .hljs-params { color: #7dcfff; }
+        .hljs-meta, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #c3db65; }
+        .hljs-deletion { color: #ff7b72; background: rgba(255, 123, 114, 0.12); }
+        .hljs-addition { background: rgba(122, 197, 90, 0.12); }
     </style>
+    <script src="/assets/js/vendor/highlight.min.js" defer></script>
+    <script src="/assets/js/code.js" defer></script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/kubernetes-best-practices/#article", "headline": "Kubernetes Best Practices for Production", "description": "A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.", "image": ["https://hadymaggot.github.io/assets/images/og/kubernetes-best-practices.png"], "datePublished": "2025-01-10", "dateModified": "2025-01-10", "inLanguage": "id", "wordCount": 110, "keywords": "Kubernetes, DevOps, Cloud", "articleSection": "Kubernetes", "url": "https://hadymaggot.github.io/blog/kubernetes-best-practices/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/kubernetes-best-practices/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Kubernetes Best Practices for Production", "item": "https://hadymaggot.github.io/blog/kubernetes-best-practices/"}]}</script>
 </head>
@@ -86,7 +110,7 @@
             </div>
             <div class="post-tags"><span>Kubernetes</span><a href="/blog/tag/devops/">DevOps</a><span>Cloud</span></div>
             <div class="post-body">
-                <p>Kubernetes has become the de facto standard for container orchestration, but running it in production requires careful planning and adherence to best practices.</p><h3>Key Considerations</h3><ul><li><strong>Resource Limits:</strong> Always set resource requests and limits for containers to prevent resource starvation</li><li><strong>Health Checks:</strong> Implement readiness and liveness probes for all services</li><li><strong>Security Policies:</strong> Use Pod Security Policies and Network Policies to enforce security boundaries</li><li><strong>Monitoring:</strong> Deploy comprehensive monitoring and logging solutions</li></ul><h3>Example Configuration</h3><pre><code>apiVersion: v1
+                <p>Kubernetes has become the de facto standard for container orchestration, but running it in production requires careful planning and adherence to best practices.</p><h3>Key Considerations</h3><ul><li><strong>Resource Limits:</strong> Always set resource requests and limits for containers to prevent resource starvation</li><li><strong>Health Checks:</strong> Implement readiness and liveness probes for all services</li><li><strong>Security Policies:</strong> Use Pod Security Policies and Network Policies to enforce security boundaries</li><li><strong>Monitoring:</strong> Deploy comprehensive monitoring and logging solutions</li></ul><h3>Example Configuration</h3><pre><code class="language-yaml">apiVersion: v1
 kind: Pod
 metadata:
   name: my-app
@@ -108,7 +132,7 @@ spec:
             <h2>Artikel terkait</h2>
             <ul><li><a href="/blog/checklist-ops-sebelum-deploy/">Checklist Ops Sebelum Deploy ke Produksi</a><span>Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.</span></li><li><a href="/blog/welcome-to-my-blog/">Welcome to My Blog</a><span>Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan…</span></li><li><a href="/blog/security-headers-github-pages/">Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</a><span>GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy…</span></li></ul>
         </section>
-        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><span></span><a href="/blog/welcome-to-my-blog/" rel="next">Welcome to My Blog &rarr;</a></nav>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><span></span><a class="pager-next" href="/blog/welcome-to-my-blog/" rel="next"><span class="pager-label">Berikutnya &rarr;</span><span class="pager-title">Welcome to My Blog</span></a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

@@ -185,6 +185,17 @@ def check_post_safety():
             fail(f"{f.name}: {problem}")
 
 
+def check_code_blocks():
+    """Setiap blok kode pada artikel wajib menyebut bahasanya, untuk penyorotan sintaks dan label."""
+    for f in sorted((ROOT / "blog" / "posts").glob("20*.json")):
+        content = json.loads(f.read_text(encoding="utf-8"))["content"]
+        bad = len(re.findall(r"<pre><code(?![^>]*\bclass=\"language-)", content))
+        if bad:
+            fail(f"{f.name}: {bad} blok kode tanpa class=\"language-...\"")
+    if not (ROOT / "assets" / "js" / "vendor" / "highlight.min.js").is_file():
+        fail("assets/js/vendor/highlight.min.js tidak ada")
+
+
 def check_cloudflare():
     """Pengaman free tier Cloudflare: Worker hanya aset statis, aturan header di bawah batas, dan dist lengkap."""
     cfg = (ROOT / "wrangler.jsonc").read_text(encoding="utf-8")
@@ -229,6 +240,7 @@ def main():
     check_security_txt()
     check_blog_build()
     check_seo()
+    check_code_blocks()
     check_post_safety()
     check_cloudflare()
     if errors:
