@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis | Ahadizapto</title>
+    <link rel="icon" href="/assets/images/ico2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/">
+    <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
+    <meta name="theme-color" content="#7AC55A">
+    <meta name="description" content="Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.">
+    <meta name="author" content="Ahadizapto">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis">
+    <meta property="og:description" content="Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.">
+    <meta property="og:url" content="https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
+    <meta name="twitter:card" content="summary">
+    <style>
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a { color: var(--primary-color); }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
+        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
+        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-body { line-height: 1.8; }
+        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
+        .post-body code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis", "datePublished": "2026-04-22", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/", "keywords": "GIS, Python, Tooling"}
+    </script>
+</head>
+
+<body>
+    <main class="post-page">
+        <nav class="post-nav" aria-label="Navigasi">
+            <a href="/">~/ahadizapto</a>
+            <a href="/blog.html">/blog</a>
+            <a href="/feed.xml">rss</a>
+        </nav>
+        <article>
+            <h1>Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis</h1>
+            <div class="post-meta">
+                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-04-22</span>
+                <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+                <span class="post-tags"><span>GIS</span><span>Python</span><span>Tooling</span></span>
+            </div>
+            <div class="post-body">
+                <p>Data batas wilayah sering didistribusikan sebagai dump SQL berisi <code>INSERT</code> dengan <code>ST_GeomFromText</code> atau <code>ST_GeomFromGeoJSON</code>. Untuk menampilkannya di peta web, data itu perlu dikonversi menjadi GeoJSON. Tool <a href="https://github.com/hadymaggot/hadymaggot.github.io/tree/main/tools/sql_geojson" target="_blank" rel="noopener noreferrer">sql_geojson</a> melakukan konversi dua arah dan ditest di CI.</p><h3>Geometri kosong</h3><p>Sebagian baris memuat geometri kosong. Baris itu tidak dapat digambar, dan pada beberapa library membuat seluruh FeatureCollection gagal dimuat. Opsi <code>--drop-empty-geometry</code> membuangnya, dan <code>report_geojson_stats.py --report-missing</code> mendaftar kode dan nama fitur yang tidak memiliki geometri, agar kekurangan data dapat dilaporkan ke sumbernya.</p><h3>Geometri tidak valid</h3><p>Poligon dengan self-intersection atau cincin yang tidak tertutup membuat operasi seperti intersect dan union gagal. Opsi <code>--repair-geometries</code> memperbaikinya dengan shapely sebelum disimpan.</p><pre><code>python tools/sql_geojson/sql_to_geojson.py --in-dir sql --out-dir geojson \
+  --drop-empty-geometry --repair-geometries --skip-errors --recursive</code></pre><p>Dump dengan <code>VALUES</code> multi-baris juga didukung. Setelah konversi, jalankan laporan statistik untuk memastikan jumlah fitur dan cakupan geometri sesuai harapan.</p>
+            </div>
+        </article>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
+    </main>
+</body>
+
+</html>

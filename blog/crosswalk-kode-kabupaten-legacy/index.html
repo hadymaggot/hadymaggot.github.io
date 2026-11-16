@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crosswalk Kode Kabupaten/Kota dari Sistem Legacy ke Kode Resmi | Ahadizapto</title>
+    <link rel="icon" href="/assets/images/ico2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/">
+    <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
+    <meta name="theme-color" content="#7AC55A">
+    <meta name="description" content="Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.">
+    <meta name="author" content="Ahadizapto">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Crosswalk Kode Kabupaten/Kota dari Sistem Legacy ke Kode Resmi">
+    <meta property="og:description" content="Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.">
+    <meta property="og:url" content="https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
+    <meta name="twitter:card" content="summary">
+    <style>
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a { color: var(--primary-color); }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
+        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
+        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-body { line-height: 1.8; }
+        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
+        .post-body code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Crosswalk Kode Kabupaten/Kota dari Sistem Legacy ke Kode Resmi", "datePublished": "2026-07-23", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/", "keywords": "GIS, Migrasi, Data"}
+    </script>
+</head>
+
+<body>
+    <main class="post-page">
+        <nav class="post-nav" aria-label="Navigasi">
+            <a href="/">~/ahadizapto</a>
+            <a href="/blog.html">/blog</a>
+            <a href="/feed.xml">rss</a>
+        </nav>
+        <article>
+            <h1>Crosswalk Kode Kabupaten/Kota dari Sistem Legacy ke Kode Resmi</h1>
+            <div class="post-meta">
+                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-07-23</span>
+                <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+                <span class="post-tags"><span>GIS</span><span>Migrasi</span><span>Data</span></span>
+            </div>
+            <div class="post-body">
+                <p>Sistem legacy memakai penomoran kabupaten/kota sendiri yang berbeda dari kode resmi pada master wilayah baru. Perbedaan itu pertama terlihat di satu provinsi, lalu dicek ke seluruh 511 kabupaten/kota lewat <code>postgres_fdw</code>. Hasilnya 166 nama tidak cocok dan 35 data tidak ditemukan, total 199 dari 511 (sekitar 39%), tersebar di hampir semua provinsi.</p><h3>Penyebabnya berlapis</h3><p>Sebagian kabupaten/kota hanya berbeda urutan nomor: namanya sama, kodenya berbeda. Provinsi Papua lama sudah dipecah menjadi enam provinsi sejak pemekaran 2022, sehingga satu kode provinsi lama dapat jatuh ke beberapa provinsi baru tergantung kabupaten/kotanya. Karena itu remap harus dilakukan di level kabupaten/kota. Sebagian kecil kabupaten juga berganti nama resmi setelah data legacy dibuat, misalnya Toba Samosir menjadi Toba dan Mamuju Utara menjadi Pasangkayu.</p><h3>Pendekatan yang dipakai</h3><p>Bangun tabel crosswalk dari kode legacy ke kode resmi, dengan sumber legacy yang tidak diubah (diakses lewat foreign data wrapper), lalu terapkan ke seluruh tabel yang mereferensikan wilayah. Simpan snapshot sebelum UPDATE, dan pastikan script dapat dijalankan ulang tanpa merusak hasil sebelumnya. Cocokkan juga dengan nama, bukan hanya kode, karena nama yang cocok dengan kode yang berbeda adalah tanda pergeseran urutan.</p>
+            </div>
+        </article>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
+    </main>
+</body>
+
+</html>

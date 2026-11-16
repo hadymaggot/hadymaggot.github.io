@@ -34,6 +34,20 @@
       <description>Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.</description>
     </item>
     <item>
+      <title>Ekspor SMART Desktop: DBF UTF-8 tanpa .cpg dan File di Atas 2 GB</title>
+      <link>https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/</guid>
+      <pubDate>Thu, 12 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.</description>
+    </item>
+    <item>
+      <title>Mempercepat Import Track di PostGIS: Geometri Besar dan CTE MATERIALIZED</title>
+      <link>https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/</guid>
+      <pubDate>Sun, 08 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan penyaringan awal memangkas waktu dari 59 ke 19 detik.</description>
+    </item>
+    <item>
       <title>Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</title>
       <link>https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</guid>
@@ -83,6 +97,13 @@
       <description>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.</description>
     </item>
     <item>
+      <title>Basemap Tile: CARTO Menampilkan Watermark dan Google vt Bukan Pilihan</title>
+      <link>https://hadymaggot.github.io/blog/basemap-tile-carto-dan-google-vt/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/basemap-tile-carto-dan-google-vt/</guid>
+      <pubDate>Tue, 29 Sep 2026 00:00:00 +0000</pubDate>
+      <description>Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak boleh dipakai.</description>
+    </item>
+    <item>
       <title>Mutex Scheduler Laravel yang Tertahan di Redis</title>
       <link>https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</guid>
@@ -97,11 +118,39 @@
       <description>Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.</description>
     </item>
     <item>
+      <title>Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa</title>
+      <link>https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/</guid>
+      <pubDate>Wed, 23 Sep 2026 00:00:00 +0000</pubDate>
+      <description>Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.</description>
+    </item>
+    <item>
       <title>Cakupan Dependabot: Image di docker-compose Sering Tidak Terpantau</title>
       <link>https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</guid>
       <pubDate>Fri, 04 Sep 2026 00:00:00 +0000</pubDate>
       <description>Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.</description>
+    </item>
+    <item>
+      <title>Koordinat DMS dan Desimal dalam Satu Kolom: Validasi Tidak Cukup dengan Bounding Box</title>
+      <link>https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 +0000</pubDate>
+      <description>Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.</description>
+    </item>
+    <item>
+      <title>Crosswalk Kode Kabupaten/Kota dari Sistem Legacy ke Kode Resmi</title>
+      <link>https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/</guid>
+      <pubDate>Thu, 23 Jul 2026 00:00:00 +0000</pubDate>
+      <description>Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.</description>
+    </item>
+    <item>
+      <title>Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan Otomatis</title>
+      <link>https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/</guid>
+      <pubDate>Wed, 22 Apr 2026 00:00:00 +0000</pubDate>
+      <description>Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.</description>
     </item>
     <item>
       <title>Welcome to My Blog</title>
