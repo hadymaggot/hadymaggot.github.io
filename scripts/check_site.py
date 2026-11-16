@@ -126,6 +126,42 @@ def check_post_safety():
             fail(f"{f.name}: {problem}")
 
 
+def check_cloudflare():
+    """Pengaman free tier Cloudflare: Worker hanya aset statis, aturan header di bawah batas, dan dist lengkap."""
+    cfg = (ROOT / "wrangler.jsonc").read_text(encoding="utf-8")
+    cfg = re.sub(r"^\s*//.*$", "", cfg, flags=re.M)
+    data = json.loads(cfg)
+    if "main" in data:
+        fail('wrangler.jsonc: "main" membuat Worker memproses request dan menghitung ke batas 100.000 per hari')
+    if "run_worker_first" in data.get("assets", {}):
+        fail("wrangler.jsonc: assets.run_worker_first membuat request menghitung ke batas harian paket Free")
+    if data.get("assets", {}).get("directory") != "./dist":
+        fail("wrangler.jsonc: assets.directory harus ./dist")
+
+    rules = [ln for ln in (ROOT / "cloudflare" / "_headers").read_text(encoding="utf-8").splitlines()
+             if ln and not ln.startswith(" ") and not ln.startswith("\t") and not ln.startswith("#")]
+    if len(rules) > 100:
+        fail(f"cloudflare/_headers: {len(rules)} aturan, batas 100")
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_dist
+
+    if build_dist.main() != 0:
+        fail("build_dist.py gagal atau melewati batas free tier")
+        return
+    dist = build_dist.DIST
+    pages = [dist / "index.html", dist / "blog.html", dist / "404.html"] + sorted((dist / "blog").glob("*/index.html"))
+    pattern = re.compile(r'(?:href|src)="([^"]+)"')
+    for page in pages:
+        for ref in pattern.findall(page.read_text(encoding="utf-8")):
+            target = local_target(ref)
+            if target is None:
+                continue
+            in_dist = dist / target.relative_to(ROOT)
+            if not in_dist.exists():
+                fail(f"dist: {page.relative_to(dist)} menautkan {ref} yang tidak ada di dist")
+
+
 def main():
     check_json()
     check_xml()
@@ -134,6 +170,7 @@ def main():
     check_security_txt()
     check_blog_build()
     check_post_safety()
+    check_cloudflare()
     if errors:
         print("Pengecekan gagal:")
         for e in errors:
