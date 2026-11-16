@@ -7,7 +7,8 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 ## About
 
 - Name: Sapto Hadi, online as Ahadizapto and hadymaggot
-- Focus: security testing of web applications, turning pentest findings into automated tests that run in CI, DevOps and SRE (containers, Kubernetes, infrastructure as code, monitoring), and web development (PHP/Laravel, Vue, Python)
+- Focus: security testing of web applications, turning pentest findings into automated tests that run in CI, DevOps and SRE (containers, Kubernetes, infrastructure as code, monitoring), GIS (spatial data processing and interactive web maps), and web development
+- Languages used in his repositories: PHP, JavaScript, TypeScript, Python, SQL, Bash, PowerShell, R, Kotlin, Dart; main frameworks are Laravel and Vue
 - Security testing is done only on systems he owns or has written permission to test
 - Site languages: mostly Indonesian, with some English
 
@@ -15,7 +16,8 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 
 - Security: penetration testing, SIEM, OWASP ZAP, Trivy, Semgrep, Gitleaks, Nmap
 - Ops: Linux, Docker, Kubernetes, Ansible, monitoring, SRE, Bash, Git, GitHub Actions
-- Dev: PHP, Laravel, VueJS, Python
+- GIS: GeoJSON, shapefile, PostGIS, MapLibre GL, Leaflet, OpenLayers, XYZ/WMS tiles
+- Dev: PHP, Laravel, JavaScript, TypeScript, VueJS, Python, SQL, Bash, PowerShell, R, Kotlin, Dart
 
 ## Projects
 
