@@ -114,7 +114,7 @@
             <div class="post-body">
                 <p>Mengimpor ekspor shapefile dari SMART Desktop memunculkan beberapa masalah yang tidak terlihat pada data uji kecil.</p><h3>DBF UTF-8 tanpa .cpg</h3><p>File DBF ditulis dalam UTF-8 tanpa file <code>.cpg</code>. GDAL, pyogrio, dan <code>foreign::read.dbf</code> mengasumsikan latin1, sehingga karakter seperti tanda pisah (en dash) berubah menjadi <code>â€“</code>. Tentukan encoding secara eksplisit, atau deteksi dengan memeriksa apakah isi file valid sebagai UTF-8.</p><h3>DBF lebih dari 2 GB</h3><p>Kolom teks sepanjang 254 byte dengan 129 kolom menghasilkan sekitar 25 KB per record. Pada 143.964 record, ukurannya 3,6 GB, padahal ZIP-nya hanya 33 MB. <code>foreign::read.dbf</code> gagal karena memakai <code>fseek</code> 32-bit. Solusinya membaca DBF secara streaming per blok record, bukan memuat semuanya.</p><h3>Identitas record</h3><p>Ekspor query observasi tertentu tidak memuat Patrol ID, sehingga tidak dapat direlasikan ke patroli. Gunakan query standar yang memuat relasi itu. Patrol ID juga dipakai ulang untuk patroli berbeda pada tanggal berbeda, sehingga identitas yang benar adalah kombinasi Patrol ID, tanggal mulai, dan unit pengelola. Mengelompokkan hanya berdasarkan Patrol ID menggabungkan patroli yang berbeda.</p>
             </div>
-            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), full-stack developer dan DevOps engineer dengan fokus pada security dan WebGIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+            <aside class="post-author">Ditulis oleh <a href="/">Saya</a></aside>
         </article>
         <section class="post-related">
             <h2>Artikel terkait</h2>
