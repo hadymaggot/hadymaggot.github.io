@@ -1,0 +1,14 @@
+{
+  "id": "container-zombie-process-init",
+  "title": "Zombie Process di Container: Mengapa PID 1 Perlu init",
+  "date": "2026-10-02",
+  "author": "Ahadizapto",
+  "tags": [
+    "Docker",
+    "Operations",
+    "Troubleshooting"
+  ],
+  "readTime": 3,
+  "excerpt": "Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.",
+  "content": "<p>Container dapat berjalan normal selama berminggu-minggu, lalu scheduler berhenti men-spawn proses tanpa error yang jelas. Pada kasus ini penyebabnya ada di PID 1 container, yaitu skrip shell yang menjalankan entrypoint.</p><p>Shell tidak memanen (reap) proses anak yang yatim. Setiap proses latar yang di-spawn scheduler lalu selesai menjadi zombie permanen dan tetap memakai satu entry di process table. Pada salah satu service, lebih dari 99% proses PHP berstatus <code>&lt;defunct&gt;</code>, dan jumlah proses mendekati batas <code>threads-max</code> host.</p><h3>Gejala yang menyesatkan</h3><p>Setelah limit tercapai, <code>posix_spawn()</code> menolak dengan <code>Resource temporarily unavailable</code>. Scheduler menampilkan mutex yang masih terpegang, sehingga terlihat seperti masalah mutex. Consumer message queue hilang tanpa alarm, memori terdorong ke swap, dan API menjawab lebih dari 30 detik sampai reverse proxy memutus koneksi dengan 500.</p><h3>Diagnosis</h3><p>Hitung proses zombie di dalam container. Jumlah yang terus naik menunjukkan ada proses yang tidak dipanen.</p><pre><code>docker exec &lt;container&gt; sh -c 'ps -eo stat | grep -c \"^Z\"'\ndocker exec &lt;container&gt; ps -p 1 -o args</code></pre><h3>Perbaikan</h3><p>Aktifkan init pada Compose agar PID 1 adalah init kecil (tini) yang memanen anak yatim.</p><pre><code>services:\n  app:\n    init: true</code></pre><p>Opsi yang sama tersedia sebagai <code>docker run --init</code>. Untuk image sendiri, <code>tini</code> sebagai ENTRYPOINT memberi hasil yang sama. Setelah container dibuat ulang, jumlah zombie tetap nol.</p>"
+}

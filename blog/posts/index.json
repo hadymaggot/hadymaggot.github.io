@@ -13,6 +13,50 @@
       "featured": false
     },
     {
+      "file": "2026-11-13-traefik-label-perlu-recreate.json",
+      "featured": false
+    },
+    {
+      "file": "2026-11-06-backup-dan-idempotent-bulk-update.json",
+      "featured": false
+    },
+    {
+      "file": "2026-10-30-redis-aof-korup-setelah-reboot.json",
+      "featured": false
+    },
+    {
+      "file": "2026-10-30-type-check-hijau-bukan-bukti-runtime.json",
+      "featured": false
+    },
+    {
+      "file": "2026-10-23-gitleaks-celah-rename-detection.json",
+      "featured": false
+    },
+    {
+      "file": "2026-10-17-daftar-tugas-adalah-petunjuk.json",
+      "featured": false
+    },
+    {
+      "file": "2026-10-14-legacy-handler-js-bukan-aturan-hidup.json",
+      "featured": false
+    },
+    {
+      "file": "2026-10-02-container-zombie-process-init.json",
+      "featured": false
+    },
+    {
+      "file": "2026-09-26-mutex-scheduler-tertahan-redis.json",
+      "featured": false
+    },
+    {
+      "file": "2026-09-24-docker-windows-crlf-dan-devnull.json",
+      "featured": false
+    },
+    {
+      "file": "2026-09-04-cakupan-dependabot-image-compose.json",
+      "featured": false
+    },
+    {
       "file": "2025-01-15-welcome-to-my-blog.json",
       "featured": false
     },
