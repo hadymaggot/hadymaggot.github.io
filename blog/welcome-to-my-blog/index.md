@@ -5,7 +5,7 @@
 - Penulis: Sapto Hadi (Ahadizapto)
 - Tag: DevOps, Web Development, Security
 
-> Catatan teknis seputar web development, DevOps, cybersecurity, dan GIS, ditulis dari pengalaman membangun dan mengamankan sistem.
+> Catatan teknis seputar security, operations, dan software engineering, ditulis dari pengalaman membangun dan mengamankan sistem.
 
 Welcome to my technical blog! This is a space where I'll be sharing my experiences, insights, and learnings from the world of web development, DevOps, and security operations.
 

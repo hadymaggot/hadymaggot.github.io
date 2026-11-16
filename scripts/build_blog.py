@@ -407,7 +407,7 @@ def render_feed(posts):
         "    <title>Blog Ahadizapto</title>\n"
         f"    <link>{BASE_URL}/blog.html</link>\n"
         f'    <atom:link href="{BASE_URL}/feed.xml" rel="self" type="application/rss+xml"/>\n'
-        "    <description>Catatan teknis seputar development, DevOps, security, dan GIS.</description>\n"
+        "    <description>Catatan teknis seputar security, operations, dan software engineering.</description>\n"
         "    <language>id</language>\n"
         f"    <lastBuildDate>{format_datetime(newest)}</lastBuildDate>\n"
         + "\n".join(items) + "\n"
@@ -439,7 +439,7 @@ def render_sitemap(posts):
 
 def render_llms_full(posts):
     parts = [f"# Blog {SITE_NAME}: seluruh artikel\n\n"
-             f"Sumber: {BASE_URL}/blog.html. Penulis: {AUTHOR_NAME} (Ahadizapto), full-stack developer dan DevOps engineer. "
+             f"Sumber: {BASE_URL}/blog.html. Penulis: {AUTHOR_NAME} (Ahadizapto), software engineer di bidang security dan operations. "
              "Setiap artikel juga tersedia sebagai Markdown pada alamat artikelnya ditambah index.md.\n"]
     for p in posts:
         parts.append("\n---\n\n" + render_markdown(p))
@@ -468,7 +468,7 @@ def post_card(p, linkable, first=False):
 
 def blog_jsonld(posts):
     blog = {"@context": "https://schema.org", "@type": "Blog", "@id": BLOG_ID, "name": "Blog Ahadizapto",
-            "description": "Catatan teknis seputar development, DevOps, security, dan GIS.",
+            "description": "Catatan teknis seputar security, operations, dan software engineering.",
             "url": f"{BASE_URL}/blog.html", "inLanguage": "id", "author": person_ref(), "publisher": person_ref(),
             "blogPost": [{"@type": "BlogPosting", "headline": p["title"], "url": post_url(p), "datePublished": p["date"],
                           "description": meta_description(p["excerpt"]), "image": og_url(p)} for p in posts]}
@@ -585,7 +585,7 @@ def ensure_og_images(posts):
         print("Pillow tidak terpasang; gambar pratinjau tidak dibuat.")
         return
     if not (ROOT / OG_DEFAULT).exists():
-        make_card(ROOT / OG_DEFAULT, "Developer, DevOps, Security, GIS", "Sapto Hadi (Ahadizapto)")
+        make_card(ROOT / OG_DEFAULT, "Security, Operations, dan Software Engineer", "Sapto Hadi (Ahadizapto)")
     for p in posts:
         if not (ROOT / og_path(p)).exists():
             make_card(ROOT / og_path(p), p["title"], " · ".join(p["tags"]))
