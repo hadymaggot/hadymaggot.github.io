@@ -99,15 +99,14 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         switch(target) {
             case 'about':
                 command = 'cat about.txt';
-                output = `<p>Saya Sapto Hadi (Ahadizapto). Kerjaan saya di seputar security dan ops: bikin sistem yang aman,
-                            gampang dioperasikan, dan bisa dipertanggungjawabkan.</p>
-                        <p><strong>Security</strong> &mdash; saya nguji aplikasi web: access control, data yang bocor di sisi klien,
-                            header dan TLS, sampai dependensi yang punya CVE. Temuannya saya ubah jadi test otomatis yang jalan terus
-                            di CI, biar celah yang sama nggak balik lagi.</p>
-                        <p><strong>Ops</strong> &mdash; container dan Kubernetes, infrastructure as code, CI/CD, plus monitoring
-                            dan observability ala SRE.</p>
-                        <p><strong>Dev</strong> &mdash; aplikasinya saya bikin pakai PHP/Laravel dan Vue, dan Python buat otomasi.</p>
-                        <p>Semua pengujian cuma di sistem sendiri atau yang ada izin tertulisnya.</p>`;
+                output = `<p>Saya Sapto Hadi (Ahadizapto), engineer di bidang security dan operations. Fokus saya pada pengujian
+                            keamanan aplikasi web, pengelolaan infrastruktur berbasis container, dan otomasi pipeline CI/CD.</p>
+                        <p>Pengujian keamanan mencakup access control, kebocoran data di sisi client, header dan TLS, serta dependency
+                            yang memiliki CVE. Setiap temuan dijadikan test otomatis, sehingga celah yang sama terdeteksi jika muncul
+                            kembali.</p>
+                        <p>Di sisi operations, pekerjaan saya meliputi container dan Kubernetes, infrastructure as code, serta monitoring
+                            dan observability. Aplikasi dikembangkan dengan PHP/Laravel dan Vue, dengan Python untuk otomasi.</p>
+                        <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
             case 'skills':
                 command = 'ls -la skills/';
