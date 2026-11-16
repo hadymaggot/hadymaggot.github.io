@@ -1,8 +1,20 @@
 {
   "posts": [
     {
-      "file": "2025-01-15-welcome-to-my-blog.json",
+      "file": "2026-11-16-pentest-ke-test-otomatis.json",
       "featured": true
+    },
+    {
+      "file": "2026-11-16-security-headers-github-pages.json",
+      "featured": false
+    },
+    {
+      "file": "2026-11-16-checklist-ops-sebelum-deploy.json",
+      "featured": false
+    },
+    {
+      "file": "2025-01-15-welcome-to-my-blog.json",
+      "featured": false
     },
     {
       "file": "2025-01-10-kubernetes-best-practices.json",

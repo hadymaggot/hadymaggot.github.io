@@ -1,0 +1,14 @@
+{
+  "id": "checklist-ops-sebelum-deploy",
+  "title": "Checklist Ops Sebelum Deploy ke Produksi",
+  "date": "2026-11-16",
+  "author": "Ahadizapto",
+  "tags": [
+    "DevOps",
+    "SRE",
+    "Operations"
+  ],
+  "readTime": 4,
+  "excerpt": "Daftar singkat yang saya cek sebelum rilis: dry-run, rollback, backup yang teruji, secret, dan observability.",
+  "content": "<p>Rilis yang tenang hampir selalu hasil persiapan, bukan keberuntungan. Ini daftar periksa yang saya pakai.</p><h3>Sebelum rilis</h3><ul><li><strong>Dry-run perubahan:</strong> <code>terraform plan</code>, <code>ansible-playbook --check</code>, <code>kubectl apply --dry-run=server</code>. Baca hasilnya, jangan hanya melihat statusnya hijau.</li><li><strong>Rencana rollback tertulis</strong> dan sudah pernah dicoba, termasuk migrasi database yang bisa dibalik.</li><li><strong>Backup teruji restore,</strong> bukan sekadar ada berkasnya.</li><li><strong>Secret tidak ada di repo.</strong> Pindai dengan gitleaks, dan pindai image serta dependensi dengan Trivy.</li><li><strong>Healthcheck dan readiness</strong> benar-benar mencerminkan kesiapan layanan.</li></ul><h3>Saat rilis</h3><ul><li>Rilis bertahap bila memungkinkan, dan pantau error rate serta latensi selama beberapa menit pertama.</li><li>Satu orang memegang keputusan rollback, dengan ambang batas yang disepakati sebelumnya.</li></ul><h3>Sesudahnya</h3><ul><li>Alert punya pemilik dan runbook, bukan hanya notifikasi.</li><li>Catat apa yang berjalan lancar dan apa yang tidak, lalu perbarui checklist ini.</li></ul>"
+}
