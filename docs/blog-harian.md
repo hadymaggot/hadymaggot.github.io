@@ -62,7 +62,8 @@ python scripts/daily_post_run.py --fake-response a.json --fake-review r.json --b
 Secara bawaan runner hanya membuat draft lokal. Mode otomatis penuh menerbitkan artikel tanpa tinjauan manusia, dan hanya menyala bila pemilik blog menjalankannya sendiri:
 
 ```
-python "%USERPROFILE%\.claudelog-dailyepo\scripts\daily_post_run.py" --enable-auto
+python "%USERPROFILE%\.claude\blog-daily\repo\scripts\daily_post_run.py" --enable-auto
+epo\scripts\daily_post_run.py" --enable-auto
 ```
 
 Perintah itu melakukan dua hal. Pertama, menulis `~/.claude/blog-auto.json` sebagai saklar. Kedua, memasang aturan pada branch `main` yang mewajibkan check `Workers Builds: ahadizapto-site` lulus sebelum merge (admin tetap dapat melewatinya). Setelah itu, setiap artikel yang lulus semua pemeriksaan otomatis di-push, dibuka sebagai PR biasa (bukan draft), dan dipasangi auto-merge. GitHub baru men-merge setelah check Workers Builds lulus, lalu branch dihapus otomatis oleh pengaturan repo.
