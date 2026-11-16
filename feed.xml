@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Blog Ahadizapto</title>
+    <link>https://hadymaggot.github.io/blog.html</link>
+    <description>Catatan teknis seputar cybersecurity, operations, dan web development.</description>
+    <language>id</language>
+    <item>
+      <title>Dari Temuan Pentest ke Test Otomatis di CI</title>
+      <link>https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Laporan pentest yang berhenti di PDF gampang terlupakan. Ubah tiap temuan menjadi test yang gagal selama celahnya ada, lalu jalankan terus di CI.</description>
+    </item>
+    <item>
+      <title>Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</title>
+      <link>https://hadymaggot.github.io/blog/security-headers-github-pages/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/security-headers-github-pages/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>GitHub Pages tidak mengizinkan header HTTP kustom. Ini yang tetap bisa dilakukan, dan kapan perlu menaruh proxy di depannya.</description>
+    </item>
+    <item>
+      <title>Checklist Ops Sebelum Deploy ke Produksi</title>
+      <link>https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Daftar singkat yang saya cek sebelum rilis: dry-run, rollback, backup yang teruji, secret, dan observability.</description>
+    </item>
+    <item>
+      <title>Welcome to My Blog</title>
+      <link>https://hadymaggot.github.io/blog/welcome-to-my-blog/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/welcome-to-my-blog/</guid>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
+      <description>Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.</description>
+    </item>
+    <item>
+      <title>Kubernetes Best Practices for Production</title>
+      <link>https://hadymaggot.github.io/blog/kubernetes-best-practices/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/kubernetes-best-practices/</guid>
+      <pubDate>Fri, 10 Jan 2025 00:00:00 +0000</pubDate>
+      <description>A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.</description>
+    </item>
+  </channel>
+</rss>

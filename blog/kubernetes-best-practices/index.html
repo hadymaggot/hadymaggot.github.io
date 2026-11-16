@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes Best Practices for Production | Ahadizapto</title>
+    <link rel="icon" href="/assets/images/ico2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/kubernetes-best-practices/">
+    <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
+    <meta name="theme-color" content="#7AC55A">
+    <meta name="description" content="A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.">
+    <meta name="author" content="Ahadizapto">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Kubernetes Best Practices for Production">
+    <meta property="og:description" content="A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.">
+    <meta property="og:url" content="https://hadymaggot.github.io/blog/kubernetes-best-practices/">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
+    <meta name="twitter:card" content="summary">
+    <style>
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a { color: var(--primary-color); }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
+        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
+        .post-body { line-height: 1.8; }
+        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
+        .post-body code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Kubernetes Best Practices for Production", "datePublished": "2025-01-10", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/kubernetes-best-practices/", "keywords": "Kubernetes, DevOps, Cloud"}
+    </script>
+</head>
+
+<body>
+    <main class="post-page">
+        <nav class="post-nav" aria-label="Navigasi">
+            <a href="/">~/ahadizapto</a>
+            <a href="/blog.html">/blog</a>
+            <a href="/feed.xml">rss</a>
+        </nav>
+        <article>
+            <h1>Kubernetes Best Practices for Production</h1>
+            <div class="post-meta">
+                <span><i class="far fa-calendar" aria-hidden="true"></i> 2025-01-10</span>
+                <span><i class="far fa-clock" aria-hidden="true"></i> 8 menit baca</span>
+                <span class="post-tags"><span>Kubernetes</span><span>DevOps</span><span>Cloud</span></span>
+            </div>
+            <div class="post-body">
+                <p>Kubernetes has become the de facto standard for container orchestration, but running it in production requires careful planning and adherence to best practices.</p><h3>Key Considerations</h3><ul><li><strong>Resource Limits:</strong> Always set resource requests and limits for containers to prevent resource starvation</li><li><strong>Health Checks:</strong> Implement readiness and liveness probes for all services</li><li><strong>Security Policies:</strong> Use Pod Security Policies and Network Policies to enforce security boundaries</li><li><strong>Monitoring:</strong> Deploy comprehensive monitoring and logging solutions</li></ul><h3>Example Configuration</h3><pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+spec:
+  containers:
+  - name: app
+    image: my-app:latest
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"</code></pre><p>Following these practices will help ensure your Kubernetes deployments are reliable, secure, and performant.</p>
+            </div>
+        </article>
+    </main>
+</body>
+
+</html>

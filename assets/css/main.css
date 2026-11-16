@@ -445,7 +445,8 @@ body {
     z-index: 100;
 }
 
-.floating-menu:hover .menu-items {
+.floating-menu:hover .menu-items,
+.floating-menu:focus-within .menu-items {
     transform: scale(1);
 }
 
@@ -787,4 +788,36 @@ body {
     font-family: 'JetBrains Mono', monospace;
     font-size: 1.2rem;
     font-weight: 600;
+}
+
+.skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 1000;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+    border-radius: 4px;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 1rem;
+}
+
+:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
