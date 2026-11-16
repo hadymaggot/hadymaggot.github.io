@@ -65,3 +65,9 @@ Perbaikan yang bisa dilakukan
 - Tambahkan dukungan WKB/HEX.
 - Tambah flag untuk menentukan nama dan tipe kolom secara eksplisit.
 - Menambahkan test suite dan CI.
+
+## Sumber data
+
+Data batas wilayah tidak lagi disimpan di repo ini. Ambil dari repo asalnya,
+[cahyadsn/wilayah_boundaries](https://github.com/cahyadsn/wilayah_boundaries) (MIT),
+lalu arahkan `--in-dir` ke folder `db` hasil clone tersebut.
