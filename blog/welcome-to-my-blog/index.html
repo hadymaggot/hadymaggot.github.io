@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to My Blog | Ahadizapto</title>
+    <meta name="description" content="Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/welcome-to-my-blog/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/welcome-to-my-blog/index.md">
     <link rel="icon" href="/assets/images/ico2.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -14,36 +17,57 @@
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://hadymaggot.github.io/blog/welcome-to-my-blog/">
     <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
     <meta name="theme-color" content="#7AC55A">
-    <meta name="description" content="Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.">
-    <meta name="author" content="Ahadizapto">
-    <meta name="robots" content="index, follow">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="DevOps, Web Development, Security">
     <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Welcome to My Blog">
     <meta property="og:description" content="Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.">
     <meta property="og:url" content="https://hadymaggot.github.io/blog/welcome-to-my-blog/">
-    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/welcome-to-my-blog.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Welcome to My Blog">
+    <meta property="article:published_time" content="2025-01-15">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="DevOps">
+    <meta property="article:tag" content="Web Development">
+    <meta property="article:tag" content="Security">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Welcome to My Blog">
+    <meta name="twitter:description" content="Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/welcome-to-my-blog.png">
     <style>
-        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
         .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
-        .post-nav a, .post-body a { color: var(--primary-color); }
-        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
-        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
-        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
         .post-body { line-height: 1.8; }
         .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
         .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
     </style>
-    <script type="application/ld+json">
-    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Welcome to My Blog", "datePublished": "2025-01-15", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/welcome-to-my-blog/", "keywords": "DevOps, Web Development, Security"}
-    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/welcome-to-my-blog/#article", "headline": "Welcome to My Blog", "description": "Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.", "image": ["https://hadymaggot.github.io/assets/images/og/welcome-to-my-blog.png"], "datePublished": "2025-01-15", "dateModified": "2025-01-15", "inLanguage": "id", "wordCount": 82, "keywords": "DevOps, Web Development, Security", "articleSection": "DevOps", "url": "https://hadymaggot.github.io/blog/welcome-to-my-blog/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/welcome-to-my-blog/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Welcome to My Blog", "item": "https://hadymaggot.github.io/blog/welcome-to-my-blog/"}]}</script>
 </head>
 
 <body>
@@ -53,17 +77,24 @@
             <a href="/blog.html">/blog</a>
             <a href="/feed.xml">rss</a>
         </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Welcome to My Blog</nav>
         <article>
             <h1>Welcome to My Blog</h1>
             <div class="post-meta">
-                <span><i class="far fa-calendar" aria-hidden="true"></i> 2025-01-15</span>
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2025-01-15">15 Januari 2025</time></span>
                 <span><i class="far fa-clock" aria-hidden="true"></i> 5 menit baca</span>
-                <span class="post-tags"><span>DevOps</span><span>Web Development</span><span>Security</span></span>
             </div>
+            <div class="post-tags"><a href="/blog/tag/devops/">DevOps</a><span>Web Development</span><a href="/blog/tag/security/">Security</a></div>
             <div class="post-body">
                 <p>Welcome to my technical blog! This is a space where I'll be sharing my experiences, insights, and learnings from the world of web development, DevOps, and security operations.</p><p>Over the coming weeks and months, I plan to write about:</p><ul><li><strong>DevOps Best Practices:</strong> CI/CD pipelines, infrastructure as code, and automation strategies</li><li><strong>Web Development:</strong> Modern frameworks, performance optimization, and design patterns</li><li><strong>Security Operations:</strong> Threat detection, incident response, and security hardening</li><li><strong>Cloud Architecture:</strong> Scalable system design and cloud-native technologies</li></ul><p>Tulisan baru akan ditambahkan secara berkala.</p>
             </div>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/security-headers-github-pages/">Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</a><span>GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy…</span></li><li><a href="/blog/pentest-ke-test-otomatis/">Dari Temuan Pentest ke Test Otomatis di CI</a><span>Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama…</span></li><li><a href="/blog/checklist-ops-sebelum-deploy/">Checklist Ops Sebelum Deploy ke Produksi</a><span>Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/kubernetes-best-practices/" rel="prev">&larr; Kubernetes Best Practices for Production</a><a href="/blog/sql-ke-geojson-geometri-kosong/" rel="next">Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan &rarr;</a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

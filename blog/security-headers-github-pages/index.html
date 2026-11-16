@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Security Headers di GitHub Pages: Apa yang Bisa dan Tidak | Ahadizapto</title>
+    <meta name="description" content="GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/security-headers-github-pages/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/security-headers-github-pages/index.md">
     <link rel="icon" href="/assets/images/ico2.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -14,36 +17,57 @@
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://hadymaggot.github.io/blog/security-headers-github-pages/">
     <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
     <meta name="theme-color" content="#7AC55A">
-    <meta name="description" content="GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.">
-    <meta name="author" content="Ahadizapto">
-    <meta name="robots" content="index, follow">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="Security, Web, Cloudflare">
     <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Security Headers di GitHub Pages: Apa yang Bisa dan Tidak">
     <meta property="og:description" content="GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.">
     <meta property="og:url" content="https://hadymaggot.github.io/blog/security-headers-github-pages/">
-    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/security-headers-github-pages.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Security Headers di GitHub Pages: Apa yang Bisa dan Tidak">
+    <meta property="article:published_time" content="2026-11-16">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="Security">
+    <meta property="article:tag" content="Web">
+    <meta property="article:tag" content="Cloudflare">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Security Headers di GitHub Pages: Apa yang Bisa dan Tidak">
+    <meta name="twitter:description" content="GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/security-headers-github-pages.png">
     <style>
-        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
         .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
-        .post-nav a, .post-body a { color: var(--primary-color); }
-        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
-        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
-        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
         .post-body { line-height: 1.8; }
         .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
         .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
     </style>
-    <script type="application/ld+json">
-    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Security Headers di GitHub Pages: Apa yang Bisa dan Tidak", "datePublished": "2026-11-16", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/security-headers-github-pages/", "keywords": "Security, Web, Cloudflare"}
-    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/security-headers-github-pages/#article", "headline": "Security Headers di GitHub Pages: Apa yang Bisa dan Tidak", "description": "GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.", "image": ["https://hadymaggot.github.io/assets/images/og/security-headers-github-pages.png"], "datePublished": "2026-11-16", "dateModified": "2026-11-16", "inLanguage": "id", "wordCount": 145, "keywords": "Security, Web, Cloudflare", "articleSection": "Security", "url": "https://hadymaggot.github.io/blog/security-headers-github-pages/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/security-headers-github-pages/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Security Headers di GitHub Pages: Apa yang Bisa dan Tidak", "item": "https://hadymaggot.github.io/blog/security-headers-github-pages/"}]}</script>
 </head>
 
 <body>
@@ -53,17 +77,24 @@
             <a href="/blog.html">/blog</a>
             <a href="/feed.xml">rss</a>
         </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</nav>
         <article>
             <h1>Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</h1>
             <div class="post-meta">
-                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-11-16</span>
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
                 <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
-                <span class="post-tags"><span>Security</span><span>Web</span><span>Cloudflare</span></span>
             </div>
+            <div class="post-tags"><a href="/blog/tag/security/">Security</a><a href="/blog/tag/web/">Web</a><span>Cloudflare</span></div>
             <div class="post-body">
                 <p>GitHub Pages praktis untuk situs statis, tetapi header respons tidak dapat diatur sendiri. Hal ini membatasi kontrol keamanan yang dapat dipasang.</p><h3>Yang tetap dapat dilakukan</h3><p>HTTPS dapat dipaksa lewat pengaturan Pages. CSP dapat dipasang lewat tag <code>&lt;meta http-equiv="Content-Security-Policy"&gt;</code>, dengan batasan: <code>frame-ancestors</code>, <code>report-uri</code>, dan <code>sandbox</code> tidak didukung. Hindari inline script dan style agar CSP yang ketat dapat dipasang kemudian, dan beri atribut <code>integrity</code> (SRI) pada script dan stylesheet dari CDN.</p><p>Pasang <code>/.well-known/security.txt</code> berisi kontak pelaporan dan tanggal <code>Expires</code> sesuai RFC 9116. <code>robots.txt</code> dan <code>sitemap.xml</code> harus berada di root, bukan di subfolder.</p><h3>Jika membutuhkan header sungguhan</h3><p>Gunakan custom domain dan tempatkan proxy seperti Cloudflare di depannya. Header seperti HSTS, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, dan CSP lengkap ditambahkan lewat aturan transformasi respons.</p><h3>Verifikasi</h3><p>Periksa respons yang sebenarnya, bukan konfigurasinya. Audit header dan TLS dari luar secara berkala, dan catat hasilnya agar regresi terlihat.</p>
             </div>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/pentest-ke-test-otomatis/">Dari Temuan Pentest ke Test Otomatis di CI</a><span>Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama…</span></li><li><a href="/blog/gitleaks-celah-rename-detection/">Gitleaks Melewatkan Secret pada Commit Rename</a><span>Peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak…</span></li><li><a href="/blog/basemap-tile-carto-dan-google-vt/">Basemap Tile: Watermark CARTO dan Larangan Google vt</a><span>Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak…</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/pentest-ke-test-otomatis/" rel="prev">&larr; Dari Temuan Pentest ke Test Otomatis di CI</a><span></span></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

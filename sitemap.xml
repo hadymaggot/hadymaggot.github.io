@@ -3,151 +3,229 @@
    <url>
       <loc>https://hadymaggot.github.io/</loc>
       <lastmod>2026-11-16</lastmod>
-      <changefreq>monthly</changefreq>
+      <changefreq>weekly</changefreq>
       <priority>1.0</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog.html</loc>
       <lastmod>2026-11-16</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</loc>
-      <lastmod>2026-11-16</lastmod>
-      <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <changefreq>weekly</changefreq>
+      <priority>0.9</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/security-headers-github-pages/</loc>
       <lastmod>2026-11-16</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/</loc>
       <lastmod>2026-11-16</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/</loc>
       <lastmod>2026-11-13</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/</loc>
       <lastmod>2026-11-12</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/</loc>
       <lastmod>2026-11-08</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</loc>
       <lastmod>2026-11-06</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
-   </url>
-   <url>
-      <loc>https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</loc>
-      <lastmod>2026-10-30</lastmod>
-      <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/</loc>
       <lastmod>2026-10-30</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</loc>
+      <lastmod>2026-10-30</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/gitleaks-celah-rename-detection/</loc>
       <lastmod>2026-10-23</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/daftar-tugas-adalah-petunjuk/</loc>
       <lastmod>2026-10-17</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/legacy-handler-js-bukan-aturan-hidup/</loc>
       <lastmod>2026-10-14</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/container-zombie-process-init/</loc>
       <lastmod>2026-10-02</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/basemap-tile-carto-dan-google-vt/</loc>
       <lastmod>2026-09-29</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</loc>
       <lastmod>2026-09-26</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/</loc>
       <lastmod>2026-09-24</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/</loc>
       <lastmod>2026-09-23</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</loc>
       <lastmod>2026-09-04</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/</loc>
       <lastmod>2026-08-28</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/</loc>
       <lastmod>2026-07-23</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/</loc>
       <lastmod>2026-04-22</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/welcome-to-my-blog/</loc>
       <lastmod>2025-01-15</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/kubernetes-best-practices/</loc>
       <lastmod>2025-01-10</lastmod>
       <changefreq>yearly</changefreq>
-      <priority>0.6</priority>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/ci-cd/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/data/</loc>
+      <lastmod>2026-11-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/devops/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/docker/</loc>
+      <lastmod>2026-11-13</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/engineering/</loc>
+      <lastmod>2026-10-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/gis/</loc>
+      <lastmod>2026-11-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/migrasi/</loc>
+      <lastmod>2026-10-14</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/operations/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/python/</loc>
+      <lastmod>2026-11-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/redis/</loc>
+      <lastmod>2026-10-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/security/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/troubleshooting/</loc>
+      <lastmod>2026-11-13</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/tag/web/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
    </url>
 </urlset>
