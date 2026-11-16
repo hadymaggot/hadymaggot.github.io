@@ -32,7 +32,8 @@ import check_post_safety as safety  # noqa: E402
 AUTHOR = "Ahadizapto"
 LOG = Path.home() / ".claude" / "blog-daily.log"
 DRAFTS = Path.home() / ".claude" / "blog-drafts"
-MAX_PICKS = 5
+# Pemakaian model per hari dibatasi (satu penulisan dan satu tinjauan per bahan) agar kuota langganan tidak terkuras.
+MAX_PICKS = 3
 MIN_DENYLIST_TERMS = 10
 BRANCH_PREFIX = "blog/harian-"
 DENY_TOOLS = ["Bash", "Edit", "Write", "Read", "Glob", "Grep", "NotebookEdit", "WebFetch", "WebSearch", "Agent"]
