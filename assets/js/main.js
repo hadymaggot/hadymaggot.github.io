@@ -97,27 +97,75 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         switch(target) {
             case 'about':
                 command = 'cat about.txt';
-                output = `<p>Welcome to my digital workspace! I'm a passionate technologist specializing in web
-                            development, DevOps automation, and security operations.</p>
-                        <p>With a strong foundation in infrastructure as code and CI/CD pipelines, I help organizations
-                            build secure, scalable, and resilient systems.</p>`;
+                output = `<p>Halo, saya Sapto Hadi (Ahadizapto). Saya bekerja di irisan cybersecurity dan operations:
+                            membangun sistem yang aman, mudah dioperasikan, dan bisa diaudit.</p>
+                        <p><strong>Security</strong> &mdash; menguji aplikasi web secara terukur (access control, kebocoran data
+                            di sisi klien, header dan TLS, dependensi rentan), lalu mengubah temuan pentest menjadi test otomatis
+                            yang berjalan terus di CI.</p>
+                        <p><strong>Ops</strong> &mdash; container dan Kubernetes, infrastructure as code, CI/CD, serta monitoring
+                            dan observability dengan prinsip SRE.</p>
+                        <p><strong>Dev</strong> &mdash; aplikasi web dengan PHP/Laravel dan Vue, serta Python untuk otomasi.</p>
+                        <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
             case 'skills':
                 command = 'ls -la skills/';
-                const skills = [
-                    "PHP", "VueJS", "Python", 
-                    "Kubernetes", "Docker", "Linux", 
-                    "Git", "Ansible", "Monitoring", 
-                    "Penetration Testing", "SIEM", "SRE"
-                ];
-                output = `total ${skills.length}\n` + 
-                    `<div class="skill-list">` +
-                    skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('') +
-                    `</div>`;
+                const skillGroups = {
+                    'security/': ["Penetration Testing", "SIEM", "OWASP ZAP", "Trivy", "Semgrep", "Gitleaks", "Nmap"],
+                    'ops/': ["Linux", "Docker", "Kubernetes", "Ansible", "Monitoring", "SRE", "Bash", "Git", "GitHub Actions"],
+                    'dev/': ["PHP", "Laravel", "VueJS", "Python"]
+                };
+                output = `total ${Object.keys(skillGroups).length}` +
+                    Object.entries(skillGroups).map(([group, list]) =>
+                        `<div>drwxr-xr-x ${group}</div><div class="skill-list">` +
+                        list.map(skill => `<span class="skill-tag">${skill}</span>`).join('') +
+                        `</div>`
+                    ).join('');
                 break;
             case 'projects':
                 command = 'ls -la projects/';
-                output = 'Coming soon...';
+                const projects = [
+                    { name: 'security-audit-kit', url: 'https://github.com/hadymaggot/security-audit-kit', tag: 'security',
+                      desc: 'Toolkit security testing berbasis config: access control, kebocoran di klien, TLS dan header, CVE dependensi, dengan laporan HTML/MD.' },
+                    { name: 'sql_geojson', url: 'https://github.com/hadymaggot/hadymaggot.github.io/tree/main/tools/sql_geojson', tag: 'tools',
+                      desc: 'Konverter SQL ke GeoJSON dan sebaliknya, lengkap dengan test dan CI.' },
+                    { name: 'private-tunneling', url: 'https://github.com/hadymaggot/private-tunneling', tag: 'ops',
+                      desc: 'Skrip SSH tunneling privat.' },
+                    { name: 'mailserver', url: 'https://github.com/hadymaggot/mailserver', tag: 'ops',
+                      desc: 'Setup mail server dengan docker-mailserver.' },
+                    { name: '9hs-ubuntu-fancyprompt', url: 'https://github.com/hadymaggot/9hs-ubuntu-fancyprompt', tag: 'ops',
+                      desc: 'Prompt shell Ubuntu yang informatif.' }
+                ];
+                const wrtProjects = [
+                    { name: 'sistem-tata-kelola-regulasi', stack: 'TypeScript', desc: 'Sistem informasi tata kelola regulasi.' },
+                    { name: 'aplikasi-emisi-ketenagalistrikan', stack: 'PHP', desc: 'Penghitungan dan pelaporan emisi ketenagalistrikan.' },
+                    { name: 'sistem-ikpa', stack: 'PHP (CodeIgniter 4), JavaScript', desc: 'Indikator kinerja pelaksanaan anggaran (IKPA): aplikasi dan API integrasi.' },
+                    { name: 'dashboard-smart-mett', stack: 'Python', desc: 'Dashboard SMART dan METT untuk aplikasi pemantauan.' },
+                    { name: 'importir-wrt', stack: 'Python', desc: 'Engine katalog dataset dinamis, beserta penerbit dan pemvalidasi lisensinya.' },
+                    { name: 'titip-absen', stack: 'TypeScript', desc: 'Absensi personil proyek.' },
+                    { name: 'wrt-compro', stack: 'JavaScript', desc: 'Company profile Wahana Reka Tekindo.' },
+                    { name: 'wrt-web-api', stack: 'PHP', desc: 'Situs dan API Wahana Reka Tekindo, termasuk situs demo.' },
+                    { name: 'wrt-filamentz', stack: 'Filament', desc: 'Aplikasi web berbasis Filament.' },
+                    { name: 'wrt-template', stack: 'Blade', desc: 'Template dasar aplikasi web.' },
+                    { name: 'platform-bumdes-frontend', stack: 'Frontend', desc: 'Antarmuka platform BUMDes.' },
+                    { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' }
+                ];
+                const otherProjects = [
+                    { name: 'sirus-2022', stack: 'PHP', desc: 'Sistem Informasi Rumah Swadaya (SIRUS).' },
+                    { name: 'bsps-api', stack: 'Laravel', desc: 'API Laravel untuk bantuan stimulan perumahan swadaya (BSPS), dengan koleksi Postman.' },
+                    { name: 'sisatker', stack: 'CodeIgniter', desc: 'Aplikasi web CodeIgniter dengan template Stisla.' },
+                    { name: 'stantek', stack: 'CodeIgniter', desc: 'Aplikasi web CodeIgniter dengan template Stisla.' }
+                ];
+                output = `total ${projects.length + wrtProjects.length + otherProjects.length}<ul class="project-list">` +
+                    projects.map(p => `<li><a class="term-link" href="${p.url}" target="_blank" rel="noopener noreferrer">${p.name}</a>
+                        <span class="project-tag project-tag-${p.tag}">${p.tag}</span><br>${p.desc}</li>`).join('') +
+                    `</ul><div>drwxr-xr-x wahana-reka-tekindo/ (repo privat, tanpa tautan)</div><ul class="project-list">` +
+                    wrtProjects.map(p => `<li>${p.name}
+                        <span class="project-tag project-tag-private">${p.stack}</span><br>${p.desc}</li>`).join('') +
+                    `</ul><div>drwxr-xr-x lainnya/ (repo privat, tanpa tautan)</div><ul class="project-list">` +
+                    otherProjects.map(p => `<li>${p.name}
+                        <span class="project-tag project-tag-private">${p.stack}</span><br>${p.desc}</li>`).join('') +
+                    `</ul><p>Perusahaan:<a class="term-link" href="https://wahanarekatekindo.co.id" target="_blank" rel="noopener noreferrer">wahanarekatekindo.co.id</a></p>` +
+                    `<p>Selengkapnya: <a class="term-link" href="https://github.com/hadymaggot/" target="_blank" rel="noopener noreferrer">github.com/hadymaggot</a></p>`;
                 break;
             case 'blog':
                 command = 'cd /blog && ls -la';
@@ -129,18 +177,11 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                 break;
             case 'contact':
                 command = 'find . -type f -name "contact_info"';
-                output = `./contact/<a href="mailto:saptohadi@outlook.com" target="_blank"
-                        style="color: inherit; text-decoration: none; border-bottom: none;"
-                        onmouseover="this.style.borderBottom='1px dotted #fff'"
-                        onmouseout="this.style.borderBottom='none'">email.txt</a>
-                    ./social/<a href="https://github.com/hadymaggot/" target="_blank"
-                        style="color: inherit; text-decoration: none; border-bottom: none;"
-                        onmouseover="this.style.borderBottom='1px dotted #fff'"
-                        onmouseout="this.style.borderBottom='none'">github.com</a>
-                    ./social/<a href="https://www.linkedin.com/in/saptohadi/" target="_blank"
-                        style="color: inherit; text-decoration: none; border-bottom: none;"
-                        onmouseover="this.style.borderBottom='1px dotted #fff'"
-                        onmouseout="this.style.borderBottom='none'">linkedin.com</a>`;
+                output = `./contact/<a class="term-link" href="mailto:saptohadi@outlook.com">email.txt</a>
+                    ./social/<a class="term-link" href="https://github.com/hadymaggot/" target="_blank" rel="noopener noreferrer">github.com</a>
+                    ./social/<a class="term-link" href="https://www.linkedin.com/in/saptohadi/" target="_blank" rel="noopener noreferrer">linkedin.com</a>
+                    ./social/<a class="term-link" href="https://x.com/hadymaggot/" target="_blank" rel="noopener noreferrer">x.com</a>
+                    ./security/<a class="term-link" href="/.well-known/security.txt">security.txt</a>`;
                 break;
             case '!':
                 command = 'whoami';

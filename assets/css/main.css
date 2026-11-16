@@ -349,6 +349,35 @@ body {
     border: 1px solid rgba(122, 197, 90, 0.3);
 }
 
+.term-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--primary-color);
+}
+
+.term-link:hover {
+    color: var(--secondary-color);
+}
+
+.project-list {
+    list-style: none;
+    margin: 0.5rem 0 1rem;
+    padding: 0;
+    text-align: left;
+}
+
+.project-list li {
+    margin-bottom: 0.7rem;
+}
+
+.project-tag {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid rgba(122, 197, 90, 0.3);
+    color: var(--secondary-color);
+}
+
 .social-links {
     display: flex;
     justify-content: center;
