@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cakupan Dependabot: Image di docker-compose Sering Tidak Terpantau | Ahadizapto</title>
+    <link rel="icon" href="/assets/images/ico2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/">
+    <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
+    <meta name="theme-color" content="#7AC55A">
+    <meta name="description" content="Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.">
+    <meta name="author" content="Ahadizapto">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cakupan Dependabot: Image di docker-compose Sering Tidak Terpantau">
+    <meta property="og:description" content="Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.">
+    <meta property="og:url" content="https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
+    <meta name="twitter:card" content="summary">
+    <style>
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a { color: var(--primary-color); }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
+        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
+        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-body { line-height: 1.8; }
+        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
+        .post-body code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Cakupan Dependabot: Image di docker-compose Sering Tidak Terpantau", "datePublished": "2026-09-04", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/", "keywords": "Security, Dependabot, Docker"}
+    </script>
+</head>
+
+<body>
+    <main class="post-page">
+        <nav class="post-nav" aria-label="Navigasi">
+            <a href="/">~/ahadizapto</a>
+            <a href="/blog.html">/blog</a>
+            <a href="/feed.xml">rss</a>
+        </nav>
+        <article>
+            <h1>Cakupan Dependabot: Image di docker-compose Sering Tidak Terpantau</h1>
+            <div class="post-meta">
+                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-09-04</span>
+                <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+                <span class="post-tags"><span>Security</span><span>Dependabot</span><span>Docker</span></span>
+            </div>
+            <div class="post-body">
+                <p>Konfigurasi Dependabot untuk ekosistem docker yang hanya mencakup <code>/docker/*</code> memindai Dockerfile di direktori itu, tetapi tidak membaca <code>docker-compose.yml</code> di root. Pada repository ini, 23 deklarasi <code>image:</code> tidak terpantau sama sekali: message broker, reverse proxy, object storage, stack monitoring, dan lainnya. Dua image di antaranya tertinggal beberapa versi dari rilis stabil terbaru.</p><p>Perbaikannya menambahkan <code>"/"</code> pada daftar <code>directories</code>.</p><pre><code>- package-ecosystem: docker
+  directories: ["/docker/*", "/"]
+  target-branch: development</code></pre><h3>Tag latest dan digest</h3><p>Tag <code>:latest</code> yang dipatok dengan <code>@sha256:</code> tetap dapat diulang, karena digest yang menentukan isi image. Masalahnya bukan isi yang bergeser sendiri, melainkan digest yang tidak pernah diperbarui karena tidak ada yang memeriksanya.</p><h3>Branch tujuan dan aturan image dasar</h3><p>Tanpa <code>target-branch</code>, setiap kenaikan dependency masuk sebagai PR ke branch default, dipindai di sana, dan main yang tersandera jika hasilnya merah. Arahkan ke branch integrasi, dan jalankan pemindaian keamanan pada setiap push ke branch itu agar sudah tersapu sebelum PR ke main dibuka.</p><p>Aturan untuk image dasar: hanya LTS atau stable, dan yang terbaru dari keduanya. Versi current, edge, atau RC ditolak seberapa pun barunya, karena Dependabot tidak mengetahui status LTS sebuah rilis.</p>
+            </div>
+        </article>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
+    </main>
+</body>
+
+</html>
