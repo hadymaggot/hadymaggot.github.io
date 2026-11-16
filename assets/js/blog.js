@@ -67,81 +67,17 @@ class BlogLoader {
                 <span><i class="far fa-calendar"></i> ${formattedDate}</span>
                 <span><i class="far fa-clock"></i> ${post.readTime} min read</span>
             </div>
-            <h2>${this.escapeHtml(post.title)}</h2>
+            <h2><a href="/blog/${post.id}/">${this.escapeHtml(post.title)}</a></h2>
             <div class="blog-post-excerpt">
                 <p>${this.escapeHtml(post.excerpt)}</p>
             </div>
             <div class="blog-post-tags">
                 ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHtml(tag)}</span>`).join('')}
             </div>
-            <a href="#" class="read-more" data-post-id="${post.id}">Read More →</a>
+            <a href="/blog/${post.id}/" class="read-more">Read More →</a>
         `;
-
-        // Add click handler for "Read More"
-        const readMoreBtn = article.querySelector('.read-more');
-        readMoreBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.showFullPost(post);
-        });
 
         return article;
-    }
-
-    showFullPost(post) {
-        const modal = document.createElement('div');
-        modal.className = 'blog-modal';
-        modal.innerHTML = `
-            <div class="blog-modal-content">
-                <div class="blog-modal-header">
-                    <h1>${this.escapeHtml(post.title)}</h1>
-                    <button class="modal-close" aria-label="Close">&times;</button>
-                </div>
-                <div class="blog-post-meta">
-                    <span><i class="far fa-calendar"></i> ${new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                    <span><i class="far fa-clock"></i> ${post.readTime} min read</span>
-                    <span><i class="far fa-user"></i> ${this.escapeHtml(post.author)}</span>
-                </div>
-                <div class="blog-post-tags">
-                    ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHtml(tag)}</span>`).join('')}
-                </div>
-                <div class="blog-post-full-content">
-                    ${post.content}
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-        document.body.style.overflow = 'hidden';
-
-        // Close handlers
-        const closeBtn = modal.querySelector('.modal-close');
-        closeBtn.addEventListener('click', () => this.closeModal(modal));
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                this.closeModal(modal);
-            }
-        });
-
-        // Escape key to close
-        const escapeHandler = (e) => {
-            if (e.key === 'Escape') {
-                this.closeModal(modal);
-                document.removeEventListener('keydown', escapeHandler);
-            }
-        };
-        document.addEventListener('keydown', escapeHandler);
-
-        // Animate in
-        setTimeout(() => modal.classList.add('active'), 10);
-    }
-
-    closeModal(modal) {
-        modal.classList.remove('active');
-        setTimeout(() => {
-            modal.remove();
-            document.body.style.overflow = '';
-        }, 300);
     }
 
     showLoading() {

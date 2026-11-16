@@ -51,6 +51,7 @@ PAGE = """<!DOCTYPE html>
         .post-page h1 {{ font-size: 2rem; margin-bottom: 0.5rem; }}
         .post-meta {{ display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }}
         .post-tags span {{ margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }}
+        .post-back {{ margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }}
         .post-body {{ line-height: 1.8; }}
         .post-body h3 {{ margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }}
         .post-body pre {{ overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }}
@@ -79,6 +80,7 @@ PAGE = """<!DOCTYPE html>
                 {content}
             </div>
         </article>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>
 
