@@ -7,6 +7,11 @@ class BlogLoader {
     }
 
     async init() {
+        // Daftar artikel sudah dirender di blog.html oleh scripts/build_blog.py (terbaca crawler tanpa JavaScript).
+        if (this.postsContainer.querySelector('article')) {
+            this.hideLoading();
+            return;
+        }
         try {
             this.showLoading();
             const index = await this.fetchPostsIndex();
