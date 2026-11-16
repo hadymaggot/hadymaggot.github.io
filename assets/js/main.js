@@ -133,29 +133,18 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                     { name: 'mailserver', url: 'https://github.com/hadymaggot/mailserver', tag: 'ops',
                       desc: 'Setup mail server dengan docker-mailserver.' },
                     { name: '9hs-ubuntu-fancyprompt', url: 'https://github.com/hadymaggot/9hs-ubuntu-fancyprompt', tag: 'ops',
-                      desc: 'Prompt shell Ubuntu yang informatif.' },
-                    { name: 'web-check', url: 'https://github.com/hadymaggot/web-check', tag: 'fork',
-                      desc: 'Fork alat OSINT untuk menganalisis sebuah website.' },
-                    { name: 'blacksmith', url: 'https://github.com/hadymaggot/blacksmith', tag: 'fork',
-                      desc: 'Fork framework pentest multi-agent (open source).' },
-                    { name: 'hyperdx', url: 'https://github.com/hadymaggot/hyperdx', tag: 'fork',
-                      desc: 'Fork platform observability: log, metrik, trace, dan session replay.' },
-                    { name: 'apk-reverse', url: 'https://github.com/hadymaggot/apk-reverse', tag: 'fork',
-                      desc: 'Fork alat analisis reverse engineering APK Android.' },
-                    { name: 'tor-relay-bootstrap', url: 'https://github.com/hadymaggot/tor-relay-bootstrap', tag: 'fork',
-                      desc: 'Fork skrip bootstrap Debian menjadi Tor relay.' }
+                      desc: 'Prompt shell Ubuntu yang informatif.' }
                 ];
                 const wrtProjects = [
                     { name: 'sistem-tata-kelola-regulasi', stack: 'TypeScript', desc: 'Sistem informasi tata kelola regulasi.' },
                     { name: 'aplikasi-emisi-ketenagalistrikan', stack: 'PHP', desc: 'Penghitungan dan pelaporan emisi ketenagalistrikan.' },
-                    { name: 'sistem-ikpa', stack: 'PHP, JavaScript', desc: 'Indikator kinerja pelaksanaan anggaran (IKPA) dengan integrasi API.' },
-                    { name: 'platform-bumdes', stack: 'Frontend, backend, SSO', desc: 'Platform BUMDes dengan single sign-on.' },
+                    { name: 'sistem-ikpa', stack: 'PHP, JavaScript', desc: 'Indikator kinerja pelaksanaan anggaran (IKPA): aplikasi dan API integrasi.' },
                     { name: 'dashboard-smart-mett', stack: 'Python', desc: 'Dashboard SMART dan METT untuk aplikasi pemantauan.' },
-                    { name: 'importir-wrt', stack: 'Python', desc: 'Engine katalog dataset dinamis, lengkap dengan penerbit dan pemvalidasi lisensi.' },
-                    { name: 'e-pengantar-kerja', stack: 'Web', desc: 'Sistem e-pengantar kerja.' },
-                    { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' },
+                    { name: 'importir-wrt', stack: 'Python', desc: 'Engine katalog dataset dinamis, beserta penerbit dan pemvalidasi lisensinya.' },
                     { name: 'titip-absen', stack: 'TypeScript', desc: 'Absensi personil proyek.' },
-                    { name: 'wrt-compro', stack: 'JavaScript', desc: 'Company profile Wahana Reka Tekindo.' }
+                    { name: 'wrt-compro', stack: 'JavaScript', desc: 'Company profile Wahana Reka Tekindo.' },
+                    { name: 'platform-bumdes-frontend', stack: 'Frontend', desc: 'Antarmuka platform BUMDes.' },
+                    { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' }
                 ];
                 output = `total ${projects.length + wrtProjects.length}<ul class="project-list">` +
                     projects.map(p => `<li><a class="term-link" href="${p.url}" target="_blank" rel="noopener noreferrer">${p.name}</a>
