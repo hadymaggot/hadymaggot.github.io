@@ -418,18 +418,21 @@ def render_llms_full(posts):
 
 # ---------------------------------------------------------------- bagian yang disisipkan
 
-def post_card(p, linkable):
-    tags = "".join(tag_chip(t, linkable, "blog-tag") for t in p["tags"])
+def post_card(p, linkable, first=False):
+    tags = "".join(tag_chip(t, linkable, "blog-tag") for t in p["tags"][:3])
+    search = escape(" ".join([p["title"], p["excerpt"], " ".join(p["tags"])]).lower(), quote=True)
+    cls = "blog-post blog-post-featured" if first else "blog-post"
     return (
-        '<article class="blog-post">\n'
-        '    <div class="blog-post-meta">\n'
-        f'        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="{p["date"]}">{date_id(p["date"])}</time></span>\n'
-        f'        <span><i class="far fa-clock" aria-hidden="true"></i> {p["readTime"]} menit baca</span>\n'
+        f'<article class="{cls}" data-search="{search}">\n'
+        '    <div class="blog-post-body">\n'
+        '        <div class="blog-post-meta">\n'
+        f'            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="{p["date"]}">{date_id(p["date"])}</time></span>\n'
+        f'            <span><i class="far fa-clock" aria-hidden="true"></i> {p["readTime"]} menit baca</span>\n'
+        '        </div>\n'
+        f'        <h2><a href="/blog/{p["id"]}/">{escape(p["title"])}</a></h2>\n'
+        f'        <p class="blog-post-excerpt">{escape(p["excerpt"])}</p>\n'
+        f'        <div class="blog-post-tags">{tags}</div>\n'
         '    </div>\n'
-        f'    <h2><a href="/blog/{p["id"]}/">{escape(p["title"])}</a></h2>\n'
-        f'    <div class="blog-post-excerpt"><p>{escape(p["excerpt"])}</p></div>\n'
-        f'    <div class="blog-post-tags">{tags}</div>\n'
-        f'    <a href="/blog/{p["id"]}/" class="read-more">Baca selengkapnya &rarr;</a>\n'
         '</article>')
 
 
@@ -461,7 +464,7 @@ def articles_markdown(posts):
 
 
 INJECTIONS = {
-    "blog.html": [("POSTS", lambda ps: "\n".join(post_card(p, indexable_tags(ps)) for p in ps)), ("JSONLD", blog_jsonld), ("TAGS", tag_cloud)],
+    "blog.html": [("POSTS", lambda ps: "\n".join(post_card(p, indexable_tags(ps), i == 0) for i, p in enumerate(ps))), ("JSONLD", blog_jsonld), ("TAGS", tag_cloud)],
     "index.html": [("LATEST", latest_list)],
     "llms.txt": [("ARTICLES", articles_markdown)],
 }
