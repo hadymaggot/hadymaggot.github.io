@@ -119,8 +119,8 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                 const skillGroups = {
                     'security/': ["Penetration Testing", "SIEM", "OWASP ZAP", "Trivy", "Semgrep", "Gitleaks", "Nmap"],
                     'ops/': ["Linux", "Docker", "Docker Compose", "Kubernetes", "Ansible", "Traefik", "Redis", "RabbitMQ", "PostgreSQL", "MySQL", "Prometheus", "Grafana", "Cloudflare", "Monitoring", "SRE", "Git", "GitHub Actions"],
-                    'gis/': ["GeoJSON", "Shapefile", "PostGIS", "MapLibre GL", "Leaflet", "OpenLayers", "Tile XYZ/WMS"],
-                    'dev/': ["PHP", "Laravel", "JavaScript", "TypeScript", "VueJS", "Python", "SQL", "Bash", "PowerShell", "R", "Django", "Playwright"]
+                    'gis/': ["GeoJSON", "Shapefile", "PostGIS", "MapLibre GL", "Leaflet", "OpenLayers", "Turf.js", "proj4", "Tile XYZ/WMS"],
+                    'dev/': ["PHP", "Laravel", "JavaScript", "TypeScript", "VueJS", "Python", "SQL", "Bash", "PowerShell", "R", "Django", "Quasar", "Playwright"]
                 };
                 output = `total ${Object.keys(skillGroups).length}` +
                     Object.entries(skillGroups).map(([group, list]) =>
@@ -146,10 +146,10 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                       desc: 'Prompt shell Ubuntu yang informatif.' }
                 ];
                 const wrtProjects = [
-                    { name: 'sistem-tata-kelola-regulasi', stack: 'TypeScript', desc: 'Sistem informasi tata kelola regulasi.' },
+                    { name: 'sistem-tata-kelola-regulasi', stack: 'TypeScript, Vue', desc: 'Sistem informasi tata kelola regulasi.' },
                     { name: 'aplikasi-pelaporan-emisi', stack: 'PHP', desc: 'Perhitungan dan pelaporan data emisi.' },
                     { name: 'sistem-monitoring-anggaran', stack: 'PHP (CodeIgniter 4), JavaScript', desc: 'Monitoring kinerja pelaksanaan anggaran: aplikasi dan API integrasi.' },
-                    { name: 'dashboard-pemantauan-patroli', stack: 'Python', desc: 'Dashboard pemantauan patroli dan indikator pengelolaan kawasan, dengan data spasial.' },
+                    { name: 'dashboard-pemantauan-patroli', stack: 'Python (Django), Vue', desc: 'Dashboard pemantauan patroli dan indikator pengelolaan kawasan, dengan data spasial.' },
                     { name: 'importir-wrt', stack: 'Python', desc: 'Engine katalog dataset dinamis, beserta penerbit dan pemvalidasi lisensinya.' },
                     { name: 'titip-absen', stack: 'TypeScript', desc: 'Absensi personil proyek.' },
                     { name: 'wrt-compro', stack: 'JavaScript', desc: 'Company profile Wahana Reka Tekindo.' },
@@ -157,13 +157,16 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                     { name: 'wrt-filamentz', stack: 'Filament', desc: 'Aplikasi web berbasis Filament.' },
                     { name: 'wrt-template', stack: 'Blade', desc: 'Template dasar aplikasi web.' },
                     { name: 'frontend-platform-usaha-desa', stack: 'Frontend', desc: 'Antarmuka platform usaha desa.' },
-                    { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' }
+                    { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' },
+                    { name: 'wrt-gis', stack: 'Vue (Quasar)', desc: 'Kerangka WebGIS dengan OpenLayers, MapLibre, Turf.js, dan proj4.' }
                 ];
                 const otherProjects = [
                     { name: 'sirus-2022', stack: 'PHP', desc: 'Sistem Informasi Rumah Swadaya (SIRUS).' },
                     { name: 'bsps-api', stack: 'Laravel', desc: 'API Laravel untuk bantuan stimulan perumahan swadaya (BSPS), dengan koleksi Postman.' },
                     { name: 'sisatker', stack: 'CodeIgniter', desc: 'Aplikasi web CodeIgniter dengan template Stisla.' },
-                    { name: 'stantek', stack: 'CodeIgniter', desc: 'Aplikasi web CodeIgniter dengan template Stisla.' }
+                    { name: 'stantek', stack: 'CodeIgniter', desc: 'Aplikasi web CodeIgniter dengan template Stisla.' },
+                    { name: 'aplikasi-web-skala-besar', stack: 'PHP, Vue', desc: 'Aplikasi web dengan kode dasar besar dan banyak kontributor, sekitar 300 commit saya di dalamnya.' },
+                    { name: 'platform-webgis', stack: 'JavaScript, Vue', desc: 'Platform WebGIS dengan engine peta kustom: layer, proyeksi, dan pengolahan shapefile.' }
                 ];
                 output = `total ${projects.length + wrtProjects.length + otherProjects.length}<ul class="project-list">` +
                     projects.map(p => `<li><a class="term-link" href="${p.url}" target="_blank" rel="noopener noreferrer">${p.name}</a>

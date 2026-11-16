@@ -16,8 +16,8 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 
 - Security: penetration testing, SIEM, OWASP ZAP, Trivy, Semgrep, Gitleaks, Nmap
 - Ops: Linux, Docker, Docker Compose, Kubernetes, Ansible, Traefik, Redis, RabbitMQ, PostgreSQL, MySQL, Prometheus, Grafana, Cloudflare, monitoring, SRE, Git, GitHub Actions
-- GIS: GeoJSON, shapefile, PostGIS, MapLibre GL, Leaflet, OpenLayers, XYZ/WMS tiles
-- Dev: PHP, Laravel, JavaScript, TypeScript, VueJS, Python, Django, SQL, Bash, PowerShell, R, Playwright
+- GIS: GeoJSON, shapefile, PostGIS, MapLibre GL, Leaflet, OpenLayers, Turf.js, proj4, XYZ/WMS tiles
+- Dev: PHP, Laravel, JavaScript, TypeScript, VueJS, Quasar, Python, Django, SQL, Bash, PowerShell, R, Playwright
 
 ## Projects
 
