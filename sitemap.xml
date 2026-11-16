@@ -12,4 +12,34 @@
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
    </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/security-headers-github-pages/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/</loc>
+      <lastmod>2026-11-16</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/welcome-to-my-blog/</loc>
+      <lastmod>2025-01-15</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/kubernetes-best-practices/</loc>
+      <lastmod>2025-01-10</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
 </urlset>
