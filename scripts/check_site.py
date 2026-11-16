@@ -196,6 +196,45 @@ def check_code_blocks():
         fail("assets/js/vendor/highlight.min.js tidak ada")
 
 
+STALE_PHRASES = ("GIS Engineer", "engineer di bidang", "engineer security,", "Security, Operations, dan GIS")
+
+
+def check_consistency():
+    """Jabatan, daftar skills, dan proyek publik harus sama di menu terminal, ringkasan, dan llms.txt."""
+    files = ["index.html", "blog.html", "assets/js/main.js", "llms.txt", "scripts/build_blog.py"]
+    for rel in files:
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        for phrase in STALE_PHRASES:
+            if phrase in text:
+                fail(f"{rel}: masih memuat frasa jabatan lama \"{phrase}\"")
+
+    js = (ROOT / "assets" / "js" / "main.js").read_text(encoding="utf-8")
+    llms = (ROOT / "llms.txt").read_text(encoding="utf-8")
+    index = (ROOT / "index.html").read_text(encoding="utf-8")
+    summary = index[index.index('id="ringkasan"'):]
+
+    def norm(items):
+        return [i.strip().lower().replace("vuejs", "vue").replace("tile xyz/wms", "xyz/wms tiles") for i in items]
+
+    groups = re.search(r"const skillGroups = \{(.*?)\n\s*\};", js, re.S).group(1)
+    menu = {name.lower(): norm(re.findall(r'"([^"]+)"', body)) for name, body in re.findall(r"'(\w+)/': \[(.*?)\]", groups)}
+    for label, key in (("Dev", "dev"), ("Ops", "ops"), ("Security", "security"), ("GIS", "gis")):
+        llms_line = re.search(rf"^- {label}: (.*)$", llms, re.M)
+        if not llms_line or norm(llms_line.group(1).split(",")) != menu[key]:
+            fail(f"llms.txt: baris skills {label} tidak sama dengan menu terminal")
+        sr_line = re.search(rf"<li>{label}: (.*?)\.</li>", summary)
+        if not sr_line or norm(sr_line.group(1).split(",")) != menu[key]:
+            fail(f"index.html: skills {label} pada ringkasan tidak sama dengan menu terminal")
+
+    projects = re.search(r"const projects = \[(.*?)\n\s*\];", js, re.S).group(1)
+    public = re.findall(r"name: '([^']+)'", projects)
+    for name in public:
+        if f"[{name}](" not in llms:
+            fail(f"llms.txt: proyek publik {name} tidak tercantum")
+        if f">{name}</a>" not in summary:
+            fail(f"index.html: proyek publik {name} tidak tercantum pada ringkasan")
+
+
 def check_cloudflare():
     """Pengaman free tier Cloudflare: Worker hanya aset statis, aturan header di bawah batas, dan dist lengkap."""
     cfg = (ROOT / "wrangler.jsonc").read_text(encoding="utf-8")
@@ -241,6 +280,7 @@ def main():
     check_blog_build()
     check_seo()
     check_code_blocks()
+    check_consistency()
     check_post_safety()
     check_cloudflare()
     if errors:
