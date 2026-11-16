@@ -97,12 +97,31 @@ def check_security_txt():
             fail(f".well-known/security.txt: field {field} wajib ada (RFC 9116)")
 
 
+def check_blog_build():
+    """Hasil build_blog.py yang di-commit harus sama dengan hasil render ulang dari sumbernya."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_blog
+
+    posts = build_blog.load_posts()
+    for post in posts:
+        page = ROOT / "blog" / post["id"] / "index.html"
+        if not page.is_file():
+            fail(f"blog/{post['id']}/index.html belum dibangun (jalankan scripts/build_blog.py)")
+        elif page.read_text(encoding="utf-8") != build_blog.render_page(post):
+            fail(f"blog/{post['id']}/index.html tidak sama dengan sumbernya (jalankan scripts/build_blog.py)")
+    for name, expected in (("feed.xml", build_blog.render_feed(posts)), ("sitemap.xml", build_blog.render_sitemap(posts))):
+        target = ROOT / name
+        if not target.is_file() or target.read_text(encoding="utf-8") != expected:
+            fail(f"{name} tidak sama dengan hasil build (jalankan scripts/build_blog.py)")
+
+
 def main():
     check_json()
     check_xml()
     check_links()
     check_robots_and_sitemap()
     check_security_txt()
+    check_blog_build()
     if errors:
         print("Pengecekan gagal:")
         for e in errors:
