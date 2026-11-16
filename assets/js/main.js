@@ -3,7 +3,8 @@
 const tickerTexts = [
     "Web Developer",
     "DevOps Engineer", 
-    "Security Operations"
+    "Security Operations",
+    "GIS Engineer"
 ];
 
 let currentIndex = 0;
@@ -110,15 +111,16 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                             interaktif dengan MapLibre, Leaflet, dan OpenLayers, termasuk pengelolaan basemap tile dan kode wilayah administrasi.</p>
                         <p>Bahasa yang saya pakai adalah PHP, JavaScript dan TypeScript, Python, SQL, serta Bash, dengan Laravel dan Vue
                             sebagai framework utama.</p>
+                        <p>Catatan teknis dari pekerjaan sehari-hari terbit di blog, mencakup security, operations, dan GIS.</p>
                         <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
             case 'skills':
                 command = 'ls -la skills/';
                 const skillGroups = {
                     'security/': ["Penetration Testing", "SIEM", "OWASP ZAP", "Trivy", "Semgrep", "Gitleaks", "Nmap"],
-                    'ops/': ["Linux", "Docker", "Kubernetes", "Ansible", "Monitoring", "SRE", "Bash", "Git", "GitHub Actions"],
+                    'ops/': ["Linux", "Docker", "Docker Compose", "Kubernetes", "Ansible", "Traefik", "Redis", "RabbitMQ", "PostgreSQL", "MySQL", "Prometheus", "Grafana", "Cloudflare", "Monitoring", "SRE", "Git", "GitHub Actions"],
                     'gis/': ["GeoJSON", "Shapefile", "PostGIS", "MapLibre GL", "Leaflet", "OpenLayers", "Tile XYZ/WMS"],
-                    'dev/': ["PHP", "Laravel", "JavaScript", "TypeScript", "VueJS", "Python", "SQL", "Bash", "PowerShell", "R", "Kotlin", "Dart"]
+                    'dev/': ["PHP", "Laravel", "JavaScript", "TypeScript", "VueJS", "Python", "SQL", "Bash", "PowerShell", "R", "Django", "Playwright"]
                 };
                 output = `total ${Object.keys(skillGroups).length}` +
                     Object.entries(skillGroups).map(([group, list]) =>
@@ -138,21 +140,23 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                       desc: 'Skrip SSH tunneling privat.' },
                     { name: 'mailserver', url: 'https://github.com/hadymaggot/mailserver', tag: 'ops',
                       desc: 'Setup mail server dengan docker-mailserver.' },
+                    { name: 'hadymaggot.github.io', url: 'https://github.com/hadymaggot/hadymaggot.github.io', tag: 'web',
+                      desc: 'Situs ini: terminal interaktif sebagai menu, blog statis dengan RSS dan llms.txt, serta tool sql_geojson.' },
                     { name: '9hs-ubuntu-fancyprompt', url: 'https://github.com/hadymaggot/9hs-ubuntu-fancyprompt', tag: 'ops',
                       desc: 'Prompt shell Ubuntu yang informatif.' }
                 ];
                 const wrtProjects = [
                     { name: 'sistem-tata-kelola-regulasi', stack: 'TypeScript', desc: 'Sistem informasi tata kelola regulasi.' },
-                    { name: 'aplikasi-emisi-ketenagalistrikan', stack: 'PHP', desc: 'Penghitungan dan pelaporan emisi ketenagalistrikan.' },
-                    { name: 'sistem-ikpa', stack: 'PHP (CodeIgniter 4), JavaScript', desc: 'Indikator kinerja pelaksanaan anggaran (IKPA): aplikasi dan API integrasi.' },
-                    { name: 'dashboard-smart-mett', stack: 'Python', desc: 'Dashboard SMART dan METT untuk aplikasi pemantauan.' },
+                    { name: 'aplikasi-pelaporan-emisi', stack: 'PHP', desc: 'Perhitungan dan pelaporan data emisi.' },
+                    { name: 'sistem-monitoring-anggaran', stack: 'PHP (CodeIgniter 4), JavaScript', desc: 'Monitoring kinerja pelaksanaan anggaran: aplikasi dan API integrasi.' },
+                    { name: 'dashboard-pemantauan-patroli', stack: 'Python', desc: 'Dashboard pemantauan patroli dan indikator pengelolaan kawasan, dengan data spasial.' },
                     { name: 'importir-wrt', stack: 'Python', desc: 'Engine katalog dataset dinamis, beserta penerbit dan pemvalidasi lisensinya.' },
                     { name: 'titip-absen', stack: 'TypeScript', desc: 'Absensi personil proyek.' },
                     { name: 'wrt-compro', stack: 'JavaScript', desc: 'Company profile Wahana Reka Tekindo.' },
                     { name: 'wrt-web-api', stack: 'PHP', desc: 'Situs dan API Wahana Reka Tekindo, termasuk situs demo.' },
                     { name: 'wrt-filamentz', stack: 'Filament', desc: 'Aplikasi web berbasis Filament.' },
                     { name: 'wrt-template', stack: 'Blade', desc: 'Template dasar aplikasi web.' },
-                    { name: 'platform-bumdes-frontend', stack: 'Frontend', desc: 'Antarmuka platform BUMDes.' },
+                    { name: 'frontend-platform-usaha-desa', stack: 'Frontend', desc: 'Antarmuka platform usaha desa.' },
                     { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' }
                 ];
                 const otherProjects = [
@@ -170,7 +174,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                     `</ul><div>drwxr-xr-x lainnya/ (repo privat, tanpa tautan)</div><ul class="project-list">` +
                     otherProjects.map(p => `<li>${p.name}
                         <span class="project-tag project-tag-private">${p.stack}</span><br>${p.desc}</li>`).join('') +
-                    `</ul><p>Perusahaan:<a class="term-link" href="https://wahanarekatekindo.co.id" target="_blank" rel="noopener noreferrer">wahanarekatekindo.co.id</a></p>` +
+                    `</ul><p>Perusahaan: <a class="term-link" href="https://wahanarekatekindo.co.id" target="_blank" rel="noopener noreferrer">wahanarekatekindo.co.id</a></p>` +
                     `<p>Selengkapnya: <a class="term-link" href="https://github.com/hadymaggot/" target="_blank" rel="noopener noreferrer">github.com/hadymaggot</a></p>`;
                 break;
             case 'blog':
@@ -187,6 +191,8 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                     ./social/<a class="term-link" href="https://github.com/hadymaggot/" target="_blank" rel="noopener noreferrer">github.com</a>
                     ./social/<a class="term-link" href="https://www.linkedin.com/in/saptohadi/" target="_blank" rel="noopener noreferrer">linkedin.com</a>
                     ./social/<a class="term-link" href="https://x.com/hadymaggot/" target="_blank" rel="noopener noreferrer">x.com</a>
+                    ./blog/<a class="term-link" href="/blog.html">blog.html</a>
+                    ./blog/<a class="term-link" href="/feed.xml">feed.xml</a>
                     ./security/<a class="term-link" href="/.well-known/security.txt">security.txt</a>`;
                 break;
             case '!':
@@ -198,7 +204,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                 ██╔══██║██╔══██║██╔══██║██║  ██║██║ ███╔╝  ██╔══██║██╔═══╝    ██║   ██║   ██║
                 ██║  ██║██║  ██║██║  ██║██████╔╝██║███████╗██║  ██║██║        ██║   ╚██████╔╝
                 ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝╚══════╝╚═╝  ╚═╝╚═╝        ╚═╝    ╚═════╝ 
-                            Web Developer | DevOps Engineer | Security Operations
+                            Security | Operations | GIS
                 </pre>`;
                 break;
             case 'ahadizapto':
