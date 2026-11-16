@@ -45,7 +45,7 @@
       <link>https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/</guid>
       <pubDate>Sun, 08 Nov 2026 00:00:00 +0000</pubDate>
-      <description>Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan penyaringan awal memangkas waktu dari 59 ke 19 detik.</description>
+      <description>Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan filtering awal memangkas waktu dari 59 ke 19 detik.</description>
     </item>
     <item>
       <title>Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</title>
