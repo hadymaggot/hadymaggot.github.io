@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koordinat DMS dan Validasi Lintang di Luar Bounding Box | Ahadizapto</title>
+    <meta name="description" content="Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/index.md">
+    <link rel="icon" href="/assets/images/ico2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
+    <meta name="theme-color" content="#7AC55A">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="GIS, Data, Migrasi">
+    <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Koordinat DMS dan Validasi Lintang di Luar Bounding Box">
+    <meta property="og:description" content="Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.">
+    <meta property="og:url" content="https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/koordinat-dms-dan-validasi-lintang.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Koordinat DMS dan Validasi Lintang di Luar Bounding Box">
+    <meta property="article:published_time" content="2026-08-28">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="GIS">
+    <meta property="article:tag" content="Data">
+    <meta property="article:tag" content="Migrasi">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Koordinat DMS dan Validasi Lintang di Luar Bounding Box">
+    <meta name="twitter:description" content="Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/koordinat-dms-dan-validasi-lintang.png">
+    <style>
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
+        .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
+        .post-body { line-height: 1.8; }
+        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
+        .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/#article", "headline": "Koordinat DMS dan Validasi Lintang di Luar Bounding Box", "description": "Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.", "image": ["https://hadymaggot.github.io/assets/images/og/koordinat-dms-dan-validasi-lintang.png"], "datePublished": "2026-08-28", "dateModified": "2026-08-28", "inLanguage": "id", "wordCount": 196, "keywords": "GIS, Data, Migrasi", "articleSection": "GIS", "url": "https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Koordinat DMS dan Validasi Lintang di Luar Bounding Box", "item": "https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/"}]}</script>
+</head>
+
+<body>
+    <main class="post-page">
+        <nav class="post-nav" aria-label="Navigasi">
+            <a href="/">~/ahadizapto</a>
+            <a href="/blog.html">/blog</a>
+            <a href="/feed.xml">rss</a>
+        </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Koordinat DMS dan Validasi Lintang di Luar Bounding Box</nav>
+        <article>
+            <h1>Koordinat DMS dan Validasi Lintang di Luar Bounding Box</h1>
+            <div class="post-meta">
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-08-28">28 Agustus 2026</time></span>
+                <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+            </div>
+            <div class="post-tags"><a href="/blog/tag/gis/">GIS</a><a href="/blog/tag/data/">Data</a><a href="/blog/tag/migrasi/">Migrasi</a></div>
+            <div class="post-body">
+                <p>Pada migrasi data lokasi unit dari sistem legacy, koordinat disimpan di kolom varchar yang sama dengan format campuran. Sebagian berupa desimal, sebagian lagi DMS, misalnya <code>7°42'58.7"S</code>. Parser migrasi hanya menerima desimal, sehingga puluhan koordinat tampak hilang padahal hanya tidak terbaca. Setelah parser diperbaiki, 46 koordinat dipulihkan.</p><h3>Gotcha encoding</h3><p>Output MySQL pada sistem itu berencoding latin1. Simbol derajat (<code>0xb0</code>) menggagalkan pembacaan UTF-8, sehingga data perlu dibaca dengan penanganan error yang eksplisit, atau konversi encoding dilakukan di sisi database.</p><h3>Bounding box tidak cukup</h3><p>Validasi yang paling mudah adalah memeriksa bahwa titik berada dalam kotak Indonesia (lintang sekitar -11,5 sampai 6,5). Kotak itu mencakup lintang utara, sehingga sebuah titik di Balikpapan yang tertulis +1,1986 padahal seharusnya -1,1986 tetap lolos, meski posisinya meleset sekitar 265 km. Kesalahan tanda lintang adalah salah satu kesalahan input yang paling umum.</p><p>Validasi yang lebih kuat menguji titik terhadap poligon wilayah yang seharusnya memuatnya, misalnya kabupaten/kota dari alamat unit. Titik yang jatuh di luar poligon itu ditandai untuk ditinjau, dan varian yang mungkin (tanda lintang dibalik, lintang dan bujur tertukar) dicoba satu per satu.</p><pre><code>SELECT id FROM unit u JOIN wilayah w ON w.kode = u.kode_kabkota
+WHERE NOT ST_Contains(w.geom, ST_SetSRID(ST_MakePoint(u.bujur, u.lintang), 4326));</code></pre>
+            </div>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+        </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/crosswalk-kode-kabupaten-legacy/">Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi</a><span>Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di…</span></li><li><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a><span>Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor…</span></li><li><a href="/blog/kode-wilayah-kemendagri-vs-bps/">Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa</a><span>Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan…</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/crosswalk-kode-kabupaten-legacy/" rel="prev">&larr; Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi</a><a href="/blog/cakupan-dependabot-image-compose/" rel="next">Cakupan Dependabot: Image di docker-compose Luput Dipantau &rarr;</a></nav>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
+    </main>
+</body>
+
+</html>

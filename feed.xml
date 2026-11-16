@@ -1,121 +1,327 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>Blog Ahadizapto</title>
     <link>https://hadymaggot.github.io/blog.html</link>
-    <description>Catatan teknis seputar cybersecurity, operations, dan web development.</description>
+    <atom:link href="https://hadymaggot.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Catatan teknis seputar cybersecurity, operations, GIS, dan web development.</description>
     <language>id</language>
-    <item>
-      <title>Dari Temuan Pentest ke Test Otomatis di CI</title>
-      <link>https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</link>
-      <guid isPermaLink="true">https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</guid>
-      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
-      <description>Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.</description>
-    </item>
+    <lastBuildDate>Mon, 16 Nov 2026 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</title>
       <link>https://hadymaggot.github.io/blog/security-headers-github-pages/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/security-headers-github-pages/</guid>
       <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Security</category>
+      <category>Web</category>
+      <category>Cloudflare</category>
       <description>GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.</description>
+      <content:encoded><![CDATA[<p>GitHub Pages praktis untuk situs statis, tetapi header respons tidak dapat diatur sendiri. Hal ini membatasi kontrol keamanan yang dapat dipasang.</p><h3>Yang tetap dapat dilakukan</h3><p>HTTPS dapat dipaksa lewat pengaturan Pages. CSP dapat dipasang lewat tag <code>&lt;meta http-equiv="Content-Security-Policy"&gt;</code>, dengan batasan: <code>frame-ancestors</code>, <code>report-uri</code>, dan <code>sandbox</code> tidak didukung. Hindari inline script dan style agar CSP yang ketat dapat dipasang kemudian, dan beri atribut <code>integrity</code> (SRI) pada script dan stylesheet dari CDN.</p><p>Pasang <code>/.well-known/security.txt</code> berisi kontak pelaporan dan tanggal <code>Expires</code> sesuai RFC 9116. <code>robots.txt</code> dan <code>sitemap.xml</code> harus berada di root, bukan di subfolder.</p><h3>Jika membutuhkan header sungguhan</h3><p>Gunakan custom domain dan tempatkan proxy seperti Cloudflare di depannya. Header seperti HSTS, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, dan CSP lengkap ditambahkan lewat aturan transformasi respons.</p><h3>Verifikasi</h3><p>Periksa respons yang sebenarnya, bukan konfigurasinya. Audit header dan TLS dari luar secara berkala, dan catat hasilnya agar regresi terlihat.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Dari Temuan Pentest ke Test Otomatis di CI</title>
+      <link>https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Security</category>
+      <category>DevSecOps</category>
+      <category>CI/CD</category>
+      <description>Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.</description>
+      <content:encoded><![CDATA[<p>Laporan pentest biasanya berakhir sebagai PDF. Celah diperbaiki, lalu beberapa rilis kemudian celah yang sama muncul lagi karena tidak ada yang menjaganya.</p><h3>Satu temuan, satu test</h3><p>Setiap temuan diterjemahkan menjadi test yang gagal selama celahnya masih ada. Untuk IDOR, test login sebagai pengguna A, lalu mencoba membaca data milik pengguna B.</p><pre><code>def test_user_a_tidak_bisa_baca_order_user_b(client_a, order_b):
+    r = client_a.get(f"/api/orders/{order_b.id}")
+    assert r.status_code in (403, 404)</code></pre><p>Pola yang sama berlaku untuk lompat status (misalnya order yang melewati tahap pembayaran), header <code>X-Auth-*</code> palsu dari client yang harus diabaikan server, upload file berbahaya, dan CORS yang memantulkan origin sembarang.</p><h3>Dijalankan di CI terhadap staging</h3><p>Test aktif diarahkan ke dev atau staging, bukan production yang sedang dipakai pengguna. Kredensial diambil dari environment variable, bukan dari file konfigurasi. Hasilnya dirangkum menjadi laporan berisi bukti request dan response, alasan severity, serta rekomendasi perbaikan.</p><h3>Batasannya</h3><p>Automation tidak menggantikan pentest manual. Temuan scanner tetap harus diverifikasi, dan celah logika bisnis hanya tertangkap jika test ditulis khusus untuk kasus itu.</p><p>Pendekatan ini dirangkum dalam <a href="https://github.com/hadymaggot/security-audit-kit" target="_blank" rel="noopener noreferrer">security-audit-kit</a>, toolkit berbasis config yang dapat dipakai ulang lintas project. Gunakan hanya pada sistem milik sendiri atau dengan izin tertulis.</p>]]></content:encoded>
     </item>
     <item>
       <title>Checklist Ops Sebelum Deploy ke Produksi</title>
       <link>https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/</guid>
       <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>DevOps</category>
+      <category>SRE</category>
+      <category>Operations</category>
       <description>Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.</description>
+      <content:encoded><![CDATA[<p>Rilis yang tenang hampir selalu hasil persiapan. Daftar periksa berikut dipakai sebelum deploy ke production.</p><h3>Sebelum rilis</h3><p>Jalankan dry-run untuk setiap perubahan: <code>terraform plan</code>, <code>ansible-playbook --check</code>, atau <code>kubectl apply --dry-run=server</code>. Baca hasilnya, jangan hanya melihat status hijau. Siapkan rencana rollback tertulis yang sudah pernah dicoba, termasuk migration database yang dapat dibalik.</p><p>Pastikan backup teruji restore, bukan sekadar berkasnya ada. Pastikan secret tidak ada di repository dengan gitleaks, dan pindai image serta dependency dengan Trivy. Healthcheck dan readiness harus benar-benar mencerminkan kesiapan service.</p><h3>Saat rilis</h3><p>Lakukan rilis bertahap jika memungkinkan, dan pantau error rate serta latency pada beberapa menit pertama. Tetapkan satu orang yang memegang keputusan rollback, dengan ambang batas yang disepakati sebelumnya.</p><h3>Sesudahnya</h3><p>Setiap alert memiliki pemilik dan runbook, bukan hanya notifikasi. Catat hasil rilis, lalu perbarui daftar periksa ini.</p>]]></content:encoded>
     </item>
     <item>
-      <title>Traefik: Menambah Route Perlu Recreate Container, Bukan Restart</title>
+      <title>Traefik: Route Baru Perlu Recreate Container</title>
       <link>https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/</guid>
       <pubDate>Fri, 13 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Traefik</category>
+      <category>Docker</category>
+      <category>Troubleshooting</category>
       <description>Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.</description>
+      <content:encoded><![CDATA[<p>Menambah <code>PathPrefix</code> baru pada label Traefik sebuah service tidak berlaku dengan <code>docker compose restart traefik</code>. Label dibaca dari container yang sedang berjalan, dan container itu masih memegang label lama. Service harus dibuat ulang dengan <code>docker compose up -d &lt;service&gt;</code>.</p><h3>Gejala yang menyesatkan</h3><p>Request menggantung, bukan 404. Router frontend memakai <code>Host(localhost)</code> tanpa batasan path, sehingga <code>/api/*</code> yang tidak cocok dengan router mana pun jatuh ke dev server frontend dan diam di sana sampai timeout. Jika endpoint API yang baru menggantung sementara endpoint lain pada service yang sama menjawab normal, curigai label lebih dulu sebelum kode.</p><h3>Memastikan tanpa menebak</h3><pre><code># dari dalam container: 200 berarti kodenya benar
+docker compose exec -T &lt;service&gt; curl -s -o /tmp/out -w "%{http_code}\n" http://localhost:&lt;port&gt;/api/&lt;endpoint&gt;
+
+# lewat Traefik: 401 berarti route ada, menggantung berarti label belum terbaca
+timeout 15 curl -s -o /dev/null -w "%{http_code}\n" http://localhost:&lt;port-traefik&gt;/api/&lt;endpoint&gt;</code></pre><p>Setelah service dibuat ulang, tunggu sampai Traefik juga berstatus sehat sebelum menyimpulkan hasilnya.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</title>
+      <link>https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/</guid>
+      <pubDate>Thu, 12 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>GIS</category>
+      <category>Data</category>
+      <category>Python</category>
+      <description>Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.</description>
+      <content:encoded><![CDATA[<p>Mengimpor ekspor shapefile dari SMART Desktop memunculkan beberapa masalah yang tidak terlihat pada data uji kecil.</p><h3>DBF UTF-8 tanpa .cpg</h3><p>File DBF ditulis dalam UTF-8 tanpa file <code>.cpg</code>. GDAL, pyogrio, dan <code>foreign::read.dbf</code> mengasumsikan latin1, sehingga karakter seperti tanda pisah (en dash) berubah menjadi <code>â€“</code>. Tentukan encoding secara eksplisit, atau deteksi dengan memeriksa apakah isi file valid sebagai UTF-8.</p><h3>DBF lebih dari 2 GB</h3><p>Kolom teks sepanjang 254 byte dengan 129 kolom menghasilkan sekitar 25 KB per record. Pada 143.964 record, ukurannya 3,6 GB, padahal ZIP-nya hanya 33 MB. <code>foreign::read.dbf</code> gagal karena memakai <code>fseek</code> 32-bit. Solusinya membaca DBF secara streaming per blok record, bukan memuat semuanya.</p><h3>Identitas record</h3><p>Ekspor query observasi tertentu tidak memuat Patrol ID, sehingga tidak dapat direlasikan ke patroli. Gunakan query standar yang memuat relasi itu. Patrol ID juga dipakai ulang untuk patroli berbeda pada tanggal berbeda, sehingga identitas yang benar adalah kombinasi Patrol ID, tanggal mulai, dan unit pengelola. Mengelompokkan hanya berdasarkan Patrol ID menggabungkan patroli yang berbeda.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Mempercepat Import Track PostGIS dengan CTE MATERIALIZED</title>
+      <link>https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/</guid>
+      <pubDate>Sun, 08 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>GIS</category>
+      <category>PostGIS</category>
+      <category>Performance</category>
+      <description>Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.</description>
+      <content:encoded><![CDATA[<p>Sebuah proses import track patroli memerlukan sekitar satu menit untuk data setahun, sebagian besar bukan di sisi aplikasi. Log menunjukkan waktu terbanyak ada pada dua tempat di server: pencocokan titik ke poligon provinsi, dan pembentukan LineString titik demi titik.</p><h3>Detoast per titik</h3><p>Geometri poligon provinsi berukuran besar disimpan sebagai TOAST. Pada query yang mengakses kolom itu untuk setiap titik, PostgreSQL men-detoast geometri yang sama berulang kali. Dengan 1,83 juta titik, biayanya terasa. Perbaikannya mengambil poligon sekali dalam CTE <code>MATERIALIZED</code>, lalu menyaring titik yang berada di provinsi kawasan sebelum pemeriksaan yang lebih mahal.</p><pre><code>WITH prov AS MATERIALIZED (
+  SELECT geom FROM provinsi WHERE kode = :kode
+)
+SELECT t.id
+FROM titik t, prov p
+WHERE ST_Intersects(t.geom, p.geom);</code></pre><h3>Geometri dari WKB</h3><p>Pembentukan LineString dari titik-titik diganti dengan geometri yang dibangun dari WKB melalui shapely, dan file DBF dibaca satu kali dengan hasilnya di-cache selama proses. Hasilnya, pada data setahun dengan 514 garis dan 1,83 juta titik, waktu turun dari 59 detik menjadi 19 detik, dan dari 45–48 detik menjadi 15–16 detik di server dev.</p><p>Pengujian terhadap alat pembanding yang menulis langsung ke PostGIS menunjukkan bahwa selisih waktu sebagian berasal dari tahap ekspor di aplikasi sumber, bukan dari proses import. Ukur dulu di mana waktu habis sebelum mengoptimalkan.</p>]]></content:encoded>
     </item>
     <item>
       <title>Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</title>
       <link>https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</guid>
       <pubDate>Fri, 06 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Database</category>
+      <category>Operations</category>
+      <category>Data</category>
       <description>Data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak hasil run pertama.</description>
-    </item>
-    <item>
-      <title>Redis Crash-Loop karena AOF Korup Setelah Reboot Tidak Bersih</title>
-      <link>https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</link>
-      <guid isPermaLink="true">https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</guid>
-      <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file AOF rusak.</description>
+      <content:encoded><![CDATA[<p>Dua pelajaran dari memperbaiki data dalam jumlah besar.</p><h3>Data yang tampak salah belum tentu salah</h3><p>Sebuah dropdown tampil kosong, dan nilai di database dikira rusak karena tidak cocok dengan label dropdown. Sebanyak 209 baris di-UPDATE agar cocok, dan 19 baris yang tampak janggal diubah menjadi NULL tanpa menyimpan nilai lamanya. Ternyata tabel master yang berisi nilai asli tersedia dan persis sama dengan yang baru saja diubah. Data sudah benar sejak awal; penyebab sebenarnya adalah dropdown yang memakai label hardcoded dan tidak pernah disambungkan ke master data.</p><p>Ke-19 baris itu dapat dipulihkan hanya karena ada seed CSV asli untuk dicocokkan berdasarkan nama. Tanpa sumber itu, datanya hilang permanen. Sebelum UPDATE massal, simpan nilai lama dalam tabel snapshot atau dump, dan periksa apakah ada master data yang menjelaskan nilai tersebut.</p><h3>Script perbaikan harus idempotent</h3><p>Script yang meng-UPDATE sebuah kolom tidak boleh mencocokkan (JOIN atau WHERE) ke kolom yang sama. Pada run pertama hasilnya benar. Pada run kedua, nilai yang sudah benar terbaca sebagai input mentah lagi, dan ribuan baris di-remap ulang. Kasus yang terjadi: kode lama dan kode baru sama-sama berupa angka 4 digit, sehingga keduanya tidak dapat dibedakan.</p><p>Kolom yang sedang diperbaiki bukan sumber kebenaran yang stabil. Gunakan sumber yang immutable, seperti tabel asal, log, atau snapshot terpisah, sebagai dasar pencocokan. Uji idempotency dengan menjalankan script dua kali pada salinan data, lalu bandingkan hasilnya.</p>]]></content:encoded>
     </item>
     <item>
       <title>Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime</title>
       <link>https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/</guid>
       <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Frontend</category>
+      <category>Vue</category>
+      <category>Testing</category>
       <description>Prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau.</description>
+      <content:encoded><![CDATA[<p>Penambahan prop <code>open?: boolean</code> pada komponen collapsible yang dipakai di sekitar 20 tempat membuat semua pemakaian tanpa <code>v-model:open</code> tampil tertutup. <code>vue-tsc --noEmit</code> dan vitest hijau sebelum maupun sesudah bug, karena tipenya benar dan yang berubah hanya perilakunya.</p><p>Penyebabnya, Vue meng-cast prop boolean yang tidak diberikan induk menjadi <code>false</code>, bukan <code>undefined</code>. Akibatnya ekspresi <code>props.open ?? internal.value</code> tidak pernah memilih nilai internal. Perbaikannya satu baris pada default prop.</p><pre><code>const props = withDefaults(defineProps&lt;{ open?: boolean }&gt;(), { open: undefined })</code></pre><h3>Menyamar sebagai tes flaky</h3><p>Kelas bug ini sering terlihat sebagai tes E2E yang flaky. Elemen ada di DOM tetapi <code>display: none</code>, sehingga <code>fill()</code> atau <code>click()</code> menunggu sampai timeout. Jika sebuah langkah E2E tiba-tiba timeout pada elemen yang jelas ada, periksa visibilitasnya sebelum menyalahkan timing.</p><h3>Cara memverifikasi</h3><p>Untuk perubahan prop pada komponen bersama, muat satu halaman nyata sebelum menyatakan bahwa perilaku lama tidak berubah. Hasil membaca kode bukan hasil verifikasi. Cara tercepat adalah spec Playwright sekali pakai yang membaca <code>getComputedStyle(...).display</code> pada elemen terkait, lalu dihapus setelah pertanyaannya terjawab.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Redis Crash-Loop karena AOF Korup Setelah Reboot</title>
+      <link>https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</guid>
+      <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Redis</category>
+      <category>Docker</category>
+      <category>Troubleshooting</category>
+      <description>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file AOF rusak.</description>
+      <content:encoded><![CDATA[<p>Reboot yang tidak bersih dapat memotong ekor file <code>appendonly.aof</code> di tengah penulisan. Redis lalu crash-loop dengan exit code 1, dan <code>docker compose up -d</code> gagal dengan pesan <code>dependency failed to start: container is unhealthy</code>. Pesan itu menyesatkan: masalahnya bukan healthcheck, melainkan Redis yang tidak pernah selesai start. Service lain yang bergantung padanya ikut unhealthy, lalu pulih sendiri begitu Redis hidup.</p><h3>Diagnosis</h3><p>Baca log container langsung dan cari pesan <code>Bad file format reading the append only file</code> beserta offset-nya. Pada kasus ini file rusak sekitar 3,5 KB sebelum ujung.</p><pre><code>docker logs &lt;container&gt; 2&gt;&amp;1 | grep -i "append only"</code></pre><h3>Perbaikan</h3><p>Backup volume terlebih dahulu, lalu potong ekor yang rusak. Hanya perintah terakhir sebelum reboot yang hilang.</p><pre><code>docker run --rm -v redis_data:/data alpine sh -c "cd /data &amp;&amp; tar czf appendonlydir-backup.tgz appendonlydir"
+docker stop &lt;container&gt;
+docker run --rm -i -v redis_data:/data redis:8-alpine sh -c "echo y | redis-check-aof --fix /data/appendonlydir/appendonly.aof.manifest"</code></pre><p><code>redis-check-aof --fix</code> bersifat interaktif, sehingga <code>echo y |</code> diperlukan jika dijalankan tanpa TTY.</p><h3>Konfigurasi yang perlu diperiksa</h3><p>Opsi <code>aof-load-truncated yes</code> hanya menangani ekor yang terpotong, bukan ekor berisi data rusak. Untuk kasus kedua, atur <code>aof-load-corrupt-tail-max-size 8192</code> (satuan byte, integer polos). Ini tidak melonggarkan durabilitas secara berarti, karena <code>appendfsync everysec</code> sudah menerima kehilangan satu detik terakhir, sedangkan crash-loop menjatuhkan seluruh aplikasi.</p><p>AOF tidak boleh dimatikan jika Redis menyimpan queue job, karena job yang belum dijalankan hilang pada setiap restart. Pastikan juga <code>maxmemory-policy</code> bukan <code>allkeys-lru</code>: key queue tidak memiliki TTL, sehingga Redis dapat membuangnya saat memori penuh tanpa error maupun log. <code>volatile-lru</code> membatasi eviction pada key ber-TTL.</p><p>Perubahan <code>redis.conf</code> yang di-bind mount baru berlaku setelah <code>docker compose up -d --force-recreate redis</code>.</p>]]></content:encoded>
     </item>
     <item>
       <title>Gitleaks Melewatkan Secret pada Commit Rename</title>
       <link>https://hadymaggot.github.io/blog/gitleaks-celah-rename-detection/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/gitleaks-celah-rename-detection/</guid>
       <pubDate>Fri, 23 Oct 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Security</category>
+      <category>CI/CD</category>
+      <category>Gitleaks</category>
       <description>Peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak dipindai.</description>
+      <content:encoded><![CDATA[<p>Gitleaks pada history sekitar 860 commit menampilkan peringatan <code>exhaustive rename detection was skipped due to too many files</code>. Peringatan itu tampak kosmetik, padahal berdampak pada hasil pemindaian.</p><p>Ketika git membaca sebuah commit sebagai rename murni, tidak ada isi yang di-diff, sehingga gitleaks tidak memiliki apa pun untuk diperiksa pada commit itu. Secret yang masuk lewat commit semacam itu lolos begitu saja. Perbandingan pada repository yang sama:</p><pre><code>tanpa flag      861 commit terpindai, 0 temuan
+--no-renames   862 commit terpindai, 1 temuan</code></pre><p>Temuan satu-satunya adalah password lama yang sudah tidak aktif, pada commit yang memindahkan sebuah dokumen ke subfolder. Tidak berbahaya, tetapi cukup untuk membuktikan celahnya.</p><h3>Perbaikan</h3><p>Tambahkan <code>--no-renames</code> pada pemanggilan gitleaks di workflow. Rename lalu tampil sebagai hapus dan tambah, sehingga isinya ikut diperiksa dan peringatannya hilang.</p><pre><code>gitleaks detect --log-opts="--no-renames"</code></pre><p>Saran git untuk menaikkan <code>diff.renameLimit</code> juga menghilangkan peringatan, tetapi menambah deteksi rename sehingga celahnya melebar, bukan tertutup. Setelah perbaikan, hasilnya 858 commit terpindai tanpa temuan dan tanpa peringatan. Karena fingerprint temuan bergantung pada commit tempat isinya muncul, baseline atau allowlist yang sudah ada perlu diperiksa ulang.</p>]]></content:encoded>
     </item>
     <item>
       <title>Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode</title>
       <link>https://hadymaggot.github.io/blog/daftar-tugas-adalah-petunjuk/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/daftar-tugas-adalah-petunjuk/</guid>
       <pubDate>Sat, 17 Oct 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Engineering</category>
+      <category>Workflow</category>
       <description>Butir belum dikerjakan pada daftar tugas atau ringkasan sesi belum tentu benar. Satu grep dapat menghemat seluruh pekerjaan.</description>
+      <content:encoded><![CDATA[<p>Butir yang tertulis belum dikerjakan pada daftar tugas, ADR, atau ringkasan sesi belum tentu mencerminkan kode saat ini. Sebuah fitur hampir dibangun ulang dari entri <code>- [ ]</code>, padahal fitur itu sudah ada lengkap beserta test parity dua sisi. Satu grep sudah cukup untuk menghemat seluruh pekerjaan tersebut.</p><p>Kasus kembarannya terjadi di sesi kerja lain pada hari yang sama. Ringkasan bertanggal beberapa hari sebelumnya menyatakan sebuah fitur belum dibangun, padahal fitur itu selesai satu jam setelah ringkasan dibuat. Hasilnya pekerjaan ganda, ditambah perubahan di disk yang disangka berasal dari pihak lain.</p><h3>Aturan yang dipakai</h3><p>Perlakukan daftar tugas sebagai petunjuk, bukan keadaan. Sebelum merancang, cek simbol kuncinya di kode.</p><pre><code>git log -S"NamaSimbol" --oneline
+grep -rn "NamaSimbol" src/</code></pre><p>Jika butir tidak menyebut nama simbol, cari lewat gejalanya. Saat menutup sebuah butir, tulis tanggal dan buktinya agar pembaca berikutnya tidak mengulang penyelidikan yang sama. Aturan ini berlaku juga ke arah sebaliknya: sebelum melaporkan bahwa sesuatu rusak, verifikasi dulu keadaannya.</p>]]></content:encoded>
     </item>
     <item>
-      <title>Memigrasi Aplikasi Legacy: Handler JS Belum Berarti Aturan Hidup</title>
+      <title>Migrasi Legacy: Handler JS Belum Berarti Aturan Hidup</title>
       <link>https://hadymaggot.github.io/blog/legacy-handler-js-bukan-aturan-hidup/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/legacy-handler-js-bukan-aturan-hidup/</guid>
       <pubDate>Wed, 14 Oct 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Migrasi</category>
+      <category>Legacy</category>
+      <category>Engineering</category>
       <description>Saat memetakan kondisional form legacy, keberadaan handler JavaScript tidak membuktikan bahwa aturannya masih aktif.</description>
+      <content:encoded><![CDATA[<p>Saat memetakan kondisional form aplikasi legacy, kehadiran handler JavaScript tidak membuktikan bahwa aturan itu aktif. Legacy menyimpan banyak sisa kode: handler <code>$('#id').change(...)</code> untuk elemen yang tidak pernah dirender, dan <code>$form-&gt;field(...)</code> yang sudah dikomentari.</p><p>Jika sisa kode itu disalin apa adanya, aplikasi baru menghidupkan perilaku yang di legacy sendiri sudah mati. Pengguna mendapat checkbox dan aturan yang tidak pernah mereka lihat sebelumnya, dan parity justru rusak. Pada satu form, sebuah kolom beserta checkbox-nya sempat dibuat, padahal checkbox itu tidak ada di view mana pun.</p><h3>Tiga pemeriksaan berurutan</h3><p>Pertama, cari nama field pada view dan pastikan ada baris yang merender field tersebut, bukan hanya referensi di blok JavaScript atau baris yang dikomentari.</p><pre><code>grep -n "nama_field" view.php</code></pre><p>Kedua, hitung pemakaiannya pada data legacy. Angka satu digit di antara puluhan ribu baris berarti praktis mati.</p><pre><code>SELECT SUM(nama_kolom = 1), COUNT(*) FROM tabel_aktivitas;</code></pre><p>Ketiga, putuskan apakah aturan itu dipindahkan, lalu catat keputusan beserta buktinya pada dokumen parity agar tidak diperiksa ulang.</p>]]></content:encoded>
     </item>
     <item>
       <title>Zombie Process di Container: Mengapa PID 1 Perlu init</title>
       <link>https://hadymaggot.github.io/blog/container-zombie-process-init/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/container-zombie-process-init/</guid>
       <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Docker</category>
+      <category>Operations</category>
+      <category>Troubleshooting</category>
       <description>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.</description>
+      <content:encoded><![CDATA[<p>Container dapat berjalan normal selama berminggu-minggu, lalu scheduler berhenti men-spawn proses tanpa error yang jelas. Pada kasus ini penyebabnya ada di PID 1 container, yaitu skrip shell yang menjalankan entrypoint.</p><p>Shell tidak memanen (reap) proses anak yang yatim. Setiap proses latar yang di-spawn scheduler lalu selesai menjadi zombie permanen dan tetap memakai satu entry di process table. Pada salah satu service, lebih dari 99% proses PHP berstatus <code>&lt;defunct&gt;</code>, dan jumlah proses mendekati batas <code>threads-max</code> host.</p><h3>Gejala yang menyesatkan</h3><p>Setelah limit tercapai, <code>posix_spawn()</code> menolak dengan <code>Resource temporarily unavailable</code>. Scheduler menampilkan mutex yang masih terpegang, sehingga terlihat seperti masalah mutex. Consumer message queue hilang tanpa alarm, memori terdorong ke swap, dan API menjawab lebih dari 30 detik sampai reverse proxy memutus koneksi dengan 500.</p><h3>Diagnosis</h3><p>Hitung proses zombie di dalam container. Jumlah yang terus naik menunjukkan ada proses yang tidak dipanen.</p><pre><code>docker exec &lt;container&gt; sh -c 'ps -eo stat | grep -c "^Z"'
+docker exec &lt;container&gt; ps -p 1 -o args</code></pre><h3>Perbaikan</h3><p>Aktifkan init pada Compose agar PID 1 adalah init kecil (tini) yang memanen anak yatim.</p><pre><code>services:
+  app:
+    init: true</code></pre><p>Opsi yang sama tersedia sebagai <code>docker run --init</code>. Untuk image sendiri, <code>tini</code> sebagai ENTRYPOINT memberi hasil yang sama. Setelah container dibuat ulang, jumlah zombie tetap nol.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Basemap Tile: Watermark CARTO dan Larangan Google vt</title>
+      <link>https://hadymaggot.github.io/blog/basemap-tile-carto-dan-google-vt/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/basemap-tile-carto-dan-google-vt/</guid>
+      <pubDate>Tue, 29 Sep 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>GIS</category>
+      <category>Web</category>
+      <category>Operations</category>
+      <description>Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak boleh dipakai.</description>
+      <content:encoded><![CDATA[<p>Pada aplikasi peta, dua sumber tile bermasalah dengan cara yang tidak terlihat di monitoring biasa.</p><h3>CARTO menutup akses anonim</h3><p><code>basemaps.cartocdn.com</code> tetap menjawab HTTP 200, tetapi isinya gambar watermark berisi tulisan API key wajib. Kegagalannya senyap karena tidak ada status error yang dapat dipantau. Pemeriksaan yang berguna adalah memuat satu tile contoh dan membandingkan ukuran atau hash-nya dengan watermark yang dikenal.</p><h3>Endpoint Google vt bukan opsi</h3><p>Endpoint <code>mt1.google.com/vt/lyrs=...</code> adalah endpoint internal Google Maps: tanpa key, tanpa dokumentasi, dan di luar ketentuan layanan Maps Platform. Walau terlihat berfungsi, jangan dihidupkan kembali. Penggunaan Google Maps yang sah adalah Maps JavaScript API atau Map Tiles API, dan keduanya mewajibkan billing aktif.</p><h3>Konfigurasi yang dipakai</h3><p>Pusatkan semua sumber tile pada satu modul, sehingga penggantian sumber tidak menyebar ke banyak komponen. Pilihan yang tidak memerlukan key adalah Esri (satelit, jalan, topografi, kanvas abu-abu), OpenStreetMap, dan OpenTopoMap, dengan memperhatikan kebijakan penggunaan masing-masing. Atur <code>maxZoom</code> per sumber, karena zoom di atas batas sumber menghasilkan tile kosong.</p><pre><code>export const TILES = {
+  satelit: { url: '.../World_Imagery/MapServer/tile/{z}/{y}/{x}', maxZoom: 19 },
+  osm:     { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', maxZoom: 19 },
+}</code></pre>]]></content:encoded>
     </item>
     <item>
       <title>Mutex Scheduler Laravel yang Tertahan di Redis</title>
       <link>https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</guid>
       <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Laravel</category>
+      <category>Redis</category>
+      <category>Troubleshooting</category>
       <description>Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.</description>
+      <content:encoded><![CDATA[<p>Scheduler Laravel dengan <code>withoutOverlapping()</code> menyimpan mutex di cache store. Jika cache store adalah Redis, mutex itu bertahan setelah container direstart. Command yang sedang berjalan lalu mati mendadak karena koneksi ke broker diputus, kehabisan memori, atau container dibuat ulang. Command itu tidak sempat melepas mutex, sehingga scheduler menganggapnya masih berjalan.</p><p>TTL bawaan mutex adalah 1440 menit. Selama itu command tidak dijalankan lagi. Tidak ada error di log; yang terlihat hanya <code>No scheduled commands are ready to run</code> berulang, dan container tetap sehat.</p><h3>Diagnosis</h3><p>Gejala paling cepat terlihat di sisi queue: consumer berjumlah nol padahal seharusnya satu, atau tabel outbox penuh baris pending yang tidak pernah dipublikasikan. Setelah itu bandingkan <code>php artisan schedule:list</code>, yang menandai command dengan <code>Has Mutex</code>, dengan proses yang benar-benar berjalan.</p><pre><code>docker exec &lt;container&gt; ps -eo etime,args | grep artisan</code></pre><p>Mutex tanpa proses berarti tertahan. Mutex dengan proses yang hidup adalah kondisi normal untuk consumer yang berjalan terus, dan tidak boleh dihapus.</p><h3>Perbaikan permanen</h3><p>Menghapus key secara manual hanya menyelesaikan satu kejadian. Penyebab kambuhnya adalah command yang tidak pernah berhenti sendiri dan TTL mutex yang terlalu panjang. Dua perubahan berikut harus dipasang bersama.</p><p>Pertama, batasi setiap consumer dan relay agar keluar sendiri sebelum satu menit, dengan <code>wait()</code> bertimeout pendek di dalam loop yang memeriksa tenggat. Kedua, pasang <code>withoutOverlapping(2)</code> agar mutex kedaluwarsa dalam dua menit. TTL pendek hanya aman karena command dijamin selesai di bawah satu menit.</p><p>Perubahan kode saja tidak cukup, karena proses lama tetap berjalan dengan kode lama dan menahan mutex. Proses itu perlu di-kill sekali, lalu mutex dibersihkan setelahnya, sebab kill itu sendiri meninggalkan mutex.</p><p>Sebagai pengaman, pasang dua alert: queue berisi pesan tetapi tanpa consumer selama 10 menit, dan pesan outbox yang pending lebih dari 10 menit. Alert kedua diperlukan karena jika relay yang mati, queue justru kosong dan alert pertama tidak melihat masalah.</p>]]></content:encoded>
     </item>
     <item>
       <title>Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</title>
       <link>https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/</guid>
       <pubDate>Thu, 24 Sep 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Docker</category>
+      <category>Windows</category>
+      <category>Troubleshooting</category>
       <description>Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.</description>
+      <content:encoded><![CDATA[<h3>CRLF pada file yang di-bind mount</h3><p>Menulis ulang file lewat skrip, misalnya <code>open(p, 'w')</code> di Python atau <code>Set-Content</code> di PowerShell, menghasilkan akhiran baris CRLF di Windows. Untuk file yang di-bind mount ke container Linux, ini merusak: <code>dash</code> membaca <code>set -e\r</code> sebagai <code>set: Illegal option -</code>, dan container masuk crash-loop.</p><p><code>.gitattributes</code> dengan <code>*.sh text eol=lf</code> hanya melindungi isi yang masuk ke git. Container membaca working tree secara langsung, sebelum git menyentuhnya, sehingga perlindungan itu tidak berlaku. Gunakan tool edit bawaan editor, atau tulis dengan <code>newline='\n'</code> di Python. Setelah menulis skrip shell, periksa dengan <code>file &lt;path&gt;</code>; hasilnya tidak boleh menyebut CRLF, dan jika menyebut, perbaiki dengan <code>sed -i 's/\r$//'</code>. Gejala lain di container adalah <code>bad interpreter: /bin/sh^M</code>.</p><h3>/dev/null yang menjadi file nul</h3><p>Pada Git Bash, argumen <code>/dev/null</code> yang diteruskan ke <code>docker compose exec</code> terkena konversi path MSYS dan sampai di container sebagai <code>nul</code>, yaitu file biasa. Karena working directory container adalah bind mount ke repository, file <code>nul</code> muncul di dalam repository dan hampir ikut ter-commit.</p><p>Buang output di sisi host, setelah perintah docker, bukan sebagai argumen yang menyeberang ke container. Periksa juga <code>git status --short | grep -i nul</code> sebelum commit. Untuk path absolut di dalam container, set <code>MSYS_NO_PATHCONV=1</code>.</p><pre><code>docker compose exec -T app curl -s http://localhost:8000/health &gt;/dev/null
+MSYS_NO_PATHCONV=1 docker compose exec -T app sh -c 'cd /app &amp;&amp; ls'</code></pre>]]></content:encoded>
     </item>
     <item>
-      <title>Cakupan Dependabot: Image di docker-compose Sering Tidak Terpantau</title>
+      <title>Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa</title>
+      <link>https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/</guid>
+      <pubDate>Wed, 23 Sep 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>GIS</category>
+      <category>Data</category>
+      <category>Indonesia</category>
+      <description>Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.</description>
+      <content:encoded><![CDATA[<p>Master wilayah pada sebuah aplikasi ternyata memakai kode Kemendagri, bukan BPS, padahal komentar di kode menyebutnya kode BPS. Kesalahan itu bertahan lama karena kode provinsi dan kabupaten/kota kedua sistem kebetulan bernilai sama. Perbedaan baru terlihat di level desa.</p><pre><code>Kemendagri   11.01.01.2001    bertitik, ekor 4 digit
+BPS          1101012001      10 digit, ekor 3 digit</code></pre><p>Data yang dipakai berasal dari repository wilayah yang mengikuti Kepmendagri 300.2.2-2138 Tahun 2025. Hasilnya diverifikasi ke dokumen resmi, bukan hanya ke repository: 38 provinsi cocok pada lima kolom, dengan total 416 kabupaten, 98 kota, 7.285 kecamatan, 8.496 kelurahan, dan 75.266 desa. Kepmendagri 2430/2025 hanya mengubah data pulau di Aceh dan Sumatera Utara, sehingga kode administrasi tidak berubah.</p><h3>Tiga hal yang menjebak</h3><p>Pertama, ekor kode desa memiliki tiga seri, bukan dua: 1xxx untuk kelurahan, 2xxx untuk desa, dan 3xxx untuk desa adat. Desa adat berjumlah 14 baris dan seluruhnya berada di Kabupaten Jayapura. Menghitung desa dengan <code>LIKE '2%'</code> saja akan kurang 14 baris.</p><pre><code>SELECT COUNT(*) FROM wilayah WHERE LENGTH(kode) = 13 AND RIGHT(kode, 4) &gt;= '2000';</code></pre><p>Kedua, perubahan nama atau pemekaran tidak selalu mengubah kode, dan sebaliknya. Ketiga, selalu cocokkan jumlah per tingkat ke dokumen sumber setelah import, karena selisih satu baris sering berarti satu seri kode yang terlewat.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Cakupan Dependabot: Image di docker-compose Luput Dipantau</title>
       <link>https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</guid>
       <pubDate>Fri, 04 Sep 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Security</category>
+      <category>Dependabot</category>
+      <category>Docker</category>
       <description>Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.</description>
+      <content:encoded><![CDATA[<p>Konfigurasi Dependabot untuk ekosistem docker yang hanya mencakup <code>/docker/*</code> memindai Dockerfile di direktori itu, tetapi tidak membaca <code>docker-compose.yml</code> di root. Pada repository ini, 23 deklarasi <code>image:</code> tidak terpantau sama sekali: message broker, reverse proxy, object storage, stack monitoring, dan lainnya. Dua image di antaranya tertinggal beberapa versi dari rilis stabil terbaru.</p><p>Perbaikannya menambahkan <code>"/"</code> pada daftar <code>directories</code>.</p><pre><code>- package-ecosystem: docker
+  directories: ["/docker/*", "/"]
+  target-branch: development</code></pre><h3>Tag latest dan digest</h3><p>Tag <code>:latest</code> yang dipatok dengan <code>@sha256:</code> tetap dapat diulang, karena digest yang menentukan isi image. Masalahnya bukan isi yang bergeser sendiri, melainkan digest yang tidak pernah diperbarui karena tidak ada yang memeriksanya.</p><h3>Branch tujuan dan aturan image dasar</h3><p>Tanpa <code>target-branch</code>, setiap kenaikan dependency masuk sebagai PR ke branch default, dipindai di sana, dan main yang tersandera jika hasilnya merah. Arahkan ke branch integrasi, dan jalankan pemindaian keamanan pada setiap push ke branch itu agar sudah tersapu sebelum PR ke main dibuka.</p><p>Aturan untuk image dasar: hanya LTS atau stable, dan yang terbaru dari keduanya. Versi current, edge, atau RC ditolak seberapa pun barunya, karena Dependabot tidak mengetahui status LTS sebuah rilis.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Koordinat DMS dan Validasi Lintang di Luar Bounding Box</title>
+      <link>https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>GIS</category>
+      <category>Data</category>
+      <category>Migrasi</category>
+      <description>Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.</description>
+      <content:encoded><![CDATA[<p>Pada migrasi data lokasi unit dari sistem legacy, koordinat disimpan di kolom varchar yang sama dengan format campuran. Sebagian berupa desimal, sebagian lagi DMS, misalnya <code>7°42'58.7"S</code>. Parser migrasi hanya menerima desimal, sehingga puluhan koordinat tampak hilang padahal hanya tidak terbaca. Setelah parser diperbaiki, 46 koordinat dipulihkan.</p><h3>Gotcha encoding</h3><p>Output MySQL pada sistem itu berencoding latin1. Simbol derajat (<code>0xb0</code>) menggagalkan pembacaan UTF-8, sehingga data perlu dibaca dengan penanganan error yang eksplisit, atau konversi encoding dilakukan di sisi database.</p><h3>Bounding box tidak cukup</h3><p>Validasi yang paling mudah adalah memeriksa bahwa titik berada dalam kotak Indonesia (lintang sekitar -11,5 sampai 6,5). Kotak itu mencakup lintang utara, sehingga sebuah titik di Balikpapan yang tertulis +1,1986 padahal seharusnya -1,1986 tetap lolos, meski posisinya meleset sekitar 265 km. Kesalahan tanda lintang adalah salah satu kesalahan input yang paling umum.</p><p>Validasi yang lebih kuat menguji titik terhadap poligon wilayah yang seharusnya memuatnya, misalnya kabupaten/kota dari alamat unit. Titik yang jatuh di luar poligon itu ditandai untuk ditinjau, dan varian yang mungkin (tanda lintang dibalik, lintang dan bujur tertukar) dicoba satu per satu.</p><pre><code>SELECT id FROM unit u JOIN wilayah w ON w.kode = u.kode_kabkota
+WHERE NOT ST_Contains(w.geom, ST_SetSRID(ST_MakePoint(u.bujur, u.lintang), 4326));</code></pre>]]></content:encoded>
+    </item>
+    <item>
+      <title>Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi</title>
+      <link>https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/</guid>
+      <pubDate>Thu, 23 Jul 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>GIS</category>
+      <category>Migrasi</category>
+      <category>Data</category>
+      <description>Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.</description>
+      <content:encoded><![CDATA[<p>Sistem legacy memakai penomoran kabupaten/kota sendiri yang berbeda dari kode resmi pada master wilayah baru. Perbedaan itu pertama terlihat di satu provinsi, lalu dicek ke seluruh 511 kabupaten/kota lewat <code>postgres_fdw</code>. Hasilnya 166 nama tidak cocok dan 35 data tidak ditemukan, total 199 dari 511 (sekitar 39%), tersebar di hampir semua provinsi.</p><h3>Penyebabnya berlapis</h3><p>Sebagian kabupaten/kota hanya berbeda urutan nomor: namanya sama, kodenya berbeda. Provinsi Papua lama sudah dipecah menjadi enam provinsi sejak pemekaran 2022, sehingga satu kode provinsi lama dapat jatuh ke beberapa provinsi baru tergantung kabupaten/kotanya. Karena itu remap harus dilakukan di level kabupaten/kota. Sebagian kecil kabupaten juga berganti nama resmi setelah data legacy dibuat, misalnya Toba Samosir menjadi Toba dan Mamuju Utara menjadi Pasangkayu.</p><h3>Pendekatan yang dipakai</h3><p>Bangun tabel crosswalk dari kode legacy ke kode resmi, dengan sumber legacy yang tidak diubah (diakses lewat foreign data wrapper), lalu terapkan ke seluruh tabel yang mereferensikan wilayah. Simpan snapshot sebelum UPDATE, dan pastikan script dapat dijalankan ulang tanpa merusak hasil sebelumnya. Cocokkan juga dengan nama, bukan hanya kode, karena nama yang cocok dengan kode yang berbeda adalah tanda pergeseran urutan.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan</title>
+      <link>https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/</guid>
+      <pubDate>Wed, 22 Apr 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>GIS</category>
+      <category>Python</category>
+      <category>Tooling</category>
+      <description>Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.</description>
+      <content:encoded><![CDATA[<p>Data batas wilayah sering didistribusikan sebagai dump SQL berisi <code>INSERT</code> dengan <code>ST_GeomFromText</code> atau <code>ST_GeomFromGeoJSON</code>. Untuk menampilkannya di peta web, data itu perlu dikonversi menjadi GeoJSON. Tool <a href="https://github.com/hadymaggot/hadymaggot.github.io/tree/main/tools/sql_geojson" target="_blank" rel="noopener noreferrer">sql_geojson</a> melakukan konversi dua arah dan ditest di CI.</p><h3>Geometri kosong</h3><p>Sebagian baris memuat geometri kosong. Baris itu tidak dapat digambar, dan pada beberapa library membuat seluruh FeatureCollection gagal dimuat. Opsi <code>--drop-empty-geometry</code> membuangnya, dan <code>report_geojson_stats.py --report-missing</code> mendaftar kode dan nama fitur yang tidak memiliki geometri, agar kekurangan data dapat dilaporkan ke sumbernya.</p><h3>Geometri tidak valid</h3><p>Poligon dengan self-intersection atau cincin yang tidak tertutup membuat operasi seperti intersect dan union gagal. Opsi <code>--repair-geometries</code> memperbaikinya dengan shapely sebelum disimpan.</p><pre><code>python tools/sql_geojson/sql_to_geojson.py --in-dir sql --out-dir geojson \
+  --drop-empty-geometry --repair-geometries --skip-errors --recursive</code></pre><p>Dump dengan <code>VALUES</code> multi-baris juga didukung. Setelah konversi, jalankan laporan statistik untuk memastikan jumlah fitur dan cakupan geometri sesuai harapan.</p>]]></content:encoded>
     </item>
     <item>
       <title>Welcome to My Blog</title>
       <link>https://hadymaggot.github.io/blog/welcome-to-my-blog/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/welcome-to-my-blog/</guid>
       <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>DevOps</category>
+      <category>Web Development</category>
+      <category>Security</category>
       <description>Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.</description>
+      <content:encoded><![CDATA[<p>Welcome to my technical blog! This is a space where I'll be sharing my experiences, insights, and learnings from the world of web development, DevOps, and security operations.</p><p>Over the coming weeks and months, I plan to write about:</p><ul><li><strong>DevOps Best Practices:</strong> CI/CD pipelines, infrastructure as code, and automation strategies</li><li><strong>Web Development:</strong> Modern frameworks, performance optimization, and design patterns</li><li><strong>Security Operations:</strong> Threat detection, incident response, and security hardening</li><li><strong>Cloud Architecture:</strong> Scalable system design and cloud-native technologies</li></ul><p>Tulisan baru akan ditambahkan secara berkala.</p>]]></content:encoded>
     </item>
     <item>
       <title>Kubernetes Best Practices for Production</title>
       <link>https://hadymaggot.github.io/blog/kubernetes-best-practices/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/kubernetes-best-practices/</guid>
       <pubDate>Fri, 10 Jan 2025 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Kubernetes</category>
+      <category>DevOps</category>
+      <category>Cloud</category>
       <description>A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.</description>
+      <content:encoded><![CDATA[<p>Kubernetes has become the de facto standard for container orchestration, but running it in production requires careful planning and adherence to best practices.</p><h3>Key Considerations</h3><ul><li><strong>Resource Limits:</strong> Always set resource requests and limits for containers to prevent resource starvation</li><li><strong>Health Checks:</strong> Implement readiness and liveness probes for all services</li><li><strong>Security Policies:</strong> Use Pod Security Policies and Network Policies to enforce security boundaries</li><li><strong>Monitoring:</strong> Deploy comprehensive monitoring and logging solutions</li></ul><h3>Example Configuration</h3><pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+spec:
+  containers:
+  - name: app
+    image: my-app:latest
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"</code></pre><p>Following these practices will help ensure your Kubernetes deployments are reliable, secure, and performant.</p>]]></content:encoded>
     </item>
   </channel>
 </rss>

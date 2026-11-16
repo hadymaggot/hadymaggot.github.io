@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null | Ahadizapto</title>
+    <title>Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</title>
+    <meta name="description" content="Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/index.md">
     <link rel="icon" href="/assets/images/ico2.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -14,36 +17,57 @@
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/">
     <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
     <meta name="theme-color" content="#7AC55A">
-    <meta name="description" content="Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.">
-    <meta name="author" content="Ahadizapto">
-    <meta name="robots" content="index, follow">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="Docker, Windows, Troubleshooting">
     <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null">
     <meta property="og:description" content="Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.">
     <meta property="og:url" content="https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/">
-    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/docker-windows-crlf-dan-devnull.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null">
+    <meta property="article:published_time" content="2026-09-24">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="Docker">
+    <meta property="article:tag" content="Windows">
+    <meta property="article:tag" content="Troubleshooting">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null">
+    <meta name="twitter:description" content="Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/docker-windows-crlf-dan-devnull.png">
     <style>
-        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
         .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
-        .post-nav a, .post-body a { color: var(--primary-color); }
-        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
-        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
-        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
         .post-body { line-height: 1.8; }
         .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
         .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
     </style>
-    <script type="application/ld+json">
-    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null", "datePublished": "2026-09-24", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/", "keywords": "Docker, Windows, Troubleshooting"}
-    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/#article", "headline": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null", "description": "Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.", "image": ["https://hadymaggot.github.io/assets/images/og/docker-windows-crlf-dan-devnull.png"], "datePublished": "2026-09-24", "dateModified": "2026-09-24", "inLanguage": "id", "wordCount": 224, "keywords": "Docker, Windows, Troubleshooting", "articleSection": "Docker", "url": "https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null", "item": "https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/"}]}</script>
 </head>
 
 <body>
@@ -53,18 +77,25 @@
             <a href="/blog.html">/blog</a>
             <a href="/feed.xml">rss</a>
         </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</nav>
         <article>
             <h1>Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</h1>
             <div class="post-meta">
-                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-09-24</span>
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-24">24 September 2026</time></span>
                 <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
-                <span class="post-tags"><span>Docker</span><span>Windows</span><span>Troubleshooting</span></span>
             </div>
+            <div class="post-tags"><a href="/blog/tag/docker/">Docker</a><span>Windows</span><a href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
             <div class="post-body">
-                <h3>CRLF pada file yang di-bind mount</h3><p>Menulis ulang file lewat skrip, misalnya <code>open(p, 'w')</code> di Python atau <code>Set-Content</code> di PowerShell, menghasilkan akhiran baris CRLF di Windows. Untuk file yang di-bind mount ke container Linux, ini merusak: <code>dash</code> membaca <code>set -e\r</code> sebagai <code>set: Illegal option -</code>, dan container masuk crash-loop.</p><p><code>.gitattributes</code> dengan <code>*.sh text eol=lf</code> hanya melindungi isi yang masuk ke git. Container membaca working tree secara langsung, sebelum git menyentuhnya, sehingga perlindungan itu tidak berlaku. Gunakan tool edit bawaan editor, atau tulis dengan <code>newline='\n'</code> di Python. Setelah menulis skrip shell, periksa dengan <code>file &lt;berkas&gt;</code>; hasilnya tidak boleh menyebut CRLF, dan jika menyebut, perbaiki dengan <code>sed -i 's/\r$//'</code>. Gejala lain di container adalah <code>bad interpreter: /bin/sh^M</code>.</p><h3>/dev/null yang menjadi file nul</h3><p>Pada Git Bash, argumen <code>/dev/null</code> yang diteruskan ke <code>docker compose exec</code> terkena konversi path MSYS dan sampai di container sebagai <code>nul</code>, yaitu file biasa. Karena working directory container adalah bind mount ke repository, file <code>nul</code> muncul di dalam repository dan hampir ikut ter-commit.</p><p>Buang output di sisi host, setelah perintah docker, bukan sebagai argumen yang menyeberang ke container. Periksa juga <code>git status --short | grep -i nul</code> sebelum commit. Untuk path absolut di dalam container, set <code>MSYS_NO_PATHCONV=1</code>.</p><pre><code>docker compose exec -T app curl -s http://localhost:8000/health &gt;/dev/null
+                <h3>CRLF pada file yang di-bind mount</h3><p>Menulis ulang file lewat skrip, misalnya <code>open(p, 'w')</code> di Python atau <code>Set-Content</code> di PowerShell, menghasilkan akhiran baris CRLF di Windows. Untuk file yang di-bind mount ke container Linux, ini merusak: <code>dash</code> membaca <code>set -e\r</code> sebagai <code>set: Illegal option -</code>, dan container masuk crash-loop.</p><p><code>.gitattributes</code> dengan <code>*.sh text eol=lf</code> hanya melindungi isi yang masuk ke git. Container membaca working tree secara langsung, sebelum git menyentuhnya, sehingga perlindungan itu tidak berlaku. Gunakan tool edit bawaan editor, atau tulis dengan <code>newline='\n'</code> di Python. Setelah menulis skrip shell, periksa dengan <code>file &lt;path&gt;</code>; hasilnya tidak boleh menyebut CRLF, dan jika menyebut, perbaiki dengan <code>sed -i 's/\r$//'</code>. Gejala lain di container adalah <code>bad interpreter: /bin/sh^M</code>.</p><h3>/dev/null yang menjadi file nul</h3><p>Pada Git Bash, argumen <code>/dev/null</code> yang diteruskan ke <code>docker compose exec</code> terkena konversi path MSYS dan sampai di container sebagai <code>nul</code>, yaitu file biasa. Karena working directory container adalah bind mount ke repository, file <code>nul</code> muncul di dalam repository dan hampir ikut ter-commit.</p><p>Buang output di sisi host, setelah perintah docker, bukan sebagai argumen yang menyeberang ke container. Periksa juga <code>git status --short | grep -i nul</code> sebelum commit. Untuk path absolut di dalam container, set <code>MSYS_NO_PATHCONV=1</code>.</p><pre><code>docker compose exec -T app curl -s http://localhost:8000/health &gt;/dev/null
 MSYS_NO_PATHCONV=1 docker compose exec -T app sh -c 'cd /app &amp;&amp; ls'</code></pre>
             </div>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/traefik-label-perlu-recreate/">Traefik: Route Baru Perlu Recreate Container</a><span>Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya…</span></li><li><a href="/blog/redis-aof-korup-setelah-reboot/">Redis Crash-Loop karena AOF Korup Setelah Reboot</a><span>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file…</span></li><li><a href="/blog/container-zombie-process-init/">Zombie Process di Container: Mengapa PID 1 Perlu init</a><span>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie…</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/kode-wilayah-kemendagri-vs-bps/" rel="prev">&larr; Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa</a><a href="/blog/mutex-scheduler-tertahan-redis/" rel="next">Mutex Scheduler Laravel yang Tertahan di Redis &rarr;</a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

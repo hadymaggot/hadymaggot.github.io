@@ -7,15 +7,17 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 ## About
 
 - Name: Sapto Hadi, online as Ahadizapto and hadymaggot
-- Focus: security testing of web applications, turning pentest findings into automated tests that run in CI, DevOps and SRE (containers, Kubernetes, infrastructure as code, monitoring), and web development (PHP/Laravel, Vue, Python)
+- Focus: security testing of web applications, turning pentest findings into automated tests that run in CI, DevOps and SRE (containers, Kubernetes, infrastructure as code, monitoring), GIS (spatial data processing and interactive web maps), and web development
+- Languages used in his repositories: PHP, JavaScript, TypeScript, Python, SQL, Bash, PowerShell, R; main frameworks are Laravel and Vue
 - Security testing is done only on systems he owns or has written permission to test
 - Site languages: mostly Indonesian, with some English
 
 ## Skills
 
 - Security: penetration testing, SIEM, OWASP ZAP, Trivy, Semgrep, Gitleaks, Nmap
-- Ops: Linux, Docker, Kubernetes, Ansible, monitoring, SRE, Bash, Git, GitHub Actions
-- Dev: PHP, Laravel, VueJS, Python
+- Ops: Linux, Docker, Docker Compose, Kubernetes, Ansible, Traefik, Redis, RabbitMQ, PostgreSQL, MySQL, Prometheus, Grafana, Cloudflare, monitoring, SRE, Git, GitHub Actions
+- GIS: GeoJSON, shapefile, PostGIS, MapLibre GL, Leaflet, OpenLayers, Turf.js, proj4, XYZ/WMS tiles
+- Dev: PHP, Laravel, JavaScript, TypeScript, VueJS, Quasar, Python, Django, SQL, Bash, PowerShell, R, Playwright
 
 ## Projects
 
@@ -28,7 +30,32 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 
 ## Writing
 
-- [Blog](https://hadymaggot.github.io/blog.html): notes on pentest automation, security headers on static hosting, and pre-deployment ops checklists
+<!--ARTICLES:START-->
+- [Blog](https://hadymaggot.github.io/blog.html): daftar semua artikel; RSS di https://hadymaggot.github.io/feed.xml; seluruh artikel dalam satu berkas Markdown di https://hadymaggot.github.io/llms-full.txt
+- [Security Headers di GitHub Pages: Apa yang Bisa dan Tidak](https://hadymaggot.github.io/blog/security-headers-github-pages/): GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.
+- [Dari Temuan Pentest ke Test Otomatis di CI](https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/): Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.
+- [Checklist Ops Sebelum Deploy ke Produksi](https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/): Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.
+- [Traefik: Route Baru Perlu Recreate Container](https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/): Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.
+- [Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB](https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/): Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.
+- [Mempercepat Import Track PostGIS dengan CTE MATERIALIZED](https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/): Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.
+- [Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent](https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/): Data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak hasil run pertama.
+- [Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime](https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/): Prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau.
+- [Redis Crash-Loop karena AOF Korup Setelah Reboot](https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/): Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file AOF rusak.
+- [Gitleaks Melewatkan Secret pada Commit Rename](https://hadymaggot.github.io/blog/gitleaks-celah-rename-detection/): Peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak dipindai.
+- [Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode](https://hadymaggot.github.io/blog/daftar-tugas-adalah-petunjuk/): Butir belum dikerjakan pada daftar tugas atau ringkasan sesi belum tentu benar. Satu grep dapat menghemat seluruh pekerjaan.
+- [Migrasi Legacy: Handler JS Belum Berarti Aturan Hidup](https://hadymaggot.github.io/blog/legacy-handler-js-bukan-aturan-hidup/): Saat memetakan kondisional form legacy, keberadaan handler JavaScript tidak membuktikan bahwa aturannya masih aktif.
+- [Zombie Process di Container: Mengapa PID 1 Perlu init](https://hadymaggot.github.io/blog/container-zombie-process-init/): Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.
+- [Basemap Tile: Watermark CARTO dan Larangan Google vt](https://hadymaggot.github.io/blog/basemap-tile-carto-dan-google-vt/): Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak boleh dipakai.
+- [Mutex Scheduler Laravel yang Tertahan di Redis](https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/): Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.
+- [Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null](https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/): Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.
+- [Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa](https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/): Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.
+- [Cakupan Dependabot: Image di docker-compose Luput Dipantau](https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/): Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.
+- [Koordinat DMS dan Validasi Lintang di Luar Bounding Box](https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/): Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.
+- [Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi](https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/): Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.
+- [Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan](https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/): Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.
+- [Welcome to My Blog](https://hadymaggot.github.io/blog/welcome-to-my-blog/): Catatan teknis seputar cybersecurity, operations, dan web development, ditulis dari pengalaman membangun dan mengamankan sistem.
+- [Kubernetes Best Practices for Production](https://hadymaggot.github.io/blog/kubernetes-best-practices/): A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.
+<!--ARTICLES:END-->
 
 ## Contact
 

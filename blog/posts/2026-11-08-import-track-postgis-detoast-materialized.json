@@ -1,0 +1,14 @@
+{
+  "id": "import-track-postgis-detoast-materialized",
+  "title": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED",
+  "date": "2026-11-08",
+  "author": "Ahadizapto",
+  "tags": [
+    "GIS",
+    "PostGIS",
+    "Performance"
+  ],
+  "readTime": 3,
+  "excerpt": "Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.",
+  "content": "<p>Sebuah proses import track patroli memerlukan sekitar satu menit untuk data setahun, sebagian besar bukan di sisi aplikasi. Log menunjukkan waktu terbanyak ada pada dua tempat di server: pencocokan titik ke poligon provinsi, dan pembentukan LineString titik demi titik.</p><h3>Detoast per titik</h3><p>Geometri poligon provinsi berukuran besar disimpan sebagai TOAST. Pada query yang mengakses kolom itu untuk setiap titik, PostgreSQL men-detoast geometri yang sama berulang kali. Dengan 1,83 juta titik, biayanya terasa. Perbaikannya mengambil poligon sekali dalam CTE <code>MATERIALIZED</code>, lalu menyaring titik yang berada di provinsi kawasan sebelum pemeriksaan yang lebih mahal.</p><pre><code>WITH prov AS MATERIALIZED (\n  SELECT geom FROM provinsi WHERE kode = :kode\n)\nSELECT t.id\nFROM titik t, prov p\nWHERE ST_Intersects(t.geom, p.geom);</code></pre><h3>Geometri dari WKB</h3><p>Pembentukan LineString dari titik-titik diganti dengan geometri yang dibangun dari WKB melalui shapely, dan file DBF dibaca satu kali dengan hasilnya di-cache selama proses. Hasilnya, pada data setahun dengan 514 garis dan 1,83 juta titik, waktu turun dari 59 detik menjadi 19 detik, dan dari 45–48 detik menjadi 15–16 detik di server dev.</p><p>Pengujian terhadap alat pembanding yang menulis langsung ke PostGIS menunjukkan bahwa selisih waktu sebagian berasal dari tahap ekspor di aplikasi sumber, bukan dari proses import. Ukur dulu di mana waktu habis sebelum mengoptimalkan.</p>"
+}

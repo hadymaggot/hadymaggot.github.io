@@ -1,0 +1,15 @@
+{
+  // Worker hanya berisi aset statis (tanpa "main"), sehingga semua request adalah request aset
+  // yang gratis dan tidak dibatasi. Jangan menambah "main" atau "assets.run_worker_first":
+  // keduanya membuat request menghitung ke batas 100.000 per hari pada paket Free.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ahadizapto-site",
+  "compatibility_date": "2026-11-16",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

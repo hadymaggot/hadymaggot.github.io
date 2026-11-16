@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mempercepat Import Track PostGIS dengan CTE MATERIALIZED | Ahadizapto</title>
+    <meta name="description" content="Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/index.md">
+    <link rel="icon" href="/assets/images/ico2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
+    <meta name="theme-color" content="#7AC55A">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="GIS, PostGIS, Performance">
+    <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Mempercepat Import Track PostGIS dengan CTE MATERIALIZED">
+    <meta property="og:description" content="Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.">
+    <meta property="og:url" content="https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/import-track-postgis-detoast-materialized.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Mempercepat Import Track PostGIS dengan CTE MATERIALIZED">
+    <meta property="article:published_time" content="2026-11-08">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="GIS">
+    <meta property="article:tag" content="PostGIS">
+    <meta property="article:tag" content="Performance">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Mempercepat Import Track PostGIS dengan CTE MATERIALIZED">
+    <meta name="twitter:description" content="Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/import-track-postgis-detoast-materialized.png">
+    <style>
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
+        .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
+        .post-body { line-height: 1.8; }
+        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
+        .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/#article", "headline": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED", "description": "Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.", "image": ["https://hadymaggot.github.io/assets/images/og/import-track-postgis-detoast-materialized.png"], "datePublished": "2026-11-08", "dateModified": "2026-11-08", "inLanguage": "id", "wordCount": 206, "keywords": "GIS, PostGIS, Performance", "articleSection": "GIS", "url": "https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED", "item": "https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/"}]}</script>
+</head>
+
+<body>
+    <main class="post-page">
+        <nav class="post-nav" aria-label="Navigasi">
+            <a href="/">~/ahadizapto</a>
+            <a href="/blog.html">/blog</a>
+            <a href="/feed.xml">rss</a>
+        </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Mempercepat Import Track PostGIS dengan CTE MATERIALIZED</nav>
+        <article>
+            <h1>Mempercepat Import Track PostGIS dengan CTE MATERIALIZED</h1>
+            <div class="post-meta">
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-08">8 November 2026</time></span>
+                <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+            </div>
+            <div class="post-tags"><a href="/blog/tag/gis/">GIS</a><span>PostGIS</span><span>Performance</span></div>
+            <div class="post-body">
+                <p>Sebuah proses import track patroli memerlukan sekitar satu menit untuk data setahun, sebagian besar bukan di sisi aplikasi. Log menunjukkan waktu terbanyak ada pada dua tempat di server: pencocokan titik ke poligon provinsi, dan pembentukan LineString titik demi titik.</p><h3>Detoast per titik</h3><p>Geometri poligon provinsi berukuran besar disimpan sebagai TOAST. Pada query yang mengakses kolom itu untuk setiap titik, PostgreSQL men-detoast geometri yang sama berulang kali. Dengan 1,83 juta titik, biayanya terasa. Perbaikannya mengambil poligon sekali dalam CTE <code>MATERIALIZED</code>, lalu menyaring titik yang berada di provinsi kawasan sebelum pemeriksaan yang lebih mahal.</p><pre><code>WITH prov AS MATERIALIZED (
+  SELECT geom FROM provinsi WHERE kode = :kode
+)
+SELECT t.id
+FROM titik t, prov p
+WHERE ST_Intersects(t.geom, p.geom);</code></pre><h3>Geometri dari WKB</h3><p>Pembentukan LineString dari titik-titik diganti dengan geometri yang dibangun dari WKB melalui shapely, dan file DBF dibaca satu kali dengan hasilnya di-cache selama proses. Hasilnya, pada data setahun dengan 514 garis dan 1,83 juta titik, waktu turun dari 59 detik menjadi 19 detik, dan dari 45–48 detik menjadi 15–16 detik di server dev.</p><p>Pengujian terhadap alat pembanding yang menulis langsung ke PostGIS menunjukkan bahwa selisih waktu sebagian berasal dari tahap ekspor di aplikasi sumber, bukan dari proses import. Ukur dulu di mana waktu habis sebelum mengoptimalkan.</p>
+            </div>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+        </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a><span>Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor…</span></li><li><a href="/blog/basemap-tile-carto-dan-google-vt/">Basemap Tile: Watermark CARTO dan Larangan Google vt</a><span>Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak…</span></li><li><a href="/blog/kode-wilayah-kemendagri-vs-bps/">Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa</a><span>Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan…</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/backup-dan-idempotent-bulk-update/" rel="prev">&larr; Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</a><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/" rel="next">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB &rarr;</a></nav>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
+    </main>
+</body>
+
+</html>

@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mutex Scheduler Laravel yang Tertahan di Redis | Ahadizapto</title>
+    <meta name="description" content="Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/index.md">
     <link rel="icon" href="/assets/images/ico2.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -14,36 +17,57 @@
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/">
     <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
     <meta name="theme-color" content="#7AC55A">
-    <meta name="description" content="Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.">
-    <meta name="author" content="Ahadizapto">
-    <meta name="robots" content="index, follow">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="Laravel, Redis, Troubleshooting">
     <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Mutex Scheduler Laravel yang Tertahan di Redis">
     <meta property="og:description" content="Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.">
     <meta property="og:url" content="https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/">
-    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/mutex-scheduler-tertahan-redis.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Mutex Scheduler Laravel yang Tertahan di Redis">
+    <meta property="article:published_time" content="2026-09-26">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="Laravel">
+    <meta property="article:tag" content="Redis">
+    <meta property="article:tag" content="Troubleshooting">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Mutex Scheduler Laravel yang Tertahan di Redis">
+    <meta name="twitter:description" content="Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/mutex-scheduler-tertahan-redis.png">
     <style>
-        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
         .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
-        .post-nav a, .post-body a { color: var(--primary-color); }
-        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
-        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
-        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
         .post-body { line-height: 1.8; }
         .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
         .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
     </style>
-    <script type="application/ld+json">
-    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Mutex Scheduler Laravel yang Tertahan di Redis", "datePublished": "2026-09-26", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/", "keywords": "Laravel, Redis, Troubleshooting"}
-    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/#article", "headline": "Mutex Scheduler Laravel yang Tertahan di Redis", "description": "Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.", "image": ["https://hadymaggot.github.io/assets/images/og/mutex-scheduler-tertahan-redis.png"], "datePublished": "2026-09-26", "dateModified": "2026-09-26", "inLanguage": "id", "wordCount": 300, "keywords": "Laravel, Redis, Troubleshooting", "articleSection": "Laravel", "url": "https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Mutex Scheduler Laravel yang Tertahan di Redis", "item": "https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/"}]}</script>
 </head>
 
 <body>
@@ -53,17 +77,24 @@
             <a href="/blog.html">/blog</a>
             <a href="/feed.xml">rss</a>
         </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Mutex Scheduler Laravel yang Tertahan di Redis</nav>
         <article>
             <h1>Mutex Scheduler Laravel yang Tertahan di Redis</h1>
             <div class="post-meta">
-                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-09-26</span>
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-26">26 September 2026</time></span>
                 <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
-                <span class="post-tags"><span>Laravel</span><span>Redis</span><span>Troubleshooting</span></span>
             </div>
+            <div class="post-tags"><span>Laravel</span><a href="/blog/tag/redis/">Redis</a><a href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
             <div class="post-body">
-                <p>Scheduler Laravel dengan <code>withoutOverlapping()</code> menyimpan mutex di cache store. Jika cache store adalah Redis, mutex itu bertahan setelah container direstart. Command yang sedang berjalan lalu mati mendadak karena koneksi ke broker diputus, kehabisan memori, atau container dibuat ulang. Command itu tidak sempat melepas mutex, sehingga scheduler menganggapnya masih berjalan.</p><p>TTL bawaan mutex adalah 1440 menit. Selama itu command tidak dijalankan lagi. Tidak ada error di log; yang terlihat hanya <code>No scheduled commands are ready to run</code> berulang, dan container tetap sehat.</p><h3>Diagnosis</h3><p>Gejala paling cepat terlihat di sisi queue: consumer berjumlah nol padahal seharusnya satu, atau tabel outbox penuh baris pending yang tidak pernah dipublikasikan. Setelah itu bandingkan <code>php artisan schedule:list</code>, yang menandai command dengan <code>Has Mutex</code>, dengan proses yang benar-benar berjalan.</p><pre><code>docker exec &lt;container&gt; ps -eo etime,args | grep artisan</code></pre><p>Mutex tanpa proses berarti tertahan. Mutex dengan proses yang hidup adalah kondisi normal untuk consumer yang berjalan terus, dan tidak boleh dihapus.</p><h3>Perbaikan permanen</h3><p>Menghapus key secara manual hanya menyelesaikan satu kejadian. Penyebab kambuhnya adalah command yang tidak pernah berhenti sendiri dan TTL mutex yang terlalu panjang. Dua perubahan berikut harus dipasang bersama.</p><p>Pertama, batasi setiap consumer dan relay agar keluar sendiri sebelum satu menit, dengan <code>wait()</code> bertimeout pendek di dalam loop yang memeriksa tenggat. Kedua, pasang <code>withoutOverlapping(2)</code> agar mutex kedaluwarsa dalam dua menit. TTL pendek hanya aman karena command dijamin selesai di bawah satu menit.</p><p>Perubahan kode saja tidak cukup, karena proses lama tetap berjalan dengan kode lama dan menahan mutex. Proses itu perlu di-kill sekali, lalu mutex dibersihkan setelahnya, sebab kill itu sendiri meninggalkan mutex.</p><p>Sebagai pengaman, pasang dua alert: antrean berisi pesan tetapi tanpa consumer selama 10 menit, dan pesan outbox yang pending lebih dari 10 menit. Alert kedua diperlukan karena jika relay yang mati, antrean justru kosong dan alert pertama tidak melihat masalah.</p>
+                <p>Scheduler Laravel dengan <code>withoutOverlapping()</code> menyimpan mutex di cache store. Jika cache store adalah Redis, mutex itu bertahan setelah container direstart. Command yang sedang berjalan lalu mati mendadak karena koneksi ke broker diputus, kehabisan memori, atau container dibuat ulang. Command itu tidak sempat melepas mutex, sehingga scheduler menganggapnya masih berjalan.</p><p>TTL bawaan mutex adalah 1440 menit. Selama itu command tidak dijalankan lagi. Tidak ada error di log; yang terlihat hanya <code>No scheduled commands are ready to run</code> berulang, dan container tetap sehat.</p><h3>Diagnosis</h3><p>Gejala paling cepat terlihat di sisi queue: consumer berjumlah nol padahal seharusnya satu, atau tabel outbox penuh baris pending yang tidak pernah dipublikasikan. Setelah itu bandingkan <code>php artisan schedule:list</code>, yang menandai command dengan <code>Has Mutex</code>, dengan proses yang benar-benar berjalan.</p><pre><code>docker exec &lt;container&gt; ps -eo etime,args | grep artisan</code></pre><p>Mutex tanpa proses berarti tertahan. Mutex dengan proses yang hidup adalah kondisi normal untuk consumer yang berjalan terus, dan tidak boleh dihapus.</p><h3>Perbaikan permanen</h3><p>Menghapus key secara manual hanya menyelesaikan satu kejadian. Penyebab kambuhnya adalah command yang tidak pernah berhenti sendiri dan TTL mutex yang terlalu panjang. Dua perubahan berikut harus dipasang bersama.</p><p>Pertama, batasi setiap consumer dan relay agar keluar sendiri sebelum satu menit, dengan <code>wait()</code> bertimeout pendek di dalam loop yang memeriksa tenggat. Kedua, pasang <code>withoutOverlapping(2)</code> agar mutex kedaluwarsa dalam dua menit. TTL pendek hanya aman karena command dijamin selesai di bawah satu menit.</p><p>Perubahan kode saja tidak cukup, karena proses lama tetap berjalan dengan kode lama dan menahan mutex. Proses itu perlu di-kill sekali, lalu mutex dibersihkan setelahnya, sebab kill itu sendiri meninggalkan mutex.</p><p>Sebagai pengaman, pasang dua alert: queue berisi pesan tetapi tanpa consumer selama 10 menit, dan pesan outbox yang pending lebih dari 10 menit. Alert kedua diperlukan karena jika relay yang mati, queue justru kosong dan alert pertama tidak melihat masalah.</p>
             </div>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/redis-aof-korup-setelah-reboot/">Redis Crash-Loop karena AOF Korup Setelah Reboot</a><span>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file…</span></li><li><a href="/blog/traefik-label-perlu-recreate/">Traefik: Route Baru Perlu Recreate Container</a><span>Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya…</span></li><li><a href="/blog/container-zombie-process-init/">Zombie Process di Container: Mengapa PID 1 Perlu init</a><span>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie…</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/docker-windows-crlf-dan-devnull/" rel="prev">&larr; Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</a><a href="/blog/basemap-tile-carto-dan-google-vt/" rel="next">Basemap Tile: Watermark CARTO dan Larangan Google vt &rarr;</a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

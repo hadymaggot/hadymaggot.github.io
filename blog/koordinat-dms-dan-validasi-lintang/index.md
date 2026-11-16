@@ -1,0 +1,25 @@
+# Koordinat DMS dan Validasi Lintang di Luar Bounding Box
+
+- URL: https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/
+- Tanggal: 2026-08-28
+- Penulis: Sapto Hadi (Ahadizapto)
+- Tag: GIS, Data, Migrasi
+
+> Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.
+
+Pada migrasi data lokasi unit dari sistem legacy, koordinat disimpan di kolom varchar yang sama dengan format campuran. Sebagian berupa desimal, sebagian lagi DMS, misalnya `7°42'58.7"S`. Parser migrasi hanya menerima desimal, sehingga puluhan koordinat tampak hilang padahal hanya tidak terbaca. Setelah parser diperbaiki, 46 koordinat dipulihkan.
+
+### Gotcha encoding
+
+Output MySQL pada sistem itu berencoding latin1. Simbol derajat (`0xb0`) menggagalkan pembacaan UTF-8, sehingga data perlu dibaca dengan penanganan error yang eksplisit, atau konversi encoding dilakukan di sisi database.
+
+### Bounding box tidak cukup
+
+Validasi yang paling mudah adalah memeriksa bahwa titik berada dalam kotak Indonesia (lintang sekitar -11,5 sampai 6,5). Kotak itu mencakup lintang utara, sehingga sebuah titik di Balikpapan yang tertulis +1,1986 padahal seharusnya -1,1986 tetap lolos, meski posisinya meleset sekitar 265 km. Kesalahan tanda lintang adalah salah satu kesalahan input yang paling umum.
+
+Validasi yang lebih kuat menguji titik terhadap poligon wilayah yang seharusnya memuatnya, misalnya kabupaten/kota dari alamat unit. Titik yang jatuh di luar poligon itu ditandai untuk ditinjau, dan varian yang mungkin (tanda lintang dibalik, lintang dan bujur tertukar) dicoba satu per satu.
+
+```
+SELECT id FROM unit u JOIN wilayah w ON w.kode = u.kode_kabkota
+WHERE NOT ST_Contains(w.geom, ST_SetSRID(ST_MakePoint(u.bujur, u.lintang), 4326));
+```

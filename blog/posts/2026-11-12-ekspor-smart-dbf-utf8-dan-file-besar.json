@@ -1,0 +1,14 @@
+{
+  "id": "ekspor-smart-dbf-utf8-dan-file-besar",
+  "title": "Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB",
+  "date": "2026-11-12",
+  "author": "Ahadizapto",
+  "tags": [
+    "GIS",
+    "Data",
+    "Python"
+  ],
+  "readTime": 3,
+  "excerpt": "Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.",
+  "content": "<p>Mengimpor ekspor shapefile dari SMART Desktop memunculkan beberapa masalah yang tidak terlihat pada data uji kecil.</p><h3>DBF UTF-8 tanpa .cpg</h3><p>File DBF ditulis dalam UTF-8 tanpa file <code>.cpg</code>. GDAL, pyogrio, dan <code>foreign::read.dbf</code> mengasumsikan latin1, sehingga karakter seperti tanda pisah (en dash) berubah menjadi <code>â€“</code>. Tentukan encoding secara eksplisit, atau deteksi dengan memeriksa apakah isi file valid sebagai UTF-8.</p><h3>DBF lebih dari 2 GB</h3><p>Kolom teks sepanjang 254 byte dengan 129 kolom menghasilkan sekitar 25 KB per record. Pada 143.964 record, ukurannya 3,6 GB, padahal ZIP-nya hanya 33 MB. <code>foreign::read.dbf</code> gagal karena memakai <code>fseek</code> 32-bit. Solusinya membaca DBF secara streaming per blok record, bukan memuat semuanya.</p><h3>Identitas record</h3><p>Ekspor query observasi tertentu tidak memuat Patrol ID, sehingga tidak dapat direlasikan ke patroli. Gunakan query standar yang memuat relasi itu. Patrol ID juga dipakai ulang untuk patroli berbeda pada tanggal berbeda, sehingga identitas yang benar adalah kombinasi Patrol ID, tanggal mulai, dan unit pengelola. Mengelompokkan hanya berdasarkan Patrol ID menggabungkan patroli yang berbeda.</p>"
+}

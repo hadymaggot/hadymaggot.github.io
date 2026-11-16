@@ -1,0 +1,32 @@
+# Mutex Scheduler Laravel yang Tertahan di Redis
+
+- URL: https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/
+- Tanggal: 2026-09-26
+- Penulis: Sapto Hadi (Ahadizapto)
+- Tag: Laravel, Redis, Troubleshooting
+
+> Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.
+
+Scheduler Laravel dengan `withoutOverlapping()` menyimpan mutex di cache store. Jika cache store adalah Redis, mutex itu bertahan setelah container direstart. Command yang sedang berjalan lalu mati mendadak karena koneksi ke broker diputus, kehabisan memori, atau container dibuat ulang. Command itu tidak sempat melepas mutex, sehingga scheduler menganggapnya masih berjalan.
+
+TTL bawaan mutex adalah 1440 menit. Selama itu command tidak dijalankan lagi. Tidak ada error di log; yang terlihat hanya `No scheduled commands are ready to run` berulang, dan container tetap sehat.
+
+### Diagnosis
+
+Gejala paling cepat terlihat di sisi queue: consumer berjumlah nol padahal seharusnya satu, atau tabel outbox penuh baris pending yang tidak pernah dipublikasikan. Setelah itu bandingkan `php artisan schedule:list`, yang menandai command dengan `Has Mutex`, dengan proses yang benar-benar berjalan.
+
+```
+docker exec <container> ps -eo etime,args | grep artisan
+```
+
+Mutex tanpa proses berarti tertahan. Mutex dengan proses yang hidup adalah kondisi normal untuk consumer yang berjalan terus, dan tidak boleh dihapus.
+
+### Perbaikan permanen
+
+Menghapus key secara manual hanya menyelesaikan satu kejadian. Penyebab kambuhnya adalah command yang tidak pernah berhenti sendiri dan TTL mutex yang terlalu panjang. Dua perubahan berikut harus dipasang bersama.
+
+Pertama, batasi setiap consumer dan relay agar keluar sendiri sebelum satu menit, dengan `wait()` bertimeout pendek di dalam loop yang memeriksa tenggat. Kedua, pasang `withoutOverlapping(2)` agar mutex kedaluwarsa dalam dua menit. TTL pendek hanya aman karena command dijamin selesai di bawah satu menit.
+
+Perubahan kode saja tidak cukup, karena proses lama tetap berjalan dengan kode lama dan menahan mutex. Proses itu perlu di-kill sekali, lalu mutex dibersihkan setelahnya, sebab kill itu sendiri meninggalkan mutex.
+
+Sebagai pengaman, pasang dua alert: queue berisi pesan tetapi tanpa consumer selama 10 menit, dan pesan outbox yang pending lebih dari 10 menit. Alert kedua diperlukan karena jika relay yang mati, queue justru kosong dan alert pertama tidak melihat masalah.

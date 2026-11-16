@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traefik: Menambah Route Perlu Recreate Container, Bukan Restart | Ahadizapto</title>
+    <title>Traefik: Route Baru Perlu Recreate Container | Ahadizapto</title>
+    <meta name="description" content="Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/index.md">
     <link rel="icon" href="/assets/images/ico2.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -14,36 +17,57 @@
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/">
     <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
     <meta name="theme-color" content="#7AC55A">
-    <meta name="description" content="Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.">
-    <meta name="author" content="Ahadizapto">
-    <meta name="robots" content="index, follow">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="Traefik, Docker, Troubleshooting">
     <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Traefik: Menambah Route Perlu Recreate Container, Bukan Restart">
+    <meta property="og:title" content="Traefik: Route Baru Perlu Recreate Container">
     <meta property="og:description" content="Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.">
     <meta property="og:url" content="https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/">
-    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/traefik-label-perlu-recreate.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Traefik: Route Baru Perlu Recreate Container">
+    <meta property="article:published_time" content="2026-11-13">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="Traefik">
+    <meta property="article:tag" content="Docker">
+    <meta property="article:tag" content="Troubleshooting">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Traefik: Route Baru Perlu Recreate Container">
+    <meta name="twitter:description" content="Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/traefik-label-perlu-recreate.png">
     <style>
-        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
         .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
-        .post-nav a, .post-body a { color: var(--primary-color); }
-        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
-        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
-        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags a { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; display: inline-block; margin-bottom: 0.4rem; }
         .post-body { line-height: 1.8; }
         .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
         .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
         .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
     </style>
-    <script type="application/ld+json">
-    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Traefik: Menambah Route Perlu Recreate Container, Bukan Restart", "datePublished": "2026-11-13", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/", "keywords": "Traefik, Docker, Troubleshooting"}
-    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/#article", "headline": "Traefik: Route Baru Perlu Recreate Container", "description": "Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.", "image": ["https://hadymaggot.github.io/assets/images/og/traefik-label-perlu-recreate.png"], "datePublished": "2026-11-13", "dateModified": "2026-11-13", "inLanguage": "id", "wordCount": 153, "keywords": "Traefik, Docker, Troubleshooting", "articleSection": "Traefik", "url": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Traefik: Route Baru Perlu Recreate Container", "item": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/"}]}</script>
 </head>
 
 <body>
@@ -53,13 +77,14 @@
             <a href="/blog.html">/blog</a>
             <a href="/feed.xml">rss</a>
         </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Traefik: Route Baru Perlu Recreate Container</nav>
         <article>
-            <h1>Traefik: Menambah Route Perlu Recreate Container, Bukan Restart</h1>
+            <h1>Traefik: Route Baru Perlu Recreate Container</h1>
             <div class="post-meta">
-                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-11-13</span>
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-13">13 November 2026</time></span>
                 <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
-                <span class="post-tags"><span>Traefik</span><span>Docker</span><span>Troubleshooting</span></span>
             </div>
+            <div class="post-tags"><span>Traefik</span><a href="/blog/tag/docker/">Docker</a><a href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
             <div class="post-body">
                 <p>Menambah <code>PathPrefix</code> baru pada label Traefik sebuah service tidak berlaku dengan <code>docker compose restart traefik</code>. Label dibaca dari container yang sedang berjalan, dan container itu masih memegang label lama. Service harus dibuat ulang dengan <code>docker compose up -d &lt;service&gt;</code>.</p><h3>Gejala yang menyesatkan</h3><p>Request menggantung, bukan 404. Router frontend memakai <code>Host(localhost)</code> tanpa batasan path, sehingga <code>/api/*</code> yang tidak cocok dengan router mana pun jatuh ke dev server frontend dan diam di sana sampai timeout. Jika endpoint API yang baru menggantung sementara endpoint lain pada service yang sama menjawab normal, curigai label lebih dulu sebelum kode.</p><h3>Memastikan tanpa menebak</h3><pre><code># dari dalam container: 200 berarti kodenya benar
 docker compose exec -T &lt;service&gt; curl -s -o /tmp/out -w "%{http_code}\n" http://localhost:&lt;port&gt;/api/&lt;endpoint&gt;
@@ -67,7 +92,13 @@ docker compose exec -T &lt;service&gt; curl -s -o /tmp/out -w "%{http_code}\n" h
 # lewat Traefik: 401 berarti route ada, menggantung berarti label belum terbaca
 timeout 15 curl -s -o /dev/null -w "%{http_code}\n" http://localhost:&lt;port-traefik&gt;/api/&lt;endpoint&gt;</code></pre><p>Setelah service dibuat ulang, tunggu sampai Traefik juga berstatus sehat sebelum menyimpulkan hasilnya.</p>
             </div>
+            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), engineer di bidang security, operations, dan GIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/redis-aof-korup-setelah-reboot/">Redis Crash-Loop karena AOF Korup Setelah Reboot</a><span>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file…</span></li><li><a href="/blog/container-zombie-process-init/">Zombie Process di Container: Mengapa PID 1 Perlu init</a><span>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie…</span></li><li><a href="/blog/docker-windows-crlf-dan-devnull/">Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</a><span>Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul…</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/" rel="prev">&larr; Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a><a href="/blog/checklist-ops-sebelum-deploy/" rel="next">Checklist Ops Sebelum Deploy ke Produksi &rarr;</a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>
