@@ -31,6 +31,72 @@
       <priority>0.6</priority>
    </url>
    <url>
+      <loc>https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/</loc>
+      <lastmod>2026-11-13</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</loc>
+      <lastmod>2026-11-06</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</loc>
+      <lastmod>2026-10-30</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/</loc>
+      <lastmod>2026-10-30</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/gitleaks-celah-rename-detection/</loc>
+      <lastmod>2026-10-23</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/daftar-tugas-adalah-petunjuk/</loc>
+      <lastmod>2026-10-17</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/legacy-handler-js-bukan-aturan-hidup/</loc>
+      <lastmod>2026-10-14</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/container-zombie-process-init/</loc>
+      <lastmod>2026-10-02</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</loc>
+      <lastmod>2026-09-26</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/</loc>
+      <lastmod>2026-09-24</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</loc>
+      <lastmod>2026-09-04</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
       <loc>https://hadymaggot.github.io/blog/welcome-to-my-blog/</loc>
       <lastmod>2025-01-15</lastmod>
       <changefreq>yearly</changefreq>

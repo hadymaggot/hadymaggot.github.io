@@ -10,21 +10,98 @@
       <link>https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/</guid>
       <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
-      <description>Laporan pentest yang berhenti di PDF gampang terlupakan. Ubah tiap temuan menjadi test yang gagal selama celahnya ada, lalu jalankan terus di CI.</description>
+      <description>Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.</description>
     </item>
     <item>
       <title>Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</title>
       <link>https://hadymaggot.github.io/blog/security-headers-github-pages/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/security-headers-github-pages/</guid>
       <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
-      <description>GitHub Pages tidak mengizinkan header HTTP kustom. Ini yang tetap bisa dilakukan, dan kapan perlu menaruh proxy di depannya.</description>
+      <description>GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.</description>
     </item>
     <item>
       <title>Checklist Ops Sebelum Deploy ke Produksi</title>
       <link>https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/</link>
       <guid isPermaLink="true">https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/</guid>
       <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
-      <description>Daftar singkat yang saya cek sebelum rilis: dry-run, rollback, backup yang teruji, secret, dan observability.</description>
+      <description>Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.</description>
+    </item>
+    <item>
+      <title>Traefik: Menambah Route Perlu Recreate Container, Bukan Restart</title>
+      <link>https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/</guid>
+      <pubDate>Fri, 13 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.</description>
+    </item>
+    <item>
+      <title>Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</title>
+      <link>https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</guid>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak hasil run pertama.</description>
+    </item>
+    <item>
+      <title>Redis Crash-Loop karena AOF Korup Setelah Reboot Tidak Bersih</title>
+      <link>https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/redis-aof-korup-setelah-reboot/</guid>
+      <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file AOF rusak.</description>
+    </item>
+    <item>
+      <title>Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime</title>
+      <link>https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/type-check-hijau-bukan-bukti-runtime/</guid>
+      <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau.</description>
+    </item>
+    <item>
+      <title>Gitleaks Melewatkan Secret pada Commit Rename</title>
+      <link>https://hadymaggot.github.io/blog/gitleaks-celah-rename-detection/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/gitleaks-celah-rename-detection/</guid>
+      <pubDate>Fri, 23 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak dipindai.</description>
+    </item>
+    <item>
+      <title>Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode</title>
+      <link>https://hadymaggot.github.io/blog/daftar-tugas-adalah-petunjuk/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/daftar-tugas-adalah-petunjuk/</guid>
+      <pubDate>Sat, 17 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Butir belum dikerjakan pada daftar tugas atau ringkasan sesi belum tentu benar. Satu grep dapat menghemat seluruh pekerjaan.</description>
+    </item>
+    <item>
+      <title>Memigrasi Aplikasi Legacy: Handler JS Belum Berarti Aturan Hidup</title>
+      <link>https://hadymaggot.github.io/blog/legacy-handler-js-bukan-aturan-hidup/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/legacy-handler-js-bukan-aturan-hidup/</guid>
+      <pubDate>Wed, 14 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Saat memetakan kondisional form legacy, keberadaan handler JavaScript tidak membuktikan bahwa aturannya masih aktif.</description>
+    </item>
+    <item>
+      <title>Zombie Process di Container: Mengapa PID 1 Perlu init</title>
+      <link>https://hadymaggot.github.io/blog/container-zombie-process-init/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/container-zombie-process-init/</guid>
+      <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.</description>
+    </item>
+    <item>
+      <title>Mutex Scheduler Laravel yang Tertahan di Redis</title>
+      <link>https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</guid>
+      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <description>Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.</description>
+    </item>
+    <item>
+      <title>Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</title>
+      <link>https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/docker-windows-crlf-dan-devnull/</guid>
+      <pubDate>Thu, 24 Sep 2026 00:00:00 +0000</pubDate>
+      <description>Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.</description>
+    </item>
+    <item>
+      <title>Cakupan Dependabot: Image di docker-compose Sering Tidak Terpantau</title>
+      <link>https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</guid>
+      <pubDate>Fri, 04 Sep 2026 00:00:00 +0000</pubDate>
+      <description>Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.</description>
     </item>
     <item>
       <title>Welcome to My Blog</title>
