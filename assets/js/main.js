@@ -85,6 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Add event listeners for navigation links
 document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', function(e) {
+        // Simulasi terminal hanya ada di beranda; di halaman lain biarkan navigasi normal
+        if (!document.querySelector('.terminal-content') || !this.getAttribute('href').startsWith('#')) return;
         e.preventDefault();
 
         // Hentikan semua typing yang sedang berjalan
@@ -97,14 +99,13 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         switch(target) {
             case 'about':
                 command = 'cat about.txt';
-                output = `<p>Halo, saya Sapto Hadi (Ahadizapto). Saya bekerja di irisan cybersecurity dan operations:
-                            membangun sistem yang aman, mudah dioperasikan, dan bisa diaudit.</p>
-                        <p><strong>Security</strong> &mdash; menguji aplikasi web secara terukur (access control, kebocoran data
-                            di sisi klien, header dan TLS, dependensi rentan), lalu mengubah temuan pentest menjadi test otomatis
-                            yang berjalan terus di CI.</p>
-                        <p><strong>Ops</strong> &mdash; container dan Kubernetes, infrastructure as code, CI/CD, serta monitoring
-                            dan observability dengan prinsip SRE.</p>
-                        <p><strong>Dev</strong> &mdash; aplikasi web dengan PHP/Laravel dan Vue, serta Python untuk otomasi.</p>
+                output = `<p>Saya Sapto Hadi (Ahadizapto), engineer di bidang security dan operations. Fokus saya pada pengujian
+                            keamanan aplikasi web, pengelolaan infrastruktur berbasis container, dan otomasi pipeline CI/CD.</p>
+                        <p>Pengujian keamanan mencakup access control, kebocoran data di sisi client, header dan TLS, serta dependency
+                            yang memiliki CVE. Setiap temuan dijadikan test otomatis, sehingga celah yang sama terdeteksi jika muncul
+                            kembali.</p>
+                        <p>Di sisi operations, pekerjaan saya meliputi container dan Kubernetes, infrastructure as code, serta monitoring
+                            dan observability. Aplikasi dikembangkan dengan PHP/Laravel dan Vue, dengan Python untuk otomasi.</p>
                         <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
             case 'skills':
