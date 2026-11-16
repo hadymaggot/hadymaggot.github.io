@@ -1,0 +1,6 @@
+Contact: mailto:saptohadi@outlook.com
+Expires: 2027-11-16T00:00:00.000Z
+Acknowledgments: https://hadymaggot.github.io/meta/acknowledgments
+Policy: https://hadymaggot.github.io/meta/security-policy
+Preferred-Languages: id, en
+Canonical: https://hadymaggot.github.io/.well-known/security.txt
