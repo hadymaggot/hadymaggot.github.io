@@ -10,7 +10,7 @@ Jika pelajarannya tidak dapat digeneralisasi tanpa membocorkan konteks klien ata
 
 ## Yang tidak boleh muncul
 
-Nama klien, instansi, perusahaan, atau project internal; nama host, alamat IP, port internal, path server, dan URL internal; kredensial, token, dan nama akun; nama orang; nomor PR atau issue; hash commit; tanggal kejadian yang spesifik; kata "user" sebagai pengamat luar; serta rujukan ke AI atau asisten. Angka teknis (ukuran, jumlah, durasi) boleh dipakai jika tidak mengidentifikasi sistem tertentu. Nama produk dan library publik boleh disebut.
+Nama klien, instansi, perusahaan, atau project internal; nama host, alamat IP, port internal, path server, dan URL internal; kredensial, token, dan nama akun; nama orang; nomor PR atau issue; hash commit; tanggal kejadian yang spesifik; kata "user" sebagai pengamat luar; serta rujukan ke AI atau asisten. Angka teknis (ukuran, jumlah, durasi) boleh dipakai jika tidak mengidentifikasi sistem tertentu. Nama produk dan library publik boleh disebut. Jika ragu apakah sebuah detail dapat mengidentifikasi klien, project, atau sistem tertentu, buang detail itu. Kerahasiaan klien lebih penting daripada kelengkapan cerita.
 
 ## Register tulisan
 

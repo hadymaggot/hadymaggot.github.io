@@ -62,9 +62,31 @@ def memory_type(text):
     return m.group(1) if m else ""
 
 
+SENSITIVE_WORDS = re.compile(r"\b(kredensial|password|passwd|kata sandi|secret|private key|api key|ssh key|token akses)\b", re.I)
+MAX_CLIENT_TERMS = 2
+
+
+def sensitive_source(text, terms):
+    """Bahan yang memuat IP, kredensial, atau banyak istilah klien tidak dikirim ke model sama sekali."""
+    if SENSITIVE_WORDS.search(text):
+        return True
+    for label, pattern in safety.RULES:
+        if label == "password atau secret literal":
+            continue
+        for m in pattern.finditer(text):
+            # angka versi seperti 1.2.3.400 bukan alamat IP
+            if label == "alamat IP" and any(int(p) > 255 for p in m.group(0).split(".")):
+                continue
+            return True
+    lowered = text.lower()
+    hits = sum(1 for t in terms if safety.denied(t, lowered))
+    return hits > MAX_CLIENT_TERMS
+
+
 def cmd_pick(args):
     ledger = load_ledger()
     types = tuple(t for t in args.types.split(",") if t)
+    terms, _ = safety.load_denylist()
     candidates = []
     for f in memory_files():
         key = f"{f.parent.parent.name}/{f.name}"
@@ -72,6 +94,8 @@ def cmd_pick(args):
             continue
         text = f.read_text(encoding="utf-8", errors="replace")
         if memory_type(text) not in types or not (MIN_CHARS <= len(text) <= MAX_CHARS):
+            continue
+        if sensitive_source(text, terms):
             continue
         candidates.append((key, f))
     if not candidates:
