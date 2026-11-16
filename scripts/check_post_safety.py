@@ -4,7 +4,7 @@ Memblokir data yang tidak boleh keluar ke situs publik: alamat IP, email selain 
 kredensial, private key, dan istilah pada daftar tolak lokal (nama klien, nama project internal).
 
 Daftar tolak lokal tidak disimpan di repository supaya nama klien tidak ikut terpublikasi.
-Lokasinya diambil dari env BLOG_DENYLIST, atau ~/.claude/blog-denylist.txt (satu istilah per baris,
+Lokasinya diambil dari env BLOG_DENYLIST, atau ~/.blog-denylist.txt (satu istilah per baris,
 baris berawalan # diabaikan, pencocokan tidak membedakan huruf besar-kecil).
 
 Jalankan dari root repo: python scripts/check_post_safety.py [berkas.json ...]
@@ -33,35 +33,12 @@ RULES = [
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 
 
-# Nama project milik sendiri yang boleh disebut di artikel.
-PUBLIC_PROJECTS = {"automation", "security-audit-kit", "hadymaggot-github-io"}
-
-
-def derive_project_terms():
-    """Nama project di ~/.claude/projects dijadikan istilah tolak, supaya project baru otomatis terlindungi."""
-    base = Path.home() / ".claude" / "projects"
-    terms = set()
-    if not base.is_dir():
-        return terms
-    for d in base.iterdir():
-        name = re.sub(r"^[a-zA-Z]--(?:GitHub-)?", "", d.name).lower()
-        name = re.sub(r"--claude-worktrees-.*$", "", name)
-        if "appdata" in name or "temp" in name or name in PUBLIC_PROJECTS or len(name) < 5:
-            continue
-        if name.startswith("automation-"):
-            name = name[len("automation-"):]
-        if name not in PUBLIC_PROJECTS and len(name) >= 5:
-            terms.add(name)
-    return terms
-
-
 def load_denylist():
-    path = Path(os.environ.get("BLOG_DENYLIST") or Path.home() / ".claude" / "blog-denylist.txt")
+    path = Path(os.environ.get("BLOG_DENYLIST") or Path.home() / ".blog-denylist.txt")
     if not path.is_file():
         return [], None
     terms = {ln.strip().lower() for ln in path.read_text(encoding="utf-8").splitlines()
              if ln.strip() and not ln.lstrip().startswith("#")}
-    terms |= derive_project_terms()
     return sorted(terms), path
 
 
