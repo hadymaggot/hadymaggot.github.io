@@ -85,6 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Add event listeners for navigation links
 document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', function(e) {
+        // Simulasi terminal hanya ada di beranda; di halaman lain biarkan navigasi normal
+        if (!document.querySelector('.terminal-content') || !this.getAttribute('href').startsWith('#')) return;
         e.preventDefault();
 
         // Hentikan semua typing yang sedang berjalan
