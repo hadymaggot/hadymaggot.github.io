@@ -298,7 +298,7 @@ def render_page(p, posts):
             <div class="post-body">
                 {p["content"]}
             </div>
-            <aside class="post-author">Ditulis oleh <strong>{AUTHOR_NAME}</strong> (Ahadizapto), full-stack developer dan DevOps engineer dengan fokus pada security dan WebGIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+            <aside class="post-author">Ditulis oleh <strong>Saya</strong>. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
         <section class="post-related">
             <h2>Artikel terkait</h2>

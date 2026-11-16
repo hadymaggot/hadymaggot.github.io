@@ -118,7 +118,7 @@
   directories: ["/docker/*", "/"]
   target-branch: development</code></pre><h3>Tag latest dan digest</h3><p>Tag <code>:latest</code> yang dipatok dengan <code>@sha256:</code> tetap dapat diulang, karena digest yang menentukan isi image. Masalahnya bukan isi yang bergeser sendiri, melainkan digest yang tidak pernah diperbarui karena tidak ada yang memeriksanya.</p><h3>Branch tujuan dan aturan image dasar</h3><p>Tanpa <code>target-branch</code>, setiap kenaikan dependency masuk sebagai PR ke branch default, dipindai di sana, dan main yang tersandera jika hasilnya merah. Arahkan ke branch integrasi, dan jalankan pemindaian keamanan pada setiap push ke branch itu agar sudah tersapu sebelum PR ke main dibuka.</p><p>Aturan untuk image dasar: hanya LTS atau stable, dan yang terbaru dari keduanya. Versi current, edge, atau RC ditolak seberapa pun barunya, karena Dependabot tidak mengetahui status LTS sebuah rilis.</p>
             </div>
-            <aside class="post-author">Ditulis oleh <strong>Sapto Hadi</strong> (Ahadizapto), full-stack developer dan DevOps engineer dengan fokus pada security dan WebGIS. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+            <aside class="post-author">Ditulis oleh <strong>Saya</strong>. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
         </article>
         <section class="post-related">
             <h2>Artikel terkait</h2>
