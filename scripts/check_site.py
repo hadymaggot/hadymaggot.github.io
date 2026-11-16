@@ -115,6 +115,17 @@ def check_blog_build():
             fail(f"{name} tidak sama dengan hasil build (jalankan scripts/build_blog.py)")
 
 
+def check_post_safety():
+    """Artikel tidak boleh memuat IP, kredensial, email pribadi, atau istilah pada daftar tolak lokal."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import check_post_safety as safety
+
+    terms, _ = safety.load_denylist()
+    for f in sorted((ROOT / "blog" / "posts").glob("20*.json")):
+        for problem in safety.scan(json.loads(f.read_text(encoding="utf-8")), terms):
+            fail(f"{f.name}: {problem}")
+
+
 def main():
     check_json()
     check_xml()
@@ -122,6 +133,7 @@ def main():
     check_robots_and_sitemap()
     check_security_txt()
     check_blog_build()
+    check_post_safety()
     if errors:
         print("Pengecekan gagal:")
         for e in errors:
