@@ -35,6 +35,19 @@
     <meta name="twitter:site" content="@hadymaggot">
     <meta name="twitter:creator" content="@hadymaggot">
     <style>
+        /* Beranda mengunci tinggi 100vh untuk terminal satu layar. Blog memuat konten panjang, jadi tinggi dilepas supaya bisa di-scroll. */
+        body {
+            height: auto;
+            min-height: 100vh;
+        }
+
+        .container {
+            height: auto;
+            min-height: 100vh;
+            overflow-x: clip;
+            overflow-y: visible;
+        }
+
         .blog-container {
             width: 100%;
             max-width: 1000px;
