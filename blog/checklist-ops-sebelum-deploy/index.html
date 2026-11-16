@@ -114,7 +114,7 @@
             <div class="post-body">
                 <p>Rilis yang tenang hampir selalu hasil persiapan. Daftar periksa berikut dipakai sebelum deploy ke production.</p><h3>Sebelum rilis</h3><p>Jalankan dry-run untuk setiap perubahan: <code>terraform plan</code>, <code>ansible-playbook --check</code>, atau <code>kubectl apply --dry-run=server</code>. Baca hasilnya, jangan hanya melihat status hijau. Siapkan rencana rollback tertulis yang sudah pernah dicoba, termasuk migration database yang dapat dibalik.</p><p>Pastikan backup teruji restore, bukan sekadar berkasnya ada. Pastikan secret tidak ada di repository dengan gitleaks, dan pindai image serta dependency dengan Trivy. Healthcheck dan readiness harus benar-benar mencerminkan kesiapan service.</p><h3>Saat rilis</h3><p>Lakukan rilis bertahap jika memungkinkan, dan pantau error rate serta latency pada beberapa menit pertama. Tetapkan satu orang yang memegang keputusan rollback, dengan ambang batas yang disepakati sebelumnya.</p><h3>Sesudahnya</h3><p>Setiap alert memiliki pemilik dan runbook, bukan hanya notifikasi. Catat hasil rilis, lalu perbarui daftar periksa ini.</p>
             </div>
-            <aside class="post-author">Ditulis oleh <strong>Saya</strong>. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+            <aside class="post-author">Ditulis oleh <a href="/">Saya</a></aside>
         </article>
         <section class="post-related">
             <h2>Artikel terkait</h2>

@@ -116,7 +116,7 @@
                 <p>Butir yang tertulis belum dikerjakan pada daftar tugas, ADR, atau ringkasan sesi belum tentu mencerminkan kode saat ini. Sebuah fitur hampir dibangun ulang dari entri <code>- [ ]</code>, padahal fitur itu sudah ada lengkap beserta test parity dua sisi. Satu grep sudah cukup untuk menghemat seluruh pekerjaan tersebut.</p><p>Kasus kembarannya terjadi di sesi kerja lain pada hari yang sama. Ringkasan bertanggal beberapa hari sebelumnya menyatakan sebuah fitur belum dibangun, padahal fitur itu selesai satu jam setelah ringkasan dibuat. Hasilnya pekerjaan ganda, ditambah perubahan di disk yang disangka berasal dari pihak lain.</p><h3>Aturan yang dipakai</h3><p>Perlakukan daftar tugas sebagai petunjuk, bukan keadaan. Sebelum merancang, cek simbol kuncinya di kode.</p><pre><code class="language-bash">git log -S"NamaSimbol" --oneline
 grep -rn "NamaSimbol" src/</code></pre><p>Jika butir tidak menyebut nama simbol, cari lewat gejalanya. Saat menutup sebuah butir, tulis tanggal dan buktinya agar pembaca berikutnya tidak mengulang penyelidikan yang sama. Aturan ini berlaku juga ke arah sebaliknya: sebelum melaporkan bahwa sesuatu rusak, verifikasi dulu keadaannya.</p>
             </div>
-            <aside class="post-author">Ditulis oleh <strong>Saya</strong>. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+            <aside class="post-author">Ditulis oleh <a href="/">Saya</a></aside>
         </article>
         <section class="post-related">
             <h2>Artikel terkait</h2>

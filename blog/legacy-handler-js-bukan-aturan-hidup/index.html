@@ -116,7 +116,7 @@
             <div class="post-body">
                 <p>Saat memetakan kondisional form aplikasi legacy, kehadiran handler JavaScript tidak membuktikan bahwa aturan itu aktif. Legacy menyimpan banyak sisa kode: handler <code>$('#id').change(...)</code> untuk elemen yang tidak pernah dirender, dan <code>$form-&gt;field(...)</code> yang sudah dikomentari.</p><p>Jika sisa kode itu disalin apa adanya, aplikasi baru menghidupkan perilaku yang di legacy sendiri sudah mati. Pengguna mendapat checkbox dan aturan yang tidak pernah mereka lihat sebelumnya, dan parity justru rusak. Pada satu form, sebuah kolom beserta checkbox-nya sempat dibuat, padahal checkbox itu tidak ada di view mana pun.</p><h3>Tiga pemeriksaan berurutan</h3><p>Pertama, cari nama field pada view dan pastikan ada baris yang merender field tersebut, bukan hanya referensi di blok JavaScript atau baris yang dikomentari.</p><pre><code class="language-bash">grep -n "nama_field" view.php</code></pre><p>Kedua, hitung pemakaiannya pada data legacy. Angka satu digit di antara puluhan ribu baris berarti praktis mati.</p><pre><code class="language-sql">SELECT SUM(nama_kolom = 1), COUNT(*) FROM tabel_aktivitas;</code></pre><p>Ketiga, putuskan apakah aturan itu dipindahkan, lalu catat keputusan beserta buktinya pada dokumen parity agar tidak diperiksa ulang.</p>
             </div>
-            <aside class="post-author">Ditulis oleh <strong>Saya</strong>. Lihat <a href="/">profil</a> atau <a href="/blog.html">artikel lainnya</a>.</aside>
+            <aside class="post-author">Ditulis oleh <a href="/">Saya</a></aside>
         </article>
         <section class="post-related">
             <h2>Artikel terkait</h2>
