@@ -148,6 +148,7 @@ def main():
               "content": post["content"]}
 
     need(run(["git", "-C", str(ROOT), "worktree", "add", "-q", "-b", branch, str(wt), args.base]), "git worktree add")
+    pushed = False
     try:
         posts_dir = wt / "blog" / "posts"
         fname = f"{today.isoformat()}-{article['id']}.json"
@@ -181,6 +182,7 @@ def main():
             log("--no-push: berhenti sebelum push.")
         else:
             need(run(["git", "-C", str(wt), "push", "-q", "-u", "origin", branch]), "git push")
+            pushed = True
             body = ("Artikel harian otomatis. Ditinjau dulu sebelum merge: pastikan tidak ada informasi klien atau "
                     "project internal, dan register tulisan sudah sesuai.\n\n"
                     "Pemeriksaan otomatis yang sudah lulus: skema artikel, lint register, pemindaian keamanan "
@@ -191,10 +193,14 @@ def main():
     finally:
         if not args.keep:
             run(["git", "-C", str(ROOT), "worktree", "remove", "--force", str(wt)])
-            if args.no_push:
+            if not pushed:
                 run(["git", "-C", str(ROOT), "branch", "-D", branch])
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except Exception as exc:  # noqa: BLE001 - kegagalan dicatat ke log agar terbaca saat dijalankan terjadwal
+        log(f"Gagal: {exc}")
+        sys.exit(1)
