@@ -138,11 +138,14 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                 const wrtProjects = [
                     { name: 'sistem-tata-kelola-regulasi', stack: 'TypeScript', desc: 'Sistem informasi tata kelola regulasi.' },
                     { name: 'aplikasi-emisi-ketenagalistrikan', stack: 'PHP', desc: 'Penghitungan dan pelaporan emisi ketenagalistrikan.' },
-                    { name: 'sistem-ikpa', stack: 'PHP, JavaScript', desc: 'Indikator kinerja pelaksanaan anggaran (IKPA): aplikasi dan API integrasi.' },
+                    { name: 'sistem-ikpa', stack: 'PHP (CodeIgniter 4), JavaScript', desc: 'Indikator kinerja pelaksanaan anggaran (IKPA): aplikasi dan API integrasi.' },
                     { name: 'dashboard-smart-mett', stack: 'Python', desc: 'Dashboard SMART dan METT untuk aplikasi pemantauan.' },
                     { name: 'importir-wrt', stack: 'Python', desc: 'Engine katalog dataset dinamis, beserta penerbit dan pemvalidasi lisensinya.' },
                     { name: 'titip-absen', stack: 'TypeScript', desc: 'Absensi personil proyek.' },
                     { name: 'wrt-compro', stack: 'JavaScript', desc: 'Company profile Wahana Reka Tekindo.' },
+                    { name: 'wrt-web-api', stack: 'PHP', desc: 'Situs dan API Wahana Reka Tekindo, termasuk situs demo.' },
+                    { name: 'wrt-filamentz', stack: 'Filament', desc: 'Aplikasi web berbasis Filament.' },
+                    { name: 'wrt-template', stack: 'Blade', desc: 'Template dasar aplikasi web.' },
                     { name: 'platform-bumdes-frontend', stack: 'Frontend', desc: 'Antarmuka platform BUMDes.' },
                     { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' }
                 ];
