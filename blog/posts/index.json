@@ -17,6 +17,14 @@
       "featured": false
     },
     {
+      "file": "2026-11-12-ekspor-smart-dbf-utf8-dan-file-besar.json",
+      "featured": false
+    },
+    {
+      "file": "2026-11-08-import-track-postgis-detoast-materialized.json",
+      "featured": false
+    },
+    {
       "file": "2026-11-06-backup-dan-idempotent-bulk-update.json",
       "featured": false
     },
@@ -45,6 +53,10 @@
       "featured": false
     },
     {
+      "file": "2026-09-29-basemap-tile-carto-dan-google-vt.json",
+      "featured": false
+    },
+    {
       "file": "2026-09-26-mutex-scheduler-tertahan-redis.json",
       "featured": false
     },
@@ -53,7 +65,23 @@
       "featured": false
     },
     {
+      "file": "2026-09-23-kode-wilayah-kemendagri-vs-bps.json",
+      "featured": false
+    },
+    {
       "file": "2026-09-04-cakupan-dependabot-image-compose.json",
+      "featured": false
+    },
+    {
+      "file": "2026-08-28-koordinat-dms-dan-validasi-lintang.json",
+      "featured": false
+    },
+    {
+      "file": "2026-07-23-crosswalk-kode-kabupaten-legacy.json",
+      "featured": false
+    },
+    {
+      "file": "2026-04-22-sql-ke-geojson-geometri-kosong.json",
       "featured": false
     },
     {

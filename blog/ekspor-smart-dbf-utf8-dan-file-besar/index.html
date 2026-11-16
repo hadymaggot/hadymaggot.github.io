@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekspor SMART Desktop: DBF UTF-8 tanpa .cpg dan File di Atas 2 GB | Ahadizapto</title>
+    <link rel="icon" href="/assets/images/ico2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/">
+    <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
+    <meta name="theme-color" content="#7AC55A">
+    <meta name="description" content="Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.">
+    <meta name="author" content="Ahadizapto">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Ekspor SMART Desktop: DBF UTF-8 tanpa .cpg dan File di Atas 2 GB">
+    <meta property="og:description" content="Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.">
+    <meta property="og:url" content="https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
+    <meta name="twitter:card" content="summary">
+    <style>
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; }
+        .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+        .post-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a { color: var(--primary-color); }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
+        .post-tags span { margin-right: 0.5rem; padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; }
+        .post-back { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; }
+        .post-body { line-height: 1.8; }
+        .post-body h3 { margin: 1.5rem 0 0.5rem; color: var(--secondary-color); }
+        .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
+        .post-body code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Ekspor SMART Desktop: DBF UTF-8 tanpa .cpg dan File di Atas 2 GB", "datePublished": "2026-11-12", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/", "keywords": "GIS, Data, Python"}
+    </script>
+</head>
+
+<body>
+    <main class="post-page">
+        <nav class="post-nav" aria-label="Navigasi">
+            <a href="/">~/ahadizapto</a>
+            <a href="/blog.html">/blog</a>
+            <a href="/feed.xml">rss</a>
+        </nav>
+        <article>
+            <h1>Ekspor SMART Desktop: DBF UTF-8 tanpa .cpg dan File di Atas 2 GB</h1>
+            <div class="post-meta">
+                <span><i class="far fa-calendar" aria-hidden="true"></i> 2026-11-12</span>
+                <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+                <span class="post-tags"><span>GIS</span><span>Data</span><span>Python</span></span>
+            </div>
+            <div class="post-body">
+                <p>Mengimpor ekspor shapefile dari SMART Desktop memunculkan beberapa masalah yang tidak terlihat pada data uji kecil.</p><h3>DBF UTF-8 tanpa .cpg</h3><p>File DBF ditulis dalam UTF-8 tanpa file <code>.cpg</code>. GDAL, pyogrio, dan <code>foreign::read.dbf</code> mengasumsikan latin1, sehingga karakter seperti tanda pisah (en dash) berubah menjadi <code>â€“</code>. Tentukan encoding secara eksplisit, atau deteksi dengan memeriksa apakah isi file valid sebagai UTF-8.</p><h3>DBF lebih dari 2 GB</h3><p>Kolom teks sepanjang 254 byte dengan 129 kolom menghasilkan sekitar 25 KB per record. Pada 143.964 record, ukurannya 3,6 GB, padahal ZIP-nya hanya 33 MB. <code>foreign::read.dbf</code> gagal karena memakai <code>fseek</code> 32-bit. Solusinya membaca DBF secara streaming per blok record, bukan memuat semuanya.</p><h3>Identitas record</h3><p>Ekspor query observasi tertentu tidak memuat Patrol ID, sehingga tidak dapat direlasikan ke patroli. Gunakan query standar yang memuat relasi itu. Patrol ID juga dipakai ulang untuk patroli berbeda pada tanggal berbeda, sehingga identitas yang benar adalah kombinasi Patrol ID, tanggal mulai, dan unit pengelola. Mengelompokkan hanya berdasarkan Patrol ID menggabungkan patroli yang berbeda.</p>
+            </div>
+        </article>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
+    </main>
+</body>
+
+</html>

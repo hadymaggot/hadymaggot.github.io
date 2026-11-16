@@ -37,6 +37,18 @@
       <priority>0.6</priority>
    </url>
    <url>
+      <loc>https://hadymaggot.github.io/blog/ekspor-smart-dbf-utf8-dan-file-besar/</loc>
+      <lastmod>2026-11-12</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/</loc>
+      <lastmod>2026-11-08</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
       <loc>https://hadymaggot.github.io/blog/backup-dan-idempotent-bulk-update/</loc>
       <lastmod>2026-11-06</lastmod>
       <changefreq>yearly</changefreq>
@@ -79,6 +91,12 @@
       <priority>0.6</priority>
    </url>
    <url>
+      <loc>https://hadymaggot.github.io/blog/basemap-tile-carto-dan-google-vt/</loc>
+      <lastmod>2026-09-29</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
       <loc>https://hadymaggot.github.io/blog/mutex-scheduler-tertahan-redis/</loc>
       <lastmod>2026-09-26</lastmod>
       <changefreq>yearly</changefreq>
@@ -91,8 +109,32 @@
       <priority>0.6</priority>
    </url>
    <url>
+      <loc>https://hadymaggot.github.io/blog/kode-wilayah-kemendagri-vs-bps/</loc>
+      <lastmod>2026-09-23</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
       <loc>https://hadymaggot.github.io/blog/cakupan-dependabot-image-compose/</loc>
       <lastmod>2026-09-04</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/koordinat-dms-dan-validasi-lintang/</loc>
+      <lastmod>2026-08-28</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/crosswalk-kode-kabupaten-legacy/</loc>
+      <lastmod>2026-07-23</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/sql-ke-geojson-geometri-kosong/</loc>
+      <lastmod>2026-04-22</lastmod>
       <changefreq>yearly</changefreq>
       <priority>0.6</priority>
    </url>
