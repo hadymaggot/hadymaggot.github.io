@@ -33,13 +33,41 @@ RULES = [
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 
 
+# Nama project milik sendiri yang boleh disebut di artikel.
+PUBLIC_PROJECTS = {"automation", "security-audit-kit", "hadymaggot-github-io"}
+
+
+def derive_project_terms():
+    """Nama project di ~/.claude/projects dijadikan istilah tolak, supaya project baru otomatis terlindungi."""
+    base = Path.home() / ".claude" / "projects"
+    terms = set()
+    if not base.is_dir():
+        return terms
+    for d in base.iterdir():
+        name = re.sub(r"^[a-zA-Z]--(?:GitHub-)?", "", d.name).lower()
+        name = re.sub(r"--claude-worktrees-.*$", "", name)
+        if "appdata" in name or "temp" in name or name in PUBLIC_PROJECTS or len(name) < 5:
+            continue
+        if name.startswith("automation-"):
+            name = name[len("automation-"):]
+        if name not in PUBLIC_PROJECTS and len(name) >= 5:
+            terms.add(name)
+    return terms
+
+
 def load_denylist():
     path = Path(os.environ.get("BLOG_DENYLIST") or Path.home() / ".claude" / "blog-denylist.txt")
     if not path.is_file():
         return [], None
-    terms = [ln.strip().lower() for ln in path.read_text(encoding="utf-8").splitlines()
-             if ln.strip() and not ln.lstrip().startswith("#")]
-    return terms, path
+    terms = {ln.strip().lower() for ln in path.read_text(encoding="utf-8").splitlines()
+             if ln.strip() and not ln.lstrip().startswith("#")}
+    terms |= derive_project_terms()
+    return sorted(terms), path
+
+
+def denied(term, lowered):
+    """Cocok per kata utuh, supaya istilah pendek tidak salah menandai kata lain (upt pada corrupt)."""
+    return re.search(r"(?<![a-z0-9])" + re.escape(term) + r"(?![a-z0-9])", lowered) is not None
 
 
 def strip_html(text):
@@ -50,7 +78,8 @@ def strip_html(text):
 
 def scan(post, terms):
     problems = []
-    fields = [("title", post.get("title", "")), ("excerpt", post.get("excerpt", "")),
+    fields = [("id", post.get("id", "").replace("-", " ")), ("title", post.get("title", "")),
+              ("excerpt", post.get("excerpt", "")),
               ("content", strip_html(post.get("content", ""))), ("tags", " ".join(post.get("tags", [])))]
     for field, text in fields:
         for label, pattern in RULES:
@@ -64,8 +93,11 @@ def scan(post, terms):
             if m.group(0).lower() != PUBLIC_EMAIL:
                 problems.append(f"{field}: email selain kontak publik ({m.group(0)})")
         lowered = text.lower()
+        # id memakai tanda hubung, sedangkan istilah tolak dapat berupa slug; periksa kedua bentuk
+        if field == "id":
+            lowered += " " + post.get("id", "").lower()
         for term in terms:
-            if term in lowered:
+            if denied(term, lowered):
                 problems.append(f"{field}: istilah pada daftar tolak lokal")
                 break
     return problems

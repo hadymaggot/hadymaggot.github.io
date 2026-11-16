@@ -17,13 +17,13 @@
     <link rel="canonical" href="https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/">
     <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
     <meta name="theme-color" content="#7AC55A">
-    <meta name="description" content="Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan penyaringan awal memangkas waktu dari 59 ke 19 detik.">
+    <meta name="description" content="Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan filtering awal memangkas waktu dari 59 ke 19 detik.">
     <meta name="author" content="Ahadizapto">
     <meta name="robots" content="index, follow">
     <meta property="og:site_name" content="Ahadizapto">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Mempercepat Import Track di PostGIS: Geometri Besar dan CTE MATERIALIZED">
-    <meta property="og:description" content="Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan penyaringan awal memangkas waktu dari 59 ke 19 detik.">
+    <meta property="og:description" content="Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan filtering awal memangkas waktu dari 59 ke 19 detik.">
     <meta property="og:url" content="https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/">
     <meta property="og:image" content="https://hadymaggot.github.io/assets/images/ico2.png">
     <meta name="twitter:card" content="summary">
@@ -42,7 +42,7 @@
         .post-body code { font-family: 'JetBrains Mono', monospace; }
     </style>
     <script type="application/ld+json">
-    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Mempercepat Import Track di PostGIS: Geometri Besar dan CTE MATERIALIZED", "datePublished": "2026-11-08", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan penyaringan awal memangkas waktu dari 59 ke 19 detik.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/", "keywords": "GIS, PostGIS, Performance"}
+    {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Mempercepat Import Track di PostGIS: Geometri Besar dan CTE MATERIALIZED", "datePublished": "2026-11-08", "author": {"@type": "Person", "name": "Ahadizapto", "url": "https://hadymaggot.github.io"}, "description": "Query yang mencocokkan jutaan titik ke poligon provinsi menjadi lambat karena geometri di-detoast berulang. CTE MATERIALIZED dan filtering awal memangkas waktu dari 59 ke 19 detik.", "mainEntityOfPage": "https://hadymaggot.github.io/blog/import-track-postgis-detoast-materialized/", "keywords": "GIS, PostGIS, Performance"}
     </script>
 </head>
 
@@ -66,7 +66,7 @@
 )
 SELECT t.id
 FROM titik t, prov p
-WHERE ST_Intersects(t.geom, p.geom);</code></pre><h3>Geometri dari WKB</h3><p>Pembentukan LineString dari titik-titik diganti dengan geometri yang dibangun dari WKB melalui shapely, dan berkas DBF dibaca satu kali dengan hasilnya di-cache selama proses. Hasilnya, pada data setahun dengan 514 garis dan 1,83 juta titik, waktu turun dari 59 detik menjadi 19 detik, dan dari 45–48 detik menjadi 15–16 detik di server dev.</p><p>Pengujian terhadap alat pembanding yang menulis langsung ke PostGIS menunjukkan bahwa selisih waktu sebagian berasal dari tahap ekspor di aplikasi sumber, bukan dari proses import. Ukur dulu di mana waktu habis sebelum mengoptimalkan.</p>
+WHERE ST_Intersects(t.geom, p.geom);</code></pre><h3>Geometri dari WKB</h3><p>Pembentukan LineString dari titik-titik diganti dengan geometri yang dibangun dari WKB melalui shapely, dan file DBF dibaca satu kali dengan hasilnya di-cache selama proses. Hasilnya, pada data setahun dengan 514 garis dan 1,83 juta titik, waktu turun dari 59 detik menjadi 19 detik, dan dari 45–48 detik menjadi 15–16 detik di server dev.</p><p>Pengujian terhadap alat pembanding yang menulis langsung ke PostGIS menunjukkan bahwa selisih waktu sebagian berasal dari tahap ekspor di aplikasi sumber, bukan dari proses import. Ukur dulu di mana waktu habis sebelum mengoptimalkan.</p>
             </div>
         </article>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
