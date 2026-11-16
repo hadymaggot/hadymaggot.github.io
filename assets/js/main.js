@@ -188,10 +188,10 @@ document.querySelectorAll('.nav-links a').forEach(link => {
             case 'ahadizapto':
                 command = 'history | grep "http" | sort | uniq -c | sort -nr | head -n 5';
                 output = `
-                        86 <a href="https://ahadizapto.tech" target="_blank"
+                        86 <a href="https://hadymaggot.github.io" target="_blank"
                         style="color: inherit; text-decoration: none; border-bottom: none;"
                         onmouseover="this.style.borderBottom='1px dotted #fff'"
-                        onmouseout="this.style.borderBottom='none'">ahadizapto.tech</a>
+                        onmouseout="this.style.borderBottom='none'">hadymaggot.github.io</a>
                         <br>
                         24 <a href="https://wahanarekatekindo.co.id" target="_blank"
                         style="color: inherit; text-decoration: none; border-bottom: none;"
