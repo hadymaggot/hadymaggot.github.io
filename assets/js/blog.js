@@ -1,121 +1,40 @@
-// Blog.js - Dynamic Blog Post Loader
-class BlogLoader {
-    constructor() {
-        this.postsContainer = document.getElementById('blog-posts');
-        this.loadingIndicator = document.getElementById('loading-indicator');
-        this.postsCache = new Map();
-    }
-
-    async init() {
-        // Daftar artikel sudah dirender di blog.html oleh scripts/build_blog.py (terbaca crawler tanpa JavaScript).
-        if (this.postsContainer.querySelector('article')) {
-            this.hideLoading();
-            return;
-        }
-        try {
-            this.showLoading();
-            const index = await this.fetchPostsIndex();
-            await this.loadAndRenderPosts(index.posts);
-            this.hideLoading();
-        } catch (error) {
-            console.error('Error loading blog posts:', error);
-            this.showError();
-        }
-    }
-
-    async fetchPostsIndex() {
-        const response = await fetch('/blog/posts/index.json');
-        if (!response.ok) throw new Error('Failed to load posts index');
-        return await response.json();
-    }
-
-    async fetchPost(filename) {
-        if (this.postsCache.has(filename)) {
-            return this.postsCache.get(filename);
-        }
-        
-        const response = await fetch(`/blog/posts/${filename}`);
-        if (!response.ok) throw new Error(`Failed to load post: ${filename}`);
-        const post = await response.json();
-        this.postsCache.set(filename, post);
-        return post;
-    }
-
-    async loadAndRenderPosts(postsList) {
-        // Sort posts by date (newest first)
-        const posts = await Promise.all(
-            postsList.map(p => this.fetchPost(p.file))
-        );
-        
-        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        this.postsContainer.innerHTML = '';
-        posts.forEach(post => {
-            this.postsContainer.appendChild(this.createPostCard(post));
-        });
-    }
-
-    createPostCard(post) {
-        const article = document.createElement('article');
-        article.className = 'blog-post';
-        article.setAttribute('data-post-id', post.id);
-        
-        const date = new Date(post.date);
-        const formattedDate = date.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
-
-        article.innerHTML = `
-            <div class="blog-post-meta">
-                <span><i class="far fa-calendar"></i> ${formattedDate}</span>
-                <span><i class="far fa-clock"></i> ${post.readTime} min read</span>
-            </div>
-            <h2><a href="/blog/${post.id}/">${this.escapeHtml(post.title)}</a></h2>
-            <div class="blog-post-excerpt">
-                <p>${this.escapeHtml(post.excerpt)}</p>
-            </div>
-            <div class="blog-post-tags">
-                ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHtml(tag)}</span>`).join('')}
-            </div>
-            <a href="/blog/${post.id}/" class="read-more">Read More →</a>
-        `;
-
-        return article;
-    }
-
-    showLoading() {
-        if (this.loadingIndicator) {
-            this.loadingIndicator.style.display = 'block';
-        }
-    }
-
-    hideLoading() {
-        if (this.loadingIndicator) {
-            this.loadingIndicator.style.display = 'none';
-        }
-    }
-
-    showError() {
-        this.postsContainer.innerHTML = `
-            <div class="blog-error">
-                <h2>Error Loading Posts</h2>
-                <p>Unable to load blog posts. Please try again later.</p>
-            </div>
-        `;
-        this.hideLoading();
-    }
-
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-}
-
-// Initialize blog when DOM is ready
+// Blog: daftar artikel sudah dirender di blog.html oleh scripts/build_blog.py (terbaca crawler tanpa JavaScript).
+// Skrip ini hanya menambah pencarian dan tombol "tampilkan lebih banyak".
 document.addEventListener('DOMContentLoaded', () => {
-    const blogLoader = new BlogLoader();
-    blogLoader.init();
+    const PAGE = 9;
+    const container = document.getElementById('blog-posts');
+    const cards = [...container.querySelectorAll('article.blog-post')];
+    if (!cards.length) {
+        container.innerHTML = '<div class="blog-error"><h2>Artikel tidak dapat dimuat</h2><p>Coba muat ulang halaman.</p></div>';
+        return;
+    }
+
+    const input = document.getElementById('blog-search');
+    const count = document.getElementById('blog-count');
+    const more = document.getElementById('blog-more');
+    const empty = document.getElementById('blog-empty');
+    let shown = PAGE;
+    let query = '';
+
+    const render = () => {
+        const matches = cards.filter(card => !query || card.dataset.search.includes(query));
+        cards.forEach(card => { card.hidden = true; });
+        matches.slice(0, shown).forEach(card => { card.hidden = false; });
+        count.textContent = `Menampilkan ${Math.min(shown, matches.length)} dari ${matches.length} artikel`;
+        more.hidden = matches.length <= shown;
+        more.textContent = `Tampilkan lebih banyak (${matches.length - shown})`;
+        empty.hidden = matches.length !== 0;
+    };
+
+    input.hidden = false;
+    input.addEventListener('input', () => {
+        query = input.value.trim().toLowerCase();
+        shown = PAGE;
+        render();
+    });
+    more.addEventListener('click', () => {
+        shown += PAGE;
+        render();
+    });
+    render();
 });

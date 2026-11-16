@@ -57,9 +57,9 @@
 
         .blog-container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 100px 2rem 2rem;
+            padding: 100px 2rem 4rem;
             position: relative;
             z-index: 3;
         }
@@ -83,48 +83,50 @@
             opacity: 0.9;
         }
 
+        /* Grid kartu responsif: satu kolom di ponsel, dua sampai tiga kolom di layar lebar. */
         .blog-posts {
             display: grid;
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+            gap: 1.25rem;
+            align-items: stretch;
         }
 
         .blog-post {
+            display: flex;
+            flex-direction: column;
             background-color: var(--terminal-bg);
-            border-radius: 8px;
-            padding: 2rem;
+            border-radius: 10px;
             border: 1px solid rgba(122, 197, 90, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
             overflow: hidden;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .blog-post::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .blog-post[hidden] {
+            display: none;
         }
 
-        .blog-post:hover {
+        .blog-post:hover,
+        .blog-post:focus-within {
+            transform: translateY(-3px);
             border-color: var(--primary-color);
-            box-shadow: 0 5px 20px rgba(122, 197, 90, 0.2);
+            box-shadow: 0 8px 24px rgba(122, 197, 90, 0.18);
         }
 
-        .blog-post:hover::before {
-            opacity: 1;
+        .blog-post-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            padding: 1.1rem 1.2rem 1.2rem;
+            flex: 1;
         }
 
         .blog-post-meta {
             display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.3rem 1rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             color: var(--primary-color);
         }
 
@@ -136,47 +138,15 @@
 
         .blog-post h2 {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.8rem;
+            font-size: 1.05rem;
+            line-height: 1.4;
             color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-
-        .blog-post-content {
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .blog-post-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .blog-tag {
-            background-color: rgba(122, 197, 90, 0.2);
-            color: var(--secondary-color);
-            padding: 0.3rem 0.7rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            border: 1px solid rgba(122, 197, 90, 0.3);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .read-more {
-            display: inline-block;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid transparent;
-        }
-
-        .read-more:hover {
-            color: var(--secondary-color);
-            border-bottom-color: var(--secondary-color);
+            margin: 0;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            overflow: hidden;
         }
 
         .blog-post h2 a {
@@ -184,13 +154,126 @@
             text-decoration: none;
         }
 
-        .blog-post h2 a:hover {
-            color: var(--secondary-color);
+        /* Seluruh kartu dapat diklik lewat tautan judul. */
+        .blog-post h2 a::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
         }
 
-        .blog-post-excerpt p {
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.8;
+        .blog-post h2 a:hover {
+            color: var(--primary-color);
+        }
+
+        .blog-post-excerpt {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            overflow: hidden;
+        }
+
+        .blog-post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: auto;
+            padding-top: 0.4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .blog-tag {
+            background-color: rgba(122, 197, 90, 0.2);
+            color: var(--secondary-color);
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(122, 197, 90, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        @media (min-width: 900px) {
+            .blog-post-featured {
+                grid-column: 1 / -1;
+                border-top: 3px solid var(--primary-color);
+            }
+
+            .blog-post-featured .blog-post-body {
+                padding: 1.6rem 1.8rem;
+            }
+
+            .blog-post-featured h2 {
+                font-size: 1.6rem;
+                -webkit-line-clamp: 4;
+                line-clamp: 4;
+            }
+
+            .blog-post-featured .blog-post-excerpt {
+                font-size: 1rem;
+                -webkit-line-clamp: 5;
+                line-clamp: 5;
+            }
+        }
+
+        .blog-tools {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .blog-tools input[type="search"] {
+            flex: 1 1 240px;
+            background: var(--terminal-bg);
+            color: var(--text-color);
+            border: 1px solid rgba(122, 197, 90, 0.3);
+            border-radius: 6px;
+            padding: 0.6rem 0.8rem;
+            font: inherit;
+        }
+
+        .blog-tools input[type="search"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        #blog-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .blog-more {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .blog-more button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 0.6rem 1.4rem;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .blog-more button:hover {
+            background: var(--primary-color);
+            color: var(--dark-color);
+        }
+
+        .blog-empty {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.8;
         }
 
         /* Loading Indicator */
@@ -230,13 +313,6 @@
                 font-size: 2rem;
             }
 
-            .blog-post {
-                padding: 1.5rem;
-            }
-
-            .blog-post h2 {
-                font-size: 1.5rem;
-            }
         }
         @media (max-width: 480px) {
             .blog-container {
@@ -300,244 +376,271 @@
 <nav class="blog-topics" aria-label="Topik"><a class="blog-tag" href="/blog/tag/gis/">GIS (7)</a><a class="blog-tag" href="/blog/tag/data/">Data (5)</a><a class="blog-tag" href="/blog/tag/docker/">Docker (5)</a><a class="blog-tag" href="/blog/tag/security/">Security (5)</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting (5)</a><a class="blog-tag" href="/blog/tag/operations/">Operations (4)</a><a class="blog-tag" href="/blog/tag/devops/">DevOps (3)</a><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi (3)</a><a class="blog-tag" href="/blog/tag/ci-cd/">CI/CD (2)</a><a class="blog-tag" href="/blog/tag/engineering/">Engineering (2)</a><a class="blog-tag" href="/blog/tag/python/">Python (2)</a><a class="blog-tag" href="/blog/tag/redis/">Redis (2)</a><a class="blog-tag" href="/blog/tag/web/">Web (2)</a></nav>
 <!--TAGS:END-->
 
-            <div id="loading-indicator">
-                <i class="fas fa-spinner fa-spin"></i> Loading posts...
+            <div class="blog-tools">
+                <label class="sr-only" for="blog-search">Cari artikel</label>
+                <input id="blog-search" type="search" placeholder="Cari artikel atau topik..." autocomplete="off" hidden>
+                <span id="blog-count" aria-live="polite"></span>
             </div>
 
             <div class="blog-posts" id="blog-posts">
                 <!--POSTS:START-->
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post blog-post-featured" data-search="security headers di github pages: apa yang bisa dan tidak github pages tidak mengizinkan header http kustom. berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan. security web cloudflare">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/security-headers-github-pages/">Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</a></h2>
+        <p class="blog-post-excerpt">GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><a class="blog-tag" href="/blog/tag/web/">Web</a><span class="blog-tag">Cloudflare</span></div>
     </div>
-    <h2><a href="/blog/security-headers-github-pages/">Security Headers di GitHub Pages: Apa yang Bisa dan Tidak</a></h2>
-    <div class="blog-post-excerpt"><p>GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><a class="blog-tag" href="/blog/tag/web/">Web</a><span class="blog-tag">Cloudflare</span></div>
-    <a href="/blog/security-headers-github-pages/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="dari temuan pentest ke test otomatis di ci laporan pentest yang berhenti sebagai pdf mudah terlupakan. setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di ci. security devsecops ci/cd">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/pentest-ke-test-otomatis/">Dari Temuan Pentest ke Test Otomatis di CI</a></h2>
+        <p class="blog-post-excerpt">Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><span class="blog-tag">DevSecOps</span><a class="blog-tag" href="/blog/tag/ci-cd/">CI/CD</a></div>
     </div>
-    <h2><a href="/blog/pentest-ke-test-otomatis/">Dari Temuan Pentest ke Test Otomatis di CI</a></h2>
-    <div class="blog-post-excerpt"><p>Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><span class="blog-tag">DevSecOps</span><a class="blog-tag" href="/blog/tag/ci-cd/">CI/CD</a></div>
-    <a href="/blog/pentest-ke-test-otomatis/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="checklist ops sebelum deploy ke produksi daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability. devops sre operations">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-16">16 November 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/checklist-ops-sebelum-deploy/">Checklist Ops Sebelum Deploy ke Produksi</a></h2>
+        <p class="blog-post-excerpt">Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">SRE</span><a class="blog-tag" href="/blog/tag/operations/">Operations</a></div>
     </div>
-    <h2><a href="/blog/checklist-ops-sebelum-deploy/">Checklist Ops Sebelum Deploy ke Produksi</a></h2>
-    <div class="blog-post-excerpt"><p>Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">SRE</span><a class="blog-tag" href="/blog/tag/operations/">Operations</a></div>
-    <a href="/blog/checklist-ops-sebelum-deploy/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-13">13 November 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="traefik: route baru perlu recreate container label router dibaca dari container yang sedang berjalan. endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca. traefik docker troubleshooting">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-13">13 November 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/traefik-label-perlu-recreate/">Traefik: Route Baru Perlu Recreate Container</a></h2>
+        <p class="blog-post-excerpt">Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.</p>
+        <div class="blog-post-tags"><span class="blog-tag">Traefik</span><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
     </div>
-    <h2><a href="/blog/traefik-label-perlu-recreate/">Traefik: Route Baru Perlu Recreate Container</a></h2>
-    <div class="blog-post-excerpt"><p>Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.</p></div>
-    <div class="blog-post-tags"><span class="blog-tag">Traefik</span><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
-    <a href="/blog/traefik-label-perlu-recreate/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-12">12 November 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="ekspor smart desktop: dbf utf-8 dan file di atas 2 gb karakter rusak pada kolom teks dan dbf yang melebihi 2 gb adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari smart desktop. gis data python">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-12">12 November 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a></h2>
+        <p class="blog-post-excerpt">Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><a class="blog-tag" href="/blog/tag/python/">Python</a></div>
     </div>
-    <h2><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a></h2>
-    <div class="blog-post-excerpt"><p>Karakter rusak pada kolom teks dan DBF yang melebihi 2 GB adalah dua masalah yang muncul saat mengimpor ekspor shapefile dari SMART Desktop.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><a class="blog-tag" href="/blog/tag/python/">Python</a></div>
-    <a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-08">8 November 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="mempercepat import track postgis dengan cte materialized query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. cte materialized memangkas waktu dari 59 ke 19 detik. gis postgis performance">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-08">8 November 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/import-track-postgis-detoast-materialized/">Mempercepat Import Track PostGIS dengan CTE MATERIALIZED</a></h2>
+        <p class="blog-post-excerpt">Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><span class="blog-tag">PostGIS</span><span class="blog-tag">Performance</span></div>
     </div>
-    <h2><a href="/blog/import-track-postgis-detoast-materialized/">Mempercepat Import Track PostGIS dengan CTE MATERIALIZED</a></h2>
-    <div class="blog-post-excerpt"><p>Query yang mencocokkan jutaan titik ke poligon provinsi lambat karena geometri di-detoast berulang. CTE MATERIALIZED memangkas waktu dari 59 ke 19 detik.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><span class="blog-tag">PostGIS</span><span class="blog-tag">Performance</span></div>
-    <a href="/blog/import-track-postgis-detoast-materialized/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-06">6 November 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="bulk update data: backup dulu dan pastikan script idempotent data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak hasil run pertama. database operations data">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-06">6 November 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/backup-dan-idempotent-bulk-update/">Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</a></h2>
+        <p class="blog-post-excerpt">Data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak hasil run pertama.</p>
+        <div class="blog-post-tags"><span class="blog-tag">Database</span><a class="blog-tag" href="/blog/tag/operations/">Operations</a><a class="blog-tag" href="/blog/tag/data/">Data</a></div>
     </div>
-    <h2><a href="/blog/backup-dan-idempotent-bulk-update/">Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</a></h2>
-    <div class="blog-post-excerpt"><p>Data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak hasil run pertama.</p></div>
-    <div class="blog-post-tags"><span class="blog-tag">Database</span><a class="blog-tag" href="/blog/tag/operations/">Operations</a><a class="blog-tag" href="/blog/tag/data/">Data</a></div>
-    <a href="/blog/backup-dan-idempotent-bulk-update/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-30">30 Oktober 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="type check dan test hijau tidak membuktikan perilaku runtime prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau. frontend vue testing">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-30">30 Oktober 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/type-check-hijau-bukan-bukti-runtime/">Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime</a></h2>
+        <p class="blog-post-excerpt">Prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau.</p>
+        <div class="blog-post-tags"><span class="blog-tag">Frontend</span><span class="blog-tag">Vue</span><span class="blog-tag">Testing</span></div>
     </div>
-    <h2><a href="/blog/type-check-hijau-bukan-bukti-runtime/">Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime</a></h2>
-    <div class="blog-post-excerpt"><p>Prop boolean opsional pada komponen bersama dapat mengubah perilaku di puluhan tempat, sementara type check dan unit test tetap hijau.</p></div>
-    <div class="blog-post-tags"><span class="blog-tag">Frontend</span><span class="blog-tag">Vue</span><span class="blog-tag">Testing</span></div>
-    <a href="/blog/type-check-hijau-bukan-bukti-runtime/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-30">30 Oktober 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="redis crash-loop karena aof korup setelah reboot pesan dependency failed to start: unhealthy menyesatkan. redis tidak pernah selesai start karena ekor file aof rusak. redis docker troubleshooting">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-30">30 Oktober 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/redis-aof-korup-setelah-reboot/">Redis Crash-Loop karena AOF Korup Setelah Reboot</a></h2>
+        <p class="blog-post-excerpt">Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file AOF rusak.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/redis/">Redis</a><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
     </div>
-    <h2><a href="/blog/redis-aof-korup-setelah-reboot/">Redis Crash-Loop karena AOF Korup Setelah Reboot</a></h2>
-    <div class="blog-post-excerpt"><p>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file AOF rusak.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/redis/">Redis</a><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
-    <a href="/blog/redis-aof-korup-setelah-reboot/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-23">23 Oktober 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="gitleaks melewatkan secret pada commit rename peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak dipindai. security ci/cd gitleaks">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-23">23 Oktober 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/gitleaks-celah-rename-detection/">Gitleaks Melewatkan Secret pada Commit Rename</a></h2>
+        <p class="blog-post-excerpt">Peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak dipindai.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><a class="blog-tag" href="/blog/tag/ci-cd/">CI/CD</a><span class="blog-tag">Gitleaks</span></div>
     </div>
-    <h2><a href="/blog/gitleaks-celah-rename-detection/">Gitleaks Melewatkan Secret pada Commit Rename</a></h2>
-    <div class="blog-post-excerpt"><p>Peringatan exhaustive rename detection was skipped terlihat kosmetik, tetapi membuat commit rename tidak dipindai.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><a class="blog-tag" href="/blog/tag/ci-cd/">CI/CD</a><span class="blog-tag">Gitleaks</span></div>
-    <a href="/blog/gitleaks-celah-rename-detection/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-17">17 Oktober 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="daftar tugas adalah petunjuk, bukan keadaan kode butir belum dikerjakan pada daftar tugas atau ringkasan sesi belum tentu benar. satu grep dapat menghemat seluruh pekerjaan. engineering workflow">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-17">17 Oktober 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/daftar-tugas-adalah-petunjuk/">Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode</a></h2>
+        <p class="blog-post-excerpt">Butir belum dikerjakan pada daftar tugas atau ringkasan sesi belum tentu benar. Satu grep dapat menghemat seluruh pekerjaan.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/engineering/">Engineering</a><span class="blog-tag">Workflow</span></div>
     </div>
-    <h2><a href="/blog/daftar-tugas-adalah-petunjuk/">Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode</a></h2>
-    <div class="blog-post-excerpt"><p>Butir belum dikerjakan pada daftar tugas atau ringkasan sesi belum tentu benar. Satu grep dapat menghemat seluruh pekerjaan.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/engineering/">Engineering</a><span class="blog-tag">Workflow</span></div>
-    <a href="/blog/daftar-tugas-adalah-petunjuk/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-14">14 Oktober 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="migrasi legacy: handler js belum berarti aturan hidup saat memetakan kondisional form legacy, keberadaan handler javascript tidak membuktikan bahwa aturannya masih aktif. migrasi legacy engineering">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-14">14 Oktober 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/legacy-handler-js-bukan-aturan-hidup/">Migrasi Legacy: Handler JS Belum Berarti Aturan Hidup</a></h2>
+        <p class="blog-post-excerpt">Saat memetakan kondisional form legacy, keberadaan handler JavaScript tidak membuktikan bahwa aturannya masih aktif.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a><span class="blog-tag">Legacy</span><a class="blog-tag" href="/blog/tag/engineering/">Engineering</a></div>
     </div>
-    <h2><a href="/blog/legacy-handler-js-bukan-aturan-hidup/">Migrasi Legacy: Handler JS Belum Berarti Aturan Hidup</a></h2>
-    <div class="blog-post-excerpt"><p>Saat memetakan kondisional form legacy, keberadaan handler JavaScript tidak membuktikan bahwa aturannya masih aktif.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a><span class="blog-tag">Legacy</span><a class="blog-tag" href="/blog/tag/engineering/">Engineering</a></div>
-    <a href="/blog/legacy-handler-js-bukan-aturan-hidup/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-02">2 Oktober 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="zombie process di container: mengapa pid 1 perlu init shell sebagai pid 1 tidak memanen proses yatim. pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak. docker operations troubleshooting">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-10-02">2 Oktober 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/container-zombie-process-init/">Zombie Process di Container: Mengapa PID 1 Perlu init</a></h2>
+        <p class="blog-post-excerpt">Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/operations/">Operations</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
     </div>
-    <h2><a href="/blog/container-zombie-process-init/">Zombie Process di Container: Mengapa PID 1 Perlu init</a></h2>
-    <div class="blog-post-excerpt"><p>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie menumpuk sampai spawn baru ditolak.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/docker/">Docker</a><a class="blog-tag" href="/blog/tag/operations/">Operations</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
-    <a href="/blog/container-zombie-process-init/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-29">29 September 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="basemap tile: watermark carto dan larangan google vt sumber tile yang gagal secara senyap: http 200 dengan gambar watermark, dan endpoint internal yang tidak boleh dipakai. gis web operations">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-29">29 September 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/basemap-tile-carto-dan-google-vt/">Basemap Tile: Watermark CARTO dan Larangan Google vt</a></h2>
+        <p class="blog-post-excerpt">Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak boleh dipakai.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/web/">Web</a><a class="blog-tag" href="/blog/tag/operations/">Operations</a></div>
     </div>
-    <h2><a href="/blog/basemap-tile-carto-dan-google-vt/">Basemap Tile: Watermark CARTO dan Larangan Google vt</a></h2>
-    <div class="blog-post-excerpt"><p>Sumber tile yang gagal secara senyap: HTTP 200 dengan gambar watermark, dan endpoint internal yang tidak boleh dipakai.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/web/">Web</a><a class="blog-tag" href="/blog/tag/operations/">Operations</a></div>
-    <a href="/blog/basemap-tile-carto-dan-google-vt/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-26">26 September 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="mutex scheduler laravel yang tertahan di redis command terjadwal berhenti tanpa error setelah restart. mutex withoutoverlapping() tertinggal di redis dan baru kedaluwarsa setelah 24 jam. laravel redis troubleshooting">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-26">26 September 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/mutex-scheduler-tertahan-redis/">Mutex Scheduler Laravel yang Tertahan di Redis</a></h2>
+        <p class="blog-post-excerpt">Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.</p>
+        <div class="blog-post-tags"><span class="blog-tag">Laravel</span><a class="blog-tag" href="/blog/tag/redis/">Redis</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
     </div>
-    <h2><a href="/blog/mutex-scheduler-tertahan-redis/">Mutex Scheduler Laravel yang Tertahan di Redis</a></h2>
-    <div class="blog-post-excerpt"><p>Command terjadwal berhenti tanpa error setelah restart. Mutex withoutOverlapping() tertinggal di Redis dan baru kedaluwarsa setelah 24 jam.</p></div>
-    <div class="blog-post-tags"><span class="blog-tag">Laravel</span><a class="blog-tag" href="/blog/tag/redis/">Redis</a><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
-    <a href="/blog/mutex-scheduler-tertahan-redis/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-24">24 September 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="gotcha docker di windows: crlf pada bind mount dan /dev/null dua masalah kecil di windows dengan git bash dan docker: shell script berakhiran crlf dan file bernama nul yang muncul di repository. docker windows troubleshooting">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-24">24 September 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/docker-windows-crlf-dan-devnull/">Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</a></h2>
+        <p class="blog-post-excerpt">Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/docker/">Docker</a><span class="blog-tag">Windows</span><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
     </div>
-    <h2><a href="/blog/docker-windows-crlf-dan-devnull/">Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</a></h2>
-    <div class="blog-post-excerpt"><p>Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul yang muncul di repository.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/docker/">Docker</a><span class="blog-tag">Windows</span><a class="blog-tag" href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
-    <a href="/blog/docker-windows-crlf-dan-devnull/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-23">23 September 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="kode wilayah kemendagri dan bps: perbedaan di level desa kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode bps bertahan lama. perbedaannya baru terlihat di level desa. gis data indonesia">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-23">23 September 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/kode-wilayah-kemendagri-vs-bps/">Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa</a></h2>
+        <p class="blog-post-excerpt">Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><span class="blog-tag">Indonesia</span></div>
     </div>
-    <h2><a href="/blog/kode-wilayah-kemendagri-vs-bps/">Kode Wilayah Kemendagri dan BPS: Perbedaan di Level Desa</a></h2>
-    <div class="blog-post-excerpt"><p>Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><span class="blog-tag">Indonesia</span></div>
-    <a href="/blog/kode-wilayah-kemendagri-vs-bps/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-04">4 September 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="cakupan dependabot: image di docker-compose luput dipantau ekosistem docker pada dependabot hanya memindai direktori yang dikonfigurasi. deklarasi image di docker-compose.yml bisa luput sepenuhnya. security dependabot docker">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-04">4 September 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/cakupan-dependabot-image-compose/">Cakupan Dependabot: Image di docker-compose Luput Dipantau</a></h2>
+        <p class="blog-post-excerpt">Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><span class="blog-tag">Dependabot</span><a class="blog-tag" href="/blog/tag/docker/">Docker</a></div>
     </div>
-    <h2><a href="/blog/cakupan-dependabot-image-compose/">Cakupan Dependabot: Image di docker-compose Luput Dipantau</a></h2>
-    <div class="blog-post-excerpt"><p>Ekosistem docker pada Dependabot hanya memindai direktori yang dikonfigurasi. Deklarasi image di docker-compose.yml bisa luput sepenuhnya.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/security/">Security</a><span class="blog-tag">Dependabot</span><a class="blog-tag" href="/blog/tag/docker/">Docker</a></div>
-    <a href="/blog/cakupan-dependabot-image-compose/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-08-28">28 Agustus 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="koordinat dms dan validasi lintang di luar bounding box parser yang hanya menerima desimal melewatkan koordinat berformat dms, dan bounding box indonesia tidak menangkap lintang yang salah tanda. gis data migrasi">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-08-28">28 Agustus 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/koordinat-dms-dan-validasi-lintang/">Koordinat DMS dan Validasi Lintang di Luar Bounding Box</a></h2>
+        <p class="blog-post-excerpt">Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a></div>
     </div>
-    <h2><a href="/blog/koordinat-dms-dan-validasi-lintang/">Koordinat DMS dan Validasi Lintang di Luar Bounding Box</a></h2>
-    <div class="blog-post-excerpt"><p>Parser yang hanya menerima desimal melewatkan koordinat berformat DMS, dan bounding box Indonesia tidak menangkap lintang yang salah tanda.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/data/">Data</a><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a></div>
-    <a href="/blog/koordinat-dms-dan-validasi-lintang/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-07-23">23 Juli 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="crosswalk kode kabupaten/kota legacy ke kode resmi hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi. gis migrasi data">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-07-23">23 Juli 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/crosswalk-kode-kabupaten-legacy/">Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi</a></h2>
+        <p class="blog-post-excerpt">Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a><a class="blog-tag" href="/blog/tag/data/">Data</a></div>
     </div>
-    <h2><a href="/blog/crosswalk-kode-kabupaten-legacy/">Crosswalk Kode Kabupaten/Kota Legacy ke Kode Resmi</a></h2>
-    <div class="blog-post-excerpt"><p>Hampir 40% kabupaten/kota pada sistem legacy tidak cocok dengan kode resmi. Pemetaannya harus dilakukan di level kabupaten/kota, bukan provinsi.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/migrasi/">Migrasi</a><a class="blog-tag" href="/blog/tag/data/">Data</a></div>
-    <a href="/blog/crosswalk-kode-kabupaten-legacy/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-04-22">22 April 2026</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+<article class="blog-post" data-search="konversi sql ke geojson: geometri kosong dan perbaikan dump sql berisi insert dengan st_geomfromtext sering memuat geometri kosong atau tidak valid. berikut cara menanganinya pada tool sql_geojson. gis python tooling">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-04-22">22 April 2026</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+        </div>
+        <h2><a href="/blog/sql-ke-geojson-geometri-kosong/">Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan</a></h2>
+        <p class="blog-post-excerpt">Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/python/">Python</a><span class="blog-tag">Tooling</span></div>
     </div>
-    <h2><a href="/blog/sql-ke-geojson-geometri-kosong/">Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan</a></h2>
-    <div class="blog-post-excerpt"><p>Dump SQL berisi INSERT dengan ST_GeomFromText sering memuat geometri kosong atau tidak valid. Berikut cara menanganinya pada tool sql_geojson.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/gis/">GIS</a><a class="blog-tag" href="/blog/tag/python/">Python</a><span class="blog-tag">Tooling</span></div>
-    <a href="/blog/sql-ke-geojson-geometri-kosong/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2025-01-15">15 Januari 2025</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 5 menit baca</span>
+<article class="blog-post" data-search="welcome to my blog catatan teknis seputar web development, devops, cybersecurity, dan gis, ditulis dari pengalaman membangun dan mengamankan sistem. devops web development security">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2025-01-15">15 Januari 2025</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 5 menit baca</span>
+        </div>
+        <h2><a href="/blog/welcome-to-my-blog/">Welcome to My Blog</a></h2>
+        <p class="blog-post-excerpt">Catatan teknis seputar web development, DevOps, cybersecurity, dan GIS, ditulis dari pengalaman membangun dan mengamankan sistem.</p>
+        <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">Web Development</span><a class="blog-tag" href="/blog/tag/security/">Security</a></div>
     </div>
-    <h2><a href="/blog/welcome-to-my-blog/">Welcome to My Blog</a></h2>
-    <div class="blog-post-excerpt"><p>Catatan teknis seputar web development, DevOps, cybersecurity, dan GIS, ditulis dari pengalaman membangun dan mengamankan sistem.</p></div>
-    <div class="blog-post-tags"><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">Web Development</span><a class="blog-tag" href="/blog/tag/security/">Security</a></div>
-    <a href="/blog/welcome-to-my-blog/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
-<article class="blog-post">
-    <div class="blog-post-meta">
-        <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2025-01-10">10 Januari 2025</time></span>
-        <span><i class="far fa-clock" aria-hidden="true"></i> 8 menit baca</span>
+<article class="blog-post" data-search="kubernetes best practices for production a comprehensive guide to deploying and managing kubernetes clusters in production environments with security and reliability in mind. kubernetes devops cloud">
+    <div class="blog-post-body">
+        <div class="blog-post-meta">
+            <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2025-01-10">10 Januari 2025</time></span>
+            <span><i class="far fa-clock" aria-hidden="true"></i> 8 menit baca</span>
+        </div>
+        <h2><a href="/blog/kubernetes-best-practices/">Kubernetes Best Practices for Production</a></h2>
+        <p class="blog-post-excerpt">A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.</p>
+        <div class="blog-post-tags"><span class="blog-tag">Kubernetes</span><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">Cloud</span></div>
     </div>
-    <h2><a href="/blog/kubernetes-best-practices/">Kubernetes Best Practices for Production</a></h2>
-    <div class="blog-post-excerpt"><p>A comprehensive guide to deploying and managing Kubernetes clusters in production environments with security and reliability in mind.</p></div>
-    <div class="blog-post-tags"><span class="blog-tag">Kubernetes</span><a class="blog-tag" href="/blog/tag/devops/">DevOps</a><span class="blog-tag">Cloud</span></div>
-    <a href="/blog/kubernetes-best-practices/" class="read-more">Baca selengkapnya &rarr;</a>
 </article>
 <!--POSTS:END-->
             </div>
+            <p class="blog-empty" id="blog-empty" hidden>Tidak ada artikel yang cocok dengan pencarian.</p>
+            <div class="blog-more"><button type="button" id="blog-more" hidden>Tampilkan lebih banyak</button></div>
         </div>
     </div>
 
