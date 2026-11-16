@@ -10,13 +10,9 @@
 Konfigurasi Dependabot untuk ekosistem docker yang hanya mencakup `/docker/*` memindai Dockerfile di direktori itu, tetapi tidak membaca `docker-compose.yml` di root. Pada repository ini, 23 deklarasi `image:` tidak terpantau sama sekali: message broker, reverse proxy, object storage, stack monitoring, dan lainnya. Dua image di antaranya tertinggal beberapa versi dari rilis stabil terbaru.
 
 Perbaikannya menambahkan `"/"` pada daftar `directories`.
-
-```
 - package-ecosystem: docker
   directories: ["/docker/*", "/"]
   target-branch: development
-```
-
 ### Tag latest dan digest
 
 Tag `:latest` yang dipatok dengan `@sha256:` tetap dapat diulang, karena digest yang menentukan isi image. Masalahnya bukan isi yang bergeser sendiri, melainkan digest yang tidak pernah diperbarui karena tidak ada yang memeriksanya.

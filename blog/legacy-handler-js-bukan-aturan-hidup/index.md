@@ -14,15 +14,7 @@ Jika sisa kode itu disalin apa adanya, aplikasi baru menghidupkan perilaku yang 
 ### Tiga pemeriksaan berurutan
 
 Pertama, cari nama field pada view dan pastikan ada baris yang merender field tersebut, bukan hanya referensi di blok JavaScript atau baris yang dikomentari.
-
-```
 grep -n "nama_field" view.php
-```
-
 Kedua, hitung pemakaiannya pada data legacy. Angka satu digit di antara puluhan ribu baris berarti praktis mati.
-
-```
 SELECT SUM(nama_kolom = 1), COUNT(*) FROM tabel_aktivitas;
-```
-
 Ketiga, putuskan apakah aturan itu dipindahkan, lalu catat keputusan beserta buktinya pada dokumen parity agar tidak diperiksa ulang.

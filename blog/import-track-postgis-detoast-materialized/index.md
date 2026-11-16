@@ -12,16 +12,12 @@ Sebuah proses import track patroli memerlukan sekitar satu menit untuk data seta
 ### Detoast per titik
 
 Geometri poligon provinsi berukuran besar disimpan sebagai TOAST. Pada query yang mengakses kolom itu untuk setiap titik, PostgreSQL men-detoast geometri yang sama berulang kali. Dengan 1,83 juta titik, biayanya terasa. Perbaikannya mengambil poligon sekali dalam CTE `MATERIALIZED`, lalu menyaring titik yang berada di provinsi kawasan sebelum pemeriksaan yang lebih mahal.
-
-```
 WITH prov AS MATERIALIZED (
   SELECT geom FROM provinsi WHERE kode = :kode
 )
 SELECT t.id
 FROM titik t, prov p
 WHERE ST_Intersects(t.geom, p.geom);
-```
-
 ### Geometri dari WKB
 
 Pembentukan LineString dari titik-titik diganti dengan geometri yang dibangun dari WKB melalui shapely, dan file DBF dibaca satu kali dengan hasilnya di-cache selama proses. Hasilnya, pada data setahun dengan 514 garis dan 1,83 juta titik, waktu turun dari 59 detik menjadi 19 detik, dan dari 45–48 detik menjadi 15–16 detik di server dev.

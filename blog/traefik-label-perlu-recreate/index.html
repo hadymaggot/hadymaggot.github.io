@@ -63,9 +63,33 @@
         .post-related ul { list-style: none; padding: 0; margin: 0; }
         .post-related li { margin-bottom: 0.7rem; }
         .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
-        .post-pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .post-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .post-pager a { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.8rem 1rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 8px; text-decoration: none; transition: border-color 0.2s ease; }
+        .post-pager a:hover, .post-pager a:focus-visible { border-color: var(--primary-color); }
+        .pager-next { text-align: right; align-items: flex-end; }
+        .pager-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--primary-color); }
+        .pager-title { color: var(--text-color); line-height: 1.4; }
+        @media (max-width: 600px) { .post-pager { grid-template-columns: 1fr; } .pager-next { text-align: left; align-items: flex-start; } }
         .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .code-block { margin: 1rem 0; border: 1px solid rgba(122, 197, 90, 0.25); border-radius: 8px; overflow: hidden; background: var(--terminal-bg); }
+        .code-head { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0.75rem; background: rgba(122, 197, 90, 0.1); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--secondary-color); }
+        .code-copy { background: transparent; color: var(--primary-color); border: 1px solid rgba(122, 197, 90, 0.4); border-radius: 4px; padding: 0.15rem 0.6rem; font: inherit; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+        .code-copy:hover, .code-copy:focus-visible { background: var(--primary-color); color: var(--dark-color); }
+        .code-block pre { margin: 0; border-radius: 0; background: transparent; font-size: 0.85rem; line-height: 1.6; }
+        .hljs { background: transparent; color: #e6e6e6; }
+        .hljs-comment, .hljs-quote { color: #7f8c8d; font-style: italic; }
+        .hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: #ff7b72; }
+        .hljs-string, .hljs-regexp, .hljs-addition { color: #e9c46a; }
+        .hljs-number, .hljs-symbol, .hljs-bullet { color: #f4a261; }
+        .hljs-title, .hljs-section, .hljs-function .hljs-title { color: #7aa2f7; }
+        .hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #bb9af7; }
+        .hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable, .hljs-params { color: #7dcfff; }
+        .hljs-meta, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #c3db65; }
+        .hljs-deletion { color: #ff7b72; background: rgba(255, 123, 114, 0.12); }
+        .hljs-addition { background: rgba(122, 197, 90, 0.12); }
     </style>
+    <script src="/assets/js/vendor/highlight.min.js" defer></script>
+    <script src="/assets/js/code.js" defer></script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/#article", "headline": "Traefik: Route Baru Perlu Recreate Container", "description": "Label router dibaca dari container yang sedang berjalan. Endpoint baru yang menggantung, bukan 404, biasanya berarti label belum terbaca.", "image": ["https://hadymaggot.github.io/assets/images/og/traefik-label-perlu-recreate.png"], "datePublished": "2026-11-13", "dateModified": "2026-11-13", "inLanguage": "id", "wordCount": 153, "keywords": "Traefik, Docker, Troubleshooting", "articleSection": "Traefik", "url": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Traefik: Route Baru Perlu Recreate Container", "item": "https://hadymaggot.github.io/blog/traefik-label-perlu-recreate/"}]}</script>
 </head>
@@ -86,7 +110,7 @@
             </div>
             <div class="post-tags"><span>Traefik</span><a href="/blog/tag/docker/">Docker</a><a href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
             <div class="post-body">
-                <p>Menambah <code>PathPrefix</code> baru pada label Traefik sebuah service tidak berlaku dengan <code>docker compose restart traefik</code>. Label dibaca dari container yang sedang berjalan, dan container itu masih memegang label lama. Service harus dibuat ulang dengan <code>docker compose up -d &lt;service&gt;</code>.</p><h3>Gejala yang menyesatkan</h3><p>Request menggantung, bukan 404. Router frontend memakai <code>Host(localhost)</code> tanpa batasan path, sehingga <code>/api/*</code> yang tidak cocok dengan router mana pun jatuh ke dev server frontend dan diam di sana sampai timeout. Jika endpoint API yang baru menggantung sementara endpoint lain pada service yang sama menjawab normal, curigai label lebih dulu sebelum kode.</p><h3>Memastikan tanpa menebak</h3><pre><code># dari dalam container: 200 berarti kodenya benar
+                <p>Menambah <code>PathPrefix</code> baru pada label Traefik sebuah service tidak berlaku dengan <code>docker compose restart traefik</code>. Label dibaca dari container yang sedang berjalan, dan container itu masih memegang label lama. Service harus dibuat ulang dengan <code>docker compose up -d &lt;service&gt;</code>.</p><h3>Gejala yang menyesatkan</h3><p>Request menggantung, bukan 404. Router frontend memakai <code>Host(localhost)</code> tanpa batasan path, sehingga <code>/api/*</code> yang tidak cocok dengan router mana pun jatuh ke dev server frontend dan diam di sana sampai timeout. Jika endpoint API yang baru menggantung sementara endpoint lain pada service yang sama menjawab normal, curigai label lebih dulu sebelum kode.</p><h3>Memastikan tanpa menebak</h3><pre><code class="language-bash"># dari dalam container: 200 berarti kodenya benar
 docker compose exec -T &lt;service&gt; curl -s -o /tmp/out -w "%{http_code}\n" http://localhost:&lt;port&gt;/api/&lt;endpoint&gt;
 
 # lewat Traefik: 401 berarti route ada, menggantung berarti label belum terbaca
@@ -98,7 +122,7 @@ timeout 15 curl -s -o /dev/null -w "%{http_code}\n" http://localhost:&lt;port-tr
             <h2>Artikel terkait</h2>
             <ul><li><a href="/blog/redis-aof-korup-setelah-reboot/">Redis Crash-Loop karena AOF Korup Setelah Reboot</a><span>Pesan dependency failed to start: unhealthy menyesatkan. Redis tidak pernah selesai start karena ekor file…</span></li><li><a href="/blog/container-zombie-process-init/">Zombie Process di Container: Mengapa PID 1 Perlu init</a><span>Shell sebagai PID 1 tidak memanen proses yatim. Pada container yang sering men-spawn proses latar, zombie…</span></li><li><a href="/blog/docker-windows-crlf-dan-devnull/">Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null</a><span>Dua masalah kecil di Windows dengan Git Bash dan Docker: shell script berakhiran CRLF dan file bernama nul…</span></li></ul>
         </section>
-        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/" rel="prev">&larr; Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</a><a href="/blog/checklist-ops-sebelum-deploy/" rel="next">Checklist Ops Sebelum Deploy ke Produksi &rarr;</a></nav>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a class="pager-prev" href="/blog/ekspor-smart-dbf-utf8-dan-file-besar/" rel="prev"><span class="pager-label">&larr; Sebelumnya</span><span class="pager-title">Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB</span></a><a class="pager-next" href="/blog/checklist-ops-sebelum-deploy/" rel="next"><span class="pager-label">Berikutnya &rarr;</span><span class="pager-title">Checklist Ops Sebelum Deploy ke Produksi</span></a></nav>
         <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
     </main>
 </body>

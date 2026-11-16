@@ -18,20 +18,12 @@ Setelah limit tercapai, `posix_spawn()` menolak dengan `Resource temporarily una
 ### Diagnosis
 
 Hitung proses zombie di dalam container. Jumlah yang terus naik menunjukkan ada proses yang tidak dipanen.
-
-```
 docker exec <container> sh -c 'ps -eo stat | grep -c "^Z"'
 docker exec <container> ps -p 1 -o args
-```
-
 ### Perbaikan
 
 Aktifkan init pada Compose agar PID 1 adalah init kecil (tini) yang memanen anak yatim.
-
-```
 services:
   app:
     init: true
-```
-
 Opsi yang sama tersedia sebagai `docker run --init`. Untuk image sendiri, `tini` sebagai ENTRYPOINT memberi hasil yang sama. Setelah container dibuat ulang, jumlah zombie tetap nol.

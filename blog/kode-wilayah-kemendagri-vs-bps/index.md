@@ -8,20 +8,12 @@
 > Kode provinsi dan kabupaten/kota kedua sistem kebetulan sama, sehingga kesalahan menyebut kode BPS bertahan lama. Perbedaannya baru terlihat di level desa.
 
 Master wilayah pada sebuah aplikasi ternyata memakai kode Kemendagri, bukan BPS, padahal komentar di kode menyebutnya kode BPS. Kesalahan itu bertahan lama karena kode provinsi dan kabupaten/kota kedua sistem kebetulan bernilai sama. Perbedaan baru terlihat di level desa.
-
-```
 Kemendagri   11.01.01.2001    bertitik, ekor 4 digit
 BPS          1101012001      10 digit, ekor 3 digit
-```
-
 Data yang dipakai berasal dari repository wilayah yang mengikuti Kepmendagri 300.2.2-2138 Tahun 2025. Hasilnya diverifikasi ke dokumen resmi, bukan hanya ke repository: 38 provinsi cocok pada lima kolom, dengan total 416 kabupaten, 98 kota, 7.285 kecamatan, 8.496 kelurahan, dan 75.266 desa. Kepmendagri 2430/2025 hanya mengubah data pulau di Aceh dan Sumatera Utara, sehingga kode administrasi tidak berubah.
 
 ### Tiga hal yang menjebak
 
 Pertama, ekor kode desa memiliki tiga seri, bukan dua: 1xxx untuk kelurahan, 2xxx untuk desa, dan 3xxx untuk desa adat. Desa adat berjumlah 14 baris dan seluruhnya berada di Kabupaten Jayapura. Menghitung desa dengan `LIKE '2%'` saja akan kurang 14 baris.
-
-```
 SELECT COUNT(*) FROM wilayah WHERE LENGTH(kode) = 13 AND RIGHT(kode, 4) >= '2000';
-```
-
 Kedua, perubahan nama atau pemekaran tidak selalu mengubah kode, dan sebaliknya. Ketiga, selalu cocokkan jumlah per tingkat ke dokumen sumber setelah import, karena selisih satu baris sering berarti satu seri kode yang terlewat.

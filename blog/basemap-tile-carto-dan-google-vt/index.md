@@ -20,10 +20,7 @@ Endpoint `mt1.google.com/vt/lyrs=...` adalah endpoint internal Google Maps: tanp
 ### Konfigurasi yang dipakai
 
 Pusatkan semua sumber tile pada satu modul, sehingga penggantian sumber tidak menyebar ke banyak komponen. Pilihan yang tidak memerlukan key adalah Esri (satelit, jalan, topografi, kanvas abu-abu), OpenStreetMap, dan OpenTopoMap, dengan memperhatikan kebijakan penggunaan masing-masing. Atur `maxZoom` per sumber, karena zoom di atas batas sumber menghasilkan tile kosong.
-
-```
 export const TILES = {
   satelit: { url: '.../World_Imagery/MapServer/tile/{z}/{y}/{x}', maxZoom: 19 },
   osm:     { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', maxZoom: 19 },
 }
-```

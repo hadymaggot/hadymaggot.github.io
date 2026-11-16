@@ -16,10 +16,6 @@ Sebagian baris memuat geometri kosong. Baris itu tidak dapat digambar, dan pada 
 ### Geometri tidak valid
 
 Poligon dengan self-intersection atau cincin yang tidak tertutup membuat operasi seperti intersect dan union gagal. Opsi `--repair-geometries` memperbaikinya dengan shapely sebelum disimpan.
-
-```
 python tools/sql_geojson/sql_to_geojson.py --in-dir sql --out-dir geojson \
   --drop-empty-geometry --repair-geometries --skip-errors --recursive
-```
-
 Dump dengan `VALUES` multi-baris juga didukung. Setelah konversi, jalankan laporan statistik untuk memastikan jumlah fitur dan cakupan geometri sesuai harapan.
