@@ -260,6 +260,12 @@ function typeNavCommand() {
 document.querySelector('.mobile-notice .close-btn').addEventListener('click', function() {
     document.querySelector('.mobile-notice').style.display = 'none';
 });
+document.querySelector('.mobile-notice .close-btn').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.click();
+    }
+});
 
 // Mobile menu handling
 // Menangani menu mobile
