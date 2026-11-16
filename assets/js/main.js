@@ -180,9 +180,8 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                 ███████║███████║███████║██║  ██║██║  ███╔╝ ███████║██████╔╝   ██║   ██║   ██║
                 ██╔══██║██╔══██║██╔══██║██║  ██║██║ ███╔╝  ██╔══██║██╔═══╝    ██║   ██║   ██║
                 ██║  ██║██║  ██║██║  ██║██████╔╝██║███████╗██║  ██║██║        ██║   ╚██████╔╝
-                ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝╚══════╝╚═╝  ╚═╝╚═╝        ╚═╝    ╚═════╝ 
-                            Security | Operations | GIS
-                </pre>`;
+                ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝╚══════╝╚═╝  ╚═╝╚═╝        ╚═╝    ╚═════╝ </pre>
+                    <p class="profile-caption">Security | Operations | Software Engineer</p>`;
                 break;
             case 'ahadizapto':
                 command = 'history | grep "http" | sort | uniq -c | sort -nr | head -n 5';
