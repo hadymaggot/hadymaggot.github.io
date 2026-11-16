@@ -138,6 +138,8 @@ def validate_post(path):
         problems.append("tags harus berisi 1 sampai 4 item")
     if not (isinstance(post["readTime"], int) and post["readTime"] >= 1):
         problems.append("readTime harus bilangan bulat positif")
+    if len(post["title"]) > 62:
+        problems.append("title terlalu panjang (maksimal 62 karakter agar tidak terpotong di hasil pencarian)")
     if len(post["excerpt"]) > 260:
         problems.append("excerpt terlalu panjang (maksimal 260 karakter)")
     if FORBIDDEN_HTML.search(post["content"]):

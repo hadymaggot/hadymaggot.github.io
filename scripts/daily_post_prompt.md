@@ -29,7 +29,8 @@ Ketentuan:
 - content hanya memakai tag p, h3, ul, li, pre, code, dan a (dengan target="_blank" rel="noopener noreferrer"). Tidak ada script, style, atau atribut event.
 - Blok kode memakai perintah atau konfigurasi generik dengan placeholder seperti &lt;container&gt;. Karakter < > & di dalam teks dan kode ditulis sebagai entitas HTML.
 - Panjang 250 sampai 450 kata, dengan 2 sampai 4 judul bagian (h3).
-- Judul tidak boleh sama atau mirip dengan judul yang sudah ada: {{JUDUL}}.
+- Judul maksimal 60 karakter, memuat kata kunci utama, dan tidak boleh sama atau mirip dengan judul yang sudah ada: {{JUDUL}}.
+- excerpt 100 sampai 155 karakter, berisi inti pelajaran, karena dipakai sebagai meta description di hasil pencarian.
 
 ## CATATAN
 
