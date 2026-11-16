@@ -56,3 +56,21 @@ Menghapus jadwal: `Unregister-ScheduledTask -TaskName 'Blog Harian' -Confirm:$fa
 python scripts/daily_post_run.py --dry-run
 python scripts/daily_post_run.py --fake-response a.json --fake-review r.json --base HEAD --branch blog/harian-uji
 ```
+
+## Mode otomatis penuh (opsional)
+
+Secara bawaan runner hanya membuat draft lokal. Mode otomatis penuh menerbitkan artikel tanpa tinjauan manusia, dan hanya menyala bila pemilik blog menjalankannya sendiri:
+
+```
+python "%USERPROFILE%\.claude\blog-daily\repo\scripts\daily_post_run.py" --enable-auto
+```
+
+Perintah itu melakukan dua hal. Pertama, menulis `~/.claude/blog-auto.json` sebagai saklar. Kedua, memasang aturan pada branch `main` yang mewajibkan check `Workers Builds: ahadizapto-site` lulus sebelum merge (admin tetap dapat melewatinya). Setelah itu, setiap artikel yang lulus semua pemeriksaan otomatis di-push, dibuka sebagai PR biasa (bukan draft), dan dipasangi auto-merge. GitHub baru men-merge setelah check Workers Builds lulus, lalu branch dihapus otomatis oleh pengaturan repo.
+
+Auto-merge hanya dipasang bila aturan check wajib di `main` sudah ada. Tanpa aturan itu PR akan langsung ter-merge sebelum check berjalan, jadi runner melewatinya dan mencatat alasannya di log.
+
+Mematikan: `--disable-auto`. Saklar dihapus dan runner kembali membuat draft lokal saja. Aturan check wajib di `main` tidak dihapus.
+
+Risiko yang perlu disadari: pada mode ini tidak ada manusia yang membaca artikel sebelum terbit. Perlindungannya seluruhnya otomatis: bahan sensitif disaring sebelum dikirim ke model, daftar tolak nama klien, pemindaian IP dan kredensial, dan tinjauan kedua oleh model yang gagal tertutup. Lapisan itu menurunkan risiko, tetapi tidak menghilangkannya. Sebuah detail yang tidak ada di daftar tolak dan lolos tinjauan model tetap dapat terbit. Jika ada keraguan, matikan mode ini dan kembali ke draft.
+
+Pengujian tanpa mengirim apa pun: tambahkan env `BLOG_DRY_GIT=1`, maka push, pembuatan PR, auto-merge, dan pengaturan repo hanya dicatat di log.

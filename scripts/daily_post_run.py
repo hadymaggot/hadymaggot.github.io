@@ -36,6 +36,12 @@ DRAFTS = Path.home() / ".claude" / "blog-drafts"
 MAX_PICKS = 3
 MIN_DENYLIST_TERMS = 10
 BRANCH_PREFIX = "blog/harian-"
+# Saklar penerbitan otomatis. Tanpa berkas ini runner hanya membuat draft lokal.
+AUTO_CONFIG = Path(os.environ.get("BLOG_AUTO_FILE") or Path.home() / ".claude" / "blog-auto.json")
+REPO = "hadymaggot/hadymaggot.github.io"
+REQUIRED_CHECK = "Workers Builds: ahadizapto-site"
+# BLOG_DRY_GIT=1: perintah yang mengirim sesuatu keluar hanya dicatat, tidak dijalankan (untuk pengujian).
+DRY_GIT = bool(os.environ.get("BLOG_DRY_GIT"))
 DENY_TOOLS = ["Bash", "Edit", "Write", "Read", "Glob", "Grep", "NotebookEdit", "WebFetch", "WebSearch", "Agent"]
 
 REVIEW_PROMPT = """Kamu adalah peninjau kerahasiaan untuk artikel blog publik. Pemilik blog adalah konsultan yang terikat kerahasiaan klien.
@@ -74,6 +80,48 @@ def need(result, what):
     if result.returncode != 0:
         raise RuntimeError(f"{what} gagal: {(result.stderr or result.stdout).strip()[:400]}")
     return result.stdout
+
+
+def auto_config():
+    try:
+        return json.loads(AUTO_CONFIG.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def outbound(cmd, what, cwd=None, input_text=None):
+    """Satu-satunya pintu untuk perintah yang mengirim sesuatu keluar laptop (push, PR, merge, pengaturan repo)."""
+    if DRY_GIT:
+        log(f"[dry-git] {what}: {' '.join(cmd[:6])}")
+        return "https://github.com/dry-run/pull/0\n"
+    return need(run(cmd, cwd=cwd, input_text=input_text), what)
+
+
+def protection_ok():
+    """Auto-merge hanya aman bila main mewajibkan check Workers Builds; tanpa itu PR langsung ter-merge."""
+    if DRY_GIT:
+        return True
+    r = run(["gh", "api", f"repos/{REPO}/branches/main/protection", "--jq", ".required_status_checks.contexts[]"])
+    return r.returncode == 0 and REQUIRED_CHECK in r.stdout.splitlines()
+
+
+def cmd_enable_auto():
+    """Dijalankan oleh pemilik blog: menyalakan penerbitan dan auto-merge, dan memasang check wajib pada main."""
+    body = json.dumps({"required_status_checks": {"strict": False, "contexts": [REQUIRED_CHECK]},
+                       "enforce_admins": False, "required_pull_request_reviews": None, "restrictions": None})
+    outbound(["gh", "api", "-X", "PUT", f"repos/{REPO}/branches/main/protection", "--input", "-"],
+             "branch protection", input_text=body)
+    AUTO_CONFIG.parent.mkdir(parents=True, exist_ok=True)
+    AUTO_CONFIG.write_text(json.dumps({"publish": True, "auto_merge": True,
+                                       "diaktifkan": date.today().isoformat()}, indent=2), encoding="utf-8")
+    log("Penerbitan otomatis dan auto-merge DIAKTIFKAN. Matikan dengan --disable-auto.")
+    return 0
+
+
+def cmd_disable_auto():
+    AUTO_CONFIG.unlink(missing_ok=True)
+    log("Penerbitan otomatis dimatikan: runner kembali membuat draft lokal saja.")
+    return 0
 
 
 def existing_posts(base_dir):
@@ -161,8 +209,8 @@ def cmd_list_drafts():
     return 0
 
 
-def cmd_publish(branch):
-    """Satu-satunya jalur yang mengirim sesuatu keluar laptop. Dijalankan manual setelah draft dibaca."""
+def cmd_publish(branch, auto=False):
+    """Mengirim draft keluar laptop: manual setelah dibaca, atau otomatis bila saklar --enable-auto menyala."""
     if not branch.startswith(BRANCH_PREFIX) or branch not in draft_branches():
         raise RuntimeError("hanya draft lokal blog/harian-* yang belum di-push yang dapat dipublikasikan")
     require_denylist()
@@ -177,14 +225,28 @@ def cmd_publish(branch):
     finally:
         os.unlink(tmp.name)
     title = json.loads(content)["title"]
-    need(run(["git", "-C", str(ROOT), "push", "-q", "-u", "origin", branch]), "git push")
-    body = ("Artikel harian. Draft ini sudah ditinjau pemilik blog sebelum dikirim. Pastikan sekali lagi tidak ada "
-            "konteks klien atau project internal sebelum merge.\n\n"
-            "Pemeriksaan otomatis yang lulus: skema, lint register, pemindaian keamanan (IP, kredensial, email, "
-            "daftar tolak lokal), tinjauan kerahasiaan, build halaman, dan check_site.")
-    out = need(run(["gh", "pr", "create", "--draft", "--base", "main", "--head", branch, "--title",
-                    f"docs(blog): tambah artikel {title.lower()}"[:72], "--body", body], cwd=ROOT), "gh pr create")
-    log(f"Dipublikasikan sebagai PR draft: {out.strip().splitlines()[-1]}")
+    outbound(["git", "-C", str(ROOT), "push", "-q", "-u", "origin", branch], "git push")
+    checks = ("Pemeriksaan otomatis yang lulus: skema, lint register, pemindaian keamanan (IP, kredensial, email, "
+              "daftar tolak lokal), tinjauan kerahasiaan, build halaman, dan check_site.")
+    if auto:
+        body = ("Artikel harian otomatis, diterbitkan tanpa tinjauan manusia karena penerbitan otomatis menyala. "
+                "Pemilik blog dapat menutup PR ini sebelum ter-merge.\n\n" + checks)
+    else:
+        body = ("Artikel harian. Draft ini sudah ditinjau pemilik blog sebelum dikirim. Pastikan sekali lagi tidak ada "
+                "konteks klien atau project internal sebelum merge.\n\n" + checks)
+    cmd = ["gh", "pr", "create", "--base", "main", "--head", branch, "--title",
+           f"docs(blog): tambah artikel {title.lower()}"[:72], "--body", body]
+    if not auto:
+        cmd.insert(3, "--draft")
+    out = outbound(cmd, "gh pr create", cwd=ROOT)
+    url = out.strip().splitlines()[-1]
+    log(f"Dipublikasikan sebagai PR{'' if auto else ' draft'}: {url}")
+    if auto and auto_config().get("auto_merge"):
+        if protection_ok():
+            outbound(["gh", "pr", "merge", url, "--auto", "--merge"], "gh pr merge --auto", cwd=ROOT)
+            log("Auto-merge dipasang: PR ter-merge setelah check Workers Builds lulus.")
+        else:
+            log("Auto-merge dilewati: main belum mewajibkan check Workers Builds (jalankan --enable-auto).")
     return 0
 
 
@@ -193,6 +255,8 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--list-drafts", action="store_true")
     ap.add_argument("--publish", metavar="BRANCH")
+    ap.add_argument("--enable-auto", action="store_true", help="nyalakan penerbitan otomatis dan auto-merge")
+    ap.add_argument("--disable-auto", action="store_true", help="kembali ke draft lokal saja")
     ap.add_argument("--fake-response", help="uji alur: JSON artikel sebagai pengganti model")
     ap.add_argument("--fake-review", help="uji alur: JSON hasil tinjauan sebagai pengganti model")
     ap.add_argument("--base", default="origin/main")
@@ -204,6 +268,10 @@ def main():
         return cmd_list_drafts()
     if args.publish:
         return cmd_publish(args.publish)
+    if args.enable_auto:
+        return cmd_enable_auto()
+    if args.disable_auto:
+        return cmd_disable_auto()
 
     require_denylist()
     today = date.today()
@@ -298,6 +366,13 @@ def main():
             run(["git", "-C", str(ROOT), "worktree", "remove", "--force", str(wt)])
         if not committed:
             run(["git", "-C", str(ROOT), "branch", "-D", branch])
+
+    # Penerbitan otomatis hanya bila pemilik blog menyalakannya (--enable-auto). Kegagalan di sini tidak menghapus draft.
+    if committed and auto_config().get("publish"):
+        try:
+            cmd_publish(branch, auto=True)
+        except Exception as exc:  # noqa: BLE001
+            log(f"Penerbitan otomatis gagal, draft tetap lokal: {exc}")
     return 0
 
 
