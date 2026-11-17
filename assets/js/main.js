@@ -249,7 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (m && document.querySelector('.terminal-content')) bukaProjects(m[1]);
 });
 
-// Skills: alur kerja dari kode sampai produksi dan jalur data peta; skill menyala sesuai bukti publiknya
+// Skills: peta rasi bintang. Tiap skill adalah bintang; makin dekat pusat makin banyak buktinya, dan garis
+// menghubungkan skill yang dibahas pada artikel yang sama.
 let dataSkill = null;
 
 async function muatSkill() {
@@ -264,92 +265,279 @@ async function muatSkill() {
 }
 
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const jumlahBukti = (sk) => sk.a.length + sk.p.length;
-const tingkatBukti = (n) => (n >= 4 ? 3 : n >= 2 ? 2 : 1);
-const DETIK_PER_TAHAP = 1.6;
+const KATEGORI = [
+    { k: 'dev', nama: 'Dev', warna: '122,197,90' },
+    { k: 'ops', nama: 'Ops', warna: '95,214,196' },
+    { k: 'security', nama: 'Security', warna: '233,196,106' },
+    { k: 'gis', nama: 'GIS', warna: '195,219,101' }
+];
+const infoKategori = (k) => KATEGORI.find(c => c.k === k);
+const RADIUS_LEVEL = [0.97, 0.8, 0.6, 0.37]; // indeks = level bukti: 0 tanpa bukti ... 3 paling banyak
+const levelBukti = (j) => (j >= 4 ? 3 : j >= 2 ? 2 : j >= 1 ? 1 : 0);
+const acak = (t) => { let h = 0; for (const c of t) h = (h * 31 + c.charCodeAt(0)) | 0; return ((h >>> 0) % 1000) / 1000; };
 
-function renderLajur(kunci, judul, tahap) {
-    const n = tahap.length;
-    const durasi = n * DETIK_PER_TAHAP;
-    const bobot = tahap.map(st => Math.max(0.9, 0.55 + 0.13 * st.skills.length));
-    const total = bobot.reduce((a, b) => a + b, 0);
-    const tengah = bobot.map((w, i) => (bobot.slice(0, i).reduce((a, b) => a + b, 0) + w / 2) / total);
-    const awal = tengah[0], akhir = tengah[n - 1];
-    const simpul = tahap.map((st, i) => `<button type="button" class="hud-node${st.gerbang ? ' is-gate' : ''}${i === 0 ? ' is-aktif' : ''}" ` +
-        `data-tahap="${st.id}" style="--d:${((tengah[i] - awal) / ((akhir - awal) || 1) * durasi).toFixed(2)}s" aria-label="Tahap ${i + 1}: ${esc(st.label)}" title="${esc(st.ket)}" ` +
-        `aria-pressed="${i === 0}"><span class="hud-no">${String(i + 1).padStart(2, '0')}</span><i class="fas ${st.ikon}" aria-hidden="true"></i></button>`).join('');
-    const kartu = tahap.map((st, i) => {
-        const chips = st.skills.map(sk => {
-            const j = jumlahBukti(sk);
-            return j
-                ? `<li><button type="button" class="chip" data-level="${tingkatBukti(j)}" data-lajur="${kunci}" data-tahap="${st.id}" data-skill="${esc(sk.n)}" aria-pressed="false">` +
-                  `${esc(sk.n)}<span class="chip-n">${j}</span></button></li>`
-                : `<li><span class="chip chip-kosong">${esc(sk.n)}</span></li>`;
-        }).join('');
-        return `<article class="hud-stage${st.gerbang ? ' is-gate' : ''}${i === 0 ? ' is-aktif' : ''}" data-tahap="${st.id}" style="--i:${i}">` +
-            `<h3>${esc(st.label)}</h3><ul class="hud-chips">${chips}</ul></article>`;
-    }).join('');
-    return `<section class="hud-lane${kunci === 'alur' ? ' is-aktif' : ''}" data-lajur="${kunci}" aria-label="${esc(judul)}" style="--n:${n};--T:${durasi}s;--cols:${bobot.map(w => w.toFixed(2) + 'fr').join(' ')};--ini:${(awal * 100).toFixed(2)}%;--fim:${(akhir * 100).toFixed(2)}%">` +
-        `<div class="hud-lane-label">${esc(judul)}</div>` +
-        `<div class="hud-rail">${simpul}<span class="hud-paket" aria-hidden="true"></span><span class="hud-paket" style="--w:-${(durasi / 2).toFixed(1)}s" aria-hidden="true"></span></div>` +
-        `<div class="hud-stages">${kartu}</div></section>`;
+// Posisi tiap skill: sektor per kategori (atau satu kategori penuh saat difokuskan), cincin menurut bukti,
+// lalu dilonggarkan beberapa putaran agar label tidak saling menimpa.
+function tataLetak(semua, W, H, fokus) {
+    const cx = W / 2, cy = H / 2, rx = W * 0.45, ry = H * 0.42;
+    const tampil = fokus ? semua.filter(s => s.g === fokus) : semua;
+    const pos = new Map();
+    const letakkan = (arr, mulai, rentang) => {
+        for (let lv = 3; lv >= 0; lv--) {
+            const grup = arr.filter(s => s.lv === lv);
+            grup.forEach((s, i) => {
+                const sudut = mulai + rentang * ((i + 0.5) / grup.length) + (acak(s.n) - 0.5) * (rentang / grup.length) * 0.5 + lv * 0.3;
+                const r = RADIUS_LEVEL[lv] + (acak(s.n + 'r') - 0.5) * 0.05;
+                pos.set(s.n, { x: cx + rx * r * Math.cos(sudut), y: cy + ry * r * Math.sin(sudut) });
+            });
+        }
+    };
+    if (fokus) {
+        letakkan(tampil, -Math.PI / 2, Math.PI * 2);
+    } else {
+        const jeda = 0.32, sisa = Math.PI * 2 - jeda * KATEGORI.length;
+        let mulai = -Math.PI / 2 + jeda / 2;
+        KATEGORI.forEach(c => {
+            const arr = semua.filter(s => s.g === c.k);
+            const rentang = sisa * arr.length / semua.length;
+            letakkan(arr, mulai, rentang);
+            mulai += rentang + jeda;
+        });
+    }
+    const mini = !fokus && W < 560; // layar kecil: hanya bukti terbanyak yang berlabel, yang lain cukup titik
+    const kotak = tampil.map(s => (mini && s.lv < 3 ? { p: pos.get(s.n), w: 22, h: 22 } : { p: pos.get(s.n), w: Math.max(34, s.n.length * 7.3 + 14), h: 40 }));
+    for (let putaran = 0; putaran < 160; putaran++) {
+        for (let i = 0; i < kotak.length; i++) {
+            const a = kotak[i];
+            const dxh = a.p.x - cx, dyh = a.p.y - cy; // jauhkan dari pusat (logo)
+            const oxh = (a.w + 120) / 2 - Math.abs(dxh), oyh = (36 + 70) / 2 - Math.abs(dyh);
+            if (oxh > 0 && oyh > 0) { if (oyh < oxh) a.p.y += (dyh >= 0 ? 1 : -1) * oyh; else a.p.x += (dxh >= 0 ? 1 : -1) * oxh; }
+            for (let j = i + 1; j < kotak.length; j++) {
+                const b = kotak[j];
+                const dx = b.p.x - a.p.x, dy = b.p.y - a.p.y;
+                const ox = (a.w + b.w) / 2 - Math.abs(dx), oy = (a.h + b.h) / 2 - Math.abs(dy);
+                if (ox > 0 && oy > 0) {
+                    if (oy < ox) { const g = (dy >= 0 ? 1 : -1) * oy / 2; a.p.y -= g; b.p.y += g; }
+                    else { const g = (dx >= 0 ? 1 : -1) * ox / 2; a.p.x -= g; b.p.x += g; }
+                }
+            }
+        }
+        kotak.forEach(k => {
+            k.p.x = Math.min(W - k.w / 2 - 6, Math.max(k.w / 2 + 6, k.p.x));
+            k.p.y = Math.min(H - 30, Math.max(14, k.p.y));
+        });
+    }
+    return { pos, cx, cy, rx, ry };
 }
 
-const DETAIL_AWAL = 'Skill yang menyala punya tulisan atau proyek publik. Pilih satu untuk melihat buktinya.';
+// Pasangan skill yang dibahas pada artikel yang sama; bobot = jumlah artikel bersama
+function hitungGaris(skills) {
+    const perArtikel = new Map();
+    skills.forEach(s => s.a.forEach(a => {
+        if (!perArtikel.has(a.id)) perArtikel.set(a.id, []);
+        perArtikel.get(a.id).push(s.n);
+    }));
+    const bobot = new Map();
+    perArtikel.forEach(nama => {
+        for (let i = 0; i < nama.length; i++) {
+            for (let j = i + 1; j < nama.length; j++) {
+                const k = [nama[i], nama[j]].sort().join('|');
+                bobot.set(k, (bobot.get(k) || 0) + 1);
+            }
+        }
+    });
+    return [...bobot].map(([k, w]) => { const [a, b] = k.split('|'); return { a, b, w }; }).sort((x, y) => y.w - x.w || (x.a + x.b).localeCompare(y.a + y.b));
+}
 
-function buatHud(data) {
+function buatPeta(data) {
     const hud = document.createElement('section');
     hud.id = 'skill-hud';
     hud.className = 'skill-hud';
     hud.hidden = true;
-    hud.setAttribute('aria-label', 'Skill sebagai alur kerja');
+    hud.setAttribute('aria-label', 'Peta skill');
     if (!data) {
-        hud.innerHTML = '<p class="hud-detail">Data skill tidak dapat dimuat. Daftar lengkapnya ada di <a href="/llms.txt">llms.txt</a>.</p>';
+        hud.innerHTML = '<p class="sk-galat">Data skill tidak dapat dimuat. Daftar lengkapnya ada di <a href="/llms.txt">llms.txt</a>.</p>';
         return hud;
     }
-    const r = data.ringkas;
-    hud.innerHTML = `<span class="hud-scan" aria-hidden="true"></span>` +
-        `<header class="hud-head"><span class="hud-title"><i class="fas fa-diagram-project" aria-hidden="true"></i> skill.flow</span>` +
-        `<span class="hud-meta">${r.berbukti} dari ${r.skill} skill berbukti &middot; ${r.artikel} artikel</span></header>` +
-        `<div class="hud-lanebar" role="group" aria-label="Pilih jalur"><button type="button" class="hud-lanebtn is-aktif" data-lajur="alur">Alur kerja</button>` +
-        `<button type="button" class="hud-lanebtn" data-lajur="peta">Data peta</button></div>` +
-        renderLajur('alur', 'Alur kerja: dari kode sampai produksi', data.alur) +
-        renderLajur('peta', 'Data peta: dari berkas sampai tampilan', data.peta) +
-        `<footer class="hud-detail" role="status" aria-live="polite">${DETAIL_AWAL}</footer>`;
+    const skills = data.skills.map(s => ({ ...s, j: s.a.length + s.p.length, lv: levelBukti(s.a.length + s.p.length) }));
+    const garisSemua = hitungGaris(skills);
+    const negara = { fokus: null, pin: null, ukuran: '' };
+    const jumlah = (k) => skills.filter(s => s.g === k).length;
 
-    const cariSkill = (lajur, tahap, nama) => data[lajur].find(t => t.id === tahap).skills.find(x => x.n === nama);
+    hud.innerHTML =
+        `<div class="sk-bintang" aria-hidden="true"></div>` +
+        `<header class="sk-top"><div class="sk-judul"><span>skill.map</span><strong>Peta skill</strong></div>` +
+        `<div class="sk-legend" role="group" aria-label="Kategori skill"><button type="button" class="sk-cat is-aktif" data-k="" aria-pressed="true">Semua<em>${skills.length}</em></button>` +
+        KATEGORI.map(c => `<button type="button" class="sk-cat" data-k="${c.k}" style="--w:${c.warna}" aria-pressed="false"><i aria-hidden="true"></i>${c.nama}<em>${jumlah(c.k)}</em></button>`).join('') +
+        `</div></header>` +
+        `<div class="sk-isi"><div class="sk-kanvas"><div class="sk-nebula" aria-hidden="true"></div><svg class="sk-garis" aria-hidden="true"></svg>` +
+        `<div class="sk-hub" aria-hidden="true"><span>SAPTO</span><small>skills</small></div>` +
+        `<div class="sk-bintang-skill">` +
+        skills.map((s, i) => `<button type="button" class="sk-node" data-n="${esc(s.n)}" data-lv="${s.lv}" data-k="${s.g}" style="--w:${infoKategori(s.g).warna};--i:${i};--d:${s.j ? 9 + Math.min(s.j, 8) * 1.7 : 6}px">` +
+            `<span class="sk-dot"></span><span class="sk-label">${esc(s.n)}</span></button>`).join('') +
+        `</div></div><aside class="sk-kartu" role="status" aria-live="polite"></aside></div>` +
+        `<footer class="sk-kaki"><span>Makin dekat pusat, makin banyak bukti. Garis menghubungkan skill yang dibahas pada artikel yang sama.</span>` +
+        `<span>${data.ringkas.berbukti} dari ${data.ringkas.skill} skill berbukti &middot; ${data.ringkas.artikel} artikel</span></footer>`;
 
+    const kanvas = hud.querySelector('.sk-kanvas');
+    const svg = hud.querySelector('.sk-garis');
+    const nebula = hud.querySelector('.sk-nebula');
+    const kartu = hud.querySelector('.sk-kartu');
+    const simpul = new Map([...hud.querySelectorAll('.sk-node')].map(el => [el.dataset.n, el]));
+    const NS = 'http://www.w3.org/2000/svg';
+    let garisTampil = [];
+
+    const teratas = [...skills].sort((x, y) => y.j - x.j || x.n.localeCompare(y.n)).slice(0, 5);
+    const kartuAwal = () => {
+        kartu.innerHTML = `<p class="sk-kartu-judul">Pilih sebuah bintang</p>` +
+            `<p class="sk-kartu-isi"><span class="sk-lg">Arahkan kursor atau ketuk sebuah skill untuk melihat artikel dan proyek yang membuktikannya.</span>` +
+            `<span class="sk-sm">Ketuk sebuah skill untuk melihat buktinya.</span></p>` +
+            `<p class="sk-subjudul">Paling banyak dibuktikan</p><ul class="sk-peringkat">` +
+            teratas.map(s => `<li><button type="button" class="sk-top-btn" data-n="${esc(s.n)}" style="--w:${infoKategori(s.g).warna}">` +
+                `<span>${esc(s.n)}</span><b><i style="width:${Math.round(s.j / teratas[0].j * 100)}%"></i></b><em>${s.j}</em></button></li>`).join('') + `</ul>` +
+            `<ul class="sk-kunci"><li><i class="besar"></i>bukti banyak</li><li><i class="sedang"></i>bukti sedikit</li><li><i class="kosong"></i>belum ada bukti publik</li></ul>`;
+    };
+
+    const tetangga = (nama) => {
+        const set = new Set();
+        garisTampil.forEach(g => { if (g.a === nama) set.add(g.b); else if (g.b === nama) set.add(g.a); });
+        return set;
+    };
+
+    const kartuSkill = (s) => {
+        const kat = infoKategori(s.g);
+        const rel = [...tetangga(s.n)].slice(0, 7);
+        let h = `<div class="sk-kartu-kepala" style="--w:${kat.warna}"><i></i><strong>${esc(s.n)}</strong><span>${kat.nama}</span></div>`;
+        if (!s.j) {
+            h += `<p class="sk-kartu-isi">Belum ada tulisan atau proyek publik untuk skill ini.</p>`;
+        } else {
+            h += `<p class="sk-kartu-isi">${s.a.length ? s.a.length + ' artikel' : ''}${s.a.length && s.p.length ? ' &middot; ' : ''}${s.p.length ? s.p.length + ' proyek' : ''}</p>`;
+            if (s.a.length) {
+                h += `<ul class="sk-daftar">` + s.a.slice(0, 4).map(a => `<li><a href="/blog/${esc(a.id)}/">${esc(a.t)}</a></li>`).join('') + `</ul>`;
+                if (s.tag) h += `<a class="sk-semua" href="/blog/tag/${esc(s.tag)}/">Semua artikel &rarr;</a>`;
+            }
+            if (s.p.length) h += `<p class="sk-proyek">Proyek: ` + s.p.map(n => `<a href="${esc(data.proyek[n])}" target="_blank" rel="noopener noreferrer">${esc(n)}</a>`).join(', ') + `</p>`;
+        }
+        if (rel.length) h += `<p class="sk-rel">Sering bersama: ${rel.map(esc).join(' &middot; ')}</p>`;
+        kartu.innerHTML = h;
+    };
+
+    const sorot = (nama) => {
+        kanvas.classList.toggle('is-sorot', !!nama);
+        const dekat = nama ? tetangga(nama) : new Set();
+        simpul.forEach((el, n) => {
+            el.classList.toggle('is-aktif', n === nama);
+            el.classList.toggle('is-tetangga', dekat.has(n));
+        });
+        svg.querySelectorAll('.sk-garis-item').forEach(p => p.classList.toggle('is-aktif', !!nama && (p.dataset.a === nama || p.dataset.b === nama)));
+        if (nama) kartuSkill(skills.find(s => s.n === nama)); else kartuAwal();
+    };
+
+    const susun = (awal) => {
+        const W = kanvas.clientWidth, H = kanvas.clientHeight;
+        if (!W || !H) return;
+        const { pos, cx, cy, rx, ry } = tataLetak(skills, W, H, negara.fokus);
+        hud.classList.toggle('sk-kecil', W < 560);
+        hud.classList.toggle('sk-fokus', !!negara.fokus);
+        simpul.forEach((el, n) => {
+            const p = pos.get(n);
+            el.classList.toggle('is-sembunyi', !p);
+            el.tabIndex = p ? 0 : -1;
+            if (p) el.style.transform = `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px)`;
+        });
+        // garis, cincin orbit, dan denyut cahaya
+        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+        svg.replaceChildren();
+        [0.34, 0.56, 0.77, 0.95].forEach(r => {
+            const e = document.createElementNS(NS, 'ellipse');
+            e.setAttribute('cx', cx); e.setAttribute('cy', cy); e.setAttribute('rx', rx * r); e.setAttribute('ry', ry * r);
+            e.setAttribute('class', 'sk-orbit');
+            svg.appendChild(e);
+        });
+        garisTampil = garisSemua.filter(g => pos.has(g.a) && pos.has(g.b)).slice(0, 150);
+        garisTampil.forEach((g, i) => {
+            const a = pos.get(g.a), b = pos.get(g.b);
+            const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+            const kx = mx + (cx - mx) * 0.4, ky = my + (cy - my) * 0.4;
+            const path = document.createElementNS(NS, 'path');
+            path.setAttribute('d', `M${a.x.toFixed(1)},${a.y.toFixed(1)} Q${kx.toFixed(1)},${ky.toFixed(1)} ${b.x.toFixed(1)},${b.y.toFixed(1)}`);
+            path.setAttribute('pathLength', '100');
+            path.setAttribute('class', 'sk-garis-item');
+            path.dataset.a = g.a; path.dataset.b = g.b;
+            path.style.setProperty('--b', Math.min(g.w, 3));
+            svg.appendChild(path);
+            if (i < 12) { // denyut cahaya mengalir di garis terkuat
+                const denyut = path.cloneNode();
+                denyut.setAttribute('class', 'sk-denyut');
+                denyut.style.setProperty('--dl', `${(i * 0.7).toFixed(1)}s`);
+                svg.appendChild(denyut);
+            }
+        });
+        // cahaya latar per kategori
+        nebula.replaceChildren();
+        const sebaran = negara.fokus ? [{ k: negara.fokus, x: cx, y: cy, r: Math.min(W, H) * 0.55 }]
+            : KATEGORI.map(c => {
+                const ada = [...pos].filter(([n]) => skills.find(s => s.n === n).g === c.k).map(([, p]) => p);
+                return { k: c.k, x: ada.reduce((t, p) => t + p.x, 0) / ada.length, y: ada.reduce((t, p) => t + p.y, 0) / ada.length, r: Math.min(W, H) * 0.34 };
+            });
+        sebaran.forEach(c => {
+            const d = document.createElement('div');
+            d.className = 'sk-cahaya';
+            d.style.cssText = `--w:${infoKategori(c.k).warna};left:${c.x - c.r}px;top:${c.y - c.r}px;width:${c.r * 2}px;height:${c.r * 2}px`;
+            nebula.appendChild(d);
+        });
+        if (negara.pin) sorot(negara.pin);
+        if (awal) hud.classList.add('sk-muncul');
+    };
+
+    // animasi masuk: semua bintang keluar dari pusat
+    hud.mulai = () => {
+        hud.classList.remove('sk-muncul');
+        const W = kanvas.clientWidth, H = kanvas.clientHeight;
+        simpul.forEach(el => { el.classList.add('is-awal'); el.style.transform = `translate(${W / 2}px, ${H / 2}px)`; });
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            simpul.forEach(el => el.classList.remove('is-awal'));
+            susun(true);
+            setTimeout(() => hud.classList.remove('sk-muncul'), 2400);
+        }));
+    };
+
+    let ulang = 0;
+    new ResizeObserver(() => {
+        cancelAnimationFrame(ulang);
+        ulang = requestAnimationFrame(() => { const u = kanvas.clientWidth + 'x' + kanvas.clientHeight; if (u !== negara.ukuran) { negara.ukuran = u; if (!hud.hidden) susun(false); } });
+    }).observe(kanvas);
+
+    hud.addEventListener('mouseover', (e) => { const n = e.target.closest('.sk-node'); if (n && !negara.pin) sorot(n.dataset.n); });
+    hud.addEventListener('mouseout', (e) => { if (e.target.closest('.sk-node') && !negara.pin) sorot(null); });
+    hud.addEventListener('focusin', (e) => { const n = e.target.closest('.sk-node'); if (n && !negara.pin) sorot(n.dataset.n); });
+    hud.addEventListener('focusout', (e) => { if (e.target.closest('.sk-node') && !negara.pin) sorot(null); });
     hud.addEventListener('click', (e) => {
-        const chip = e.target.closest('.chip[data-skill]');
-        const simpul = e.target.closest('.hud-node');
-        const lane = e.target.closest('.hud-lanebtn');
-        if (chip) {
-            hud.querySelectorAll('.chip[aria-pressed="true"]').forEach(c => c.setAttribute('aria-pressed', 'false'));
-            chip.setAttribute('aria-pressed', 'true');
-            tampilkanBukti(hud, cariSkill(chip.dataset.lajur, chip.dataset.tahap, chip.dataset.skill), data);
-        } else if (simpul) {
-            const lajur = simpul.closest('.hud-lane');
-            lajur.querySelectorAll('.hud-node, .hud-stage').forEach(el => el.classList.toggle('is-aktif', el.dataset.tahap === simpul.dataset.tahap));
-            lajur.querySelectorAll('.hud-node').forEach(el => el.setAttribute('aria-pressed', String(el === simpul)));
-        } else if (lane) {
-            hud.querySelectorAll('.hud-lanebtn, .hud-lane').forEach(el => el.classList.toggle('is-aktif', (el.dataset.lajur) === lane.dataset.lajur));
+        const n = e.target.closest('.sk-node');
+        const kat = e.target.closest('.sk-cat');
+        const top = e.target.closest('.sk-top-btn');
+        if (top) {
+            const sk = skills.find(x => x.n === top.dataset.n);
+            if (negara.fokus && negara.fokus !== sk.g) { negara.fokus = null; hud.querySelectorAll('.sk-cat').forEach(b => { const aktif = !b.dataset.k; b.classList.toggle('is-aktif', aktif); b.setAttribute('aria-pressed', String(aktif)); }); susun(false); }
+            negara.pin = sk.n;
+            sorot(sk.n);
+        } else if (n) {
+            negara.pin = negara.pin === n.dataset.n ? null : n.dataset.n;
+            sorot(negara.pin || null);
+        } else if (kat) {
+            negara.fokus = kat.dataset.k || null;
+            negara.pin = null;
+            hud.querySelectorAll('.sk-cat').forEach(b => { const aktif = b === kat; b.classList.toggle('is-aktif', aktif); b.setAttribute('aria-pressed', String(aktif)); });
+            sorot(null);
+            susun(false);
+        } else if (negara.pin && !e.target.closest('.sk-kartu')) {
+            negara.pin = null;
+            sorot(null);
         }
     });
+    hud.addEventListener('keydown', (e) => { if (e.key === 'Escape' && negara.pin) { negara.pin = null; sorot(null); } });
+    kartuAwal();
     return hud;
-}
-
-function tampilkanBukti(hud, sk, data) {
-    const kotak = hud.querySelector('.hud-detail');
-    const bagian = [`<strong>${esc(sk.n)}</strong>`];
-    if (sk.a.length) {
-        const daftar = sk.a.slice(0, 3).map(a => `<a href="/blog/${esc(a.id)}/">${esc(a.t)}</a>`).join(' &middot; ');
-        const semua = sk.tag ? ` &middot; <a href="/blog/tag/${esc(sk.tag)}/">semua artikel &rarr;</a>` : '';
-        bagian.push(`${sk.a.length} artikel: ${daftar}${semua}`);
-    }
-    if (sk.p.length) {
-        bagian.push('proyek: ' + sk.p.map(n => `<a href="${esc(data.proyek[n])}" target="_blank" rel="noopener noreferrer">${esc(n)}</a>`).join(', '));
-    }
-    kotak.innerHTML = bagian.join(' &mdash; ');
 }
 
 async function bukaSkills() {
@@ -359,14 +547,12 @@ async function bukaSkills() {
     if (!terminal) return;
     let hud = document.getElementById('skill-hud');
     if (!hud) {
-        hud = buatHud(await muatSkill());
+        hud = buatPeta(await muatSkill());
         terminal.insertAdjacentElement('afterend', hud);
     }
     terminal.hidden = true;
     hud.hidden = false;
-    hud.classList.remove('is-masuk');
-    void hud.offsetWidth; // ulang animasi masuk
-    hud.classList.add('is-masuk');
+    if (hud.mulai) hud.mulai();
 }
 
 function sembunyikanSkills() {

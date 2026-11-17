@@ -521,7 +521,7 @@ def load_skills():
 
 
 def render_skills_evidence(posts):
-    """Data untuk halaman Skills: tiap skill beserta artikel yang menyebutnya dan proyek publik yang memakainya.
+    """Data untuk halaman Skills: tiap skill beserta kategori, artikel yang menyebutnya, dan proyek publik yang memakainya.
 
     Artikel dicocokkan per kata utuh pada judul, ringkasan, tag, dan isi; skill satu huruf (R) hanya dicocokkan
     lewat alias atau proyek supaya tidak menghasilkan kecocokan palsu.
@@ -542,21 +542,16 @@ def render_skills_evidence(posts):
     def proyek_untuk(nama):
         return [n for n, info in data["proyek"].items() if nama in info["skills"]]
 
-    total = berbukti = 0
-    lajur = {}
-    for kunci in ("alur", "peta"):
-        tahap = []
-        for st in data[kunci]:
-            skills = []
-            for nama in st["skills"]:
-                a, pr = artikel_untuk(nama), proyek_untuk(nama)
-                total += 1
-                berbukti += bool(a or pr)
-                skills.append({"n": nama, "a": a, "p": pr, "tag": slug(nama) if slug(nama) in tag_halaman else None})
-            tahap.append({k: v for k, v in st.items() if k != "skills"} | {"skills": skills})
-        lajur[kunci] = tahap
-    lajur["proyek"] = {n: info["url"] for n, info in data["proyek"].items()}
-    lajur["ringkas"] = {"skill": total, "berbukti": berbukti, "artikel": len(posts)}
+    daftar = []
+    for kategori, nama_skill in data["grup"].items():
+        for nama in nama_skill:
+            a, pr = artikel_untuk(nama), proyek_untuk(nama)
+            daftar.append({"n": nama, "g": kategori, "a": a, "p": pr, "tag": slug(nama) if slug(nama) in tag_halaman else None})
+    lajur = {
+        "skills": daftar,
+        "proyek": {n: info["url"] for n, info in data["proyek"].items()},
+        "ringkas": {"skill": len(daftar), "berbukti": sum(1 for x in daftar if x["a"] or x["p"]), "artikel": len(posts)},
+    }
     return json.dumps(lajur, ensure_ascii=False, indent=1) + "\n"
 
 
