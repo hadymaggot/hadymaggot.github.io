@@ -15,7 +15,7 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 ## Skills
 
 - Dev: PHP, Laravel, JavaScript, TypeScript, VueJS, Python, SQL, Bash, PowerShell, R, Django, Quasar, Playwright
-- Ops: Linux, Docker, Docker Compose, Kubernetes, Ansible, Traefik, Redis, RabbitMQ, PostgreSQL, MySQL, Prometheus, Grafana, Cloudflare, monitoring, SRE, Git, GitHub Actions
+- Ops: Linux, Docker, Docker Compose, Kubernetes, Ansible, Traefik, Redis, RabbitMQ, PostgreSQL, MySQL, Prometheus, Grafana, Cloudflare, monitoring, SRE, Git, GitHub Actions, GitLab CI
 - Security: penetration testing, SIEM, OWASP ZAP, Trivy, Semgrep, Gitleaks, Nmap
 - GIS: GeoJSON, shapefile, PostGIS, MapLibre GL, Leaflet, OpenLayers, Turf.js, proj4, XYZ/WMS tiles
 
