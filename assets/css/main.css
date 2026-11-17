@@ -452,24 +452,42 @@ body {
 
 .menu-toggle:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 22px rgba(122, 197, 90, 0.6);
 }
 
+.menu-toggle:active {
+    transform: scale(0.96);
+}
+
+.menu-toggle:focus-visible,
+.menu-item a:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 3px;
+}
+
+/* Menu menempel pada tombol (tanpa celah yang tidak bisa di-hover) dan tidak bisa difokus saat tertutup */
 .menu-items {
     position: absolute;
-    bottom: 70px;
+    bottom: 55px;
     right: 5px;
+    padding-bottom: 15px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     transform: scale(0);
     transform-origin: bottom right;
-    transition: transform 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s ease, opacity 0.2s ease, visibility 0s linear 0.3s;
     z-index: 100;
 }
 
 .floating-menu:hover .menu-items,
 .floating-menu:focus-within .menu-items {
     transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
 }
 
 .menu-item {
@@ -492,6 +510,36 @@ body {
     background-color: var(--primary-color);
     color: var(--dark-color);
     transform: translateY(-3px);
+}
+
+/* Seluruh lingkaran bisa diklik dan ikon memakai warna tema, bukan biru tautan bawaan */
+.menu-item a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    color: inherit;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .floating-menu {
+        bottom: 5rem;
+        right: 1rem;
+    }
+
+    .menu-toggle {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+
+    .menu-items {
+        bottom: 48px;
+        right: 1.5px;
+    }
 }
 
 .blink {
@@ -653,15 +701,19 @@ body {
 }
 
 /* Loading Bar Effects */
+/* Berada di dalam navbar, menempel pada garis bawahnya */
 .loading-bar {
-    position: fixed;
-    top: 0;
+    position: absolute;
+    bottom: -1px;
     left: 0;
     width: 100%;
     height: 3px;
     background: rgba(122, 197, 90, 0.1);
     z-index: 9999;
     overflow: hidden;
+    pointer-events: none;
+    /* hilang setelah selesai, supaya tidak menempel di atas navbar selamanya */
+    animation: hideLoadingBar 0.4s ease 1.7s forwards;
 }
 
 /* Effect 1: Pulse Loading */
@@ -675,7 +727,7 @@ body {
         var(--primary-color) 100%
     );
     box-shadow: 0 0 10px var(--primary-color);
-    animation: pulseLoading 2s ease-in-out both;
+    animation: pulseLoading 1.6s ease-in-out both;
     background-size: 200% 100%;
     position: relative;
 }
@@ -689,7 +741,7 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(255, 255, 255, 0.3);
-    animation: glitchEffect 0.5s ease-in-out infinite;
+    animation: glitchEffect 0.5s ease-in-out 3;
 }
 
 /* Effect 3: Glow Points */
@@ -707,7 +759,7 @@ body {
         0 0 10px var(--primary-color),
         0 0 20px var(--primary-color),
         0 0 30px var(--primary-color);
-    animation: glowPoint 2s linear infinite;
+    animation: glowPoint 1.6s linear 1;
 }
 
 @keyframes pulseLoading {
@@ -722,6 +774,25 @@ body {
     100% {
         width: 100%;
         background-position: -100% 0;
+    }
+}
+
+@keyframes hideLoadingBar {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loading-bar {
+        display: none;
+    }
+
+    .menu-toggle,
+    .menu-items,
+    .menu-item {
+        transition: none;
     }
 }
 
