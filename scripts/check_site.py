@@ -201,6 +201,7 @@ STALE_PHRASES = ("GIS Engineer", "engineer di bidang security, operations", "eng
                  "development, DevOps, security", "web development, DevOps, cybersecurity")
 TAGLINE = "Security, Operations, dan Software Engineer"
 CAPTION = "Security | Operations | Software Engineer"
+OSS_PR = "torproject/community/pull/149"
 
 
 def check_consistency():
@@ -219,6 +220,10 @@ def check_consistency():
         if TAGLINE not in (ROOT / rel).read_text(encoding="utf-8"):
             fail(f"{rel}: tagline baku \"{TAGLINE}\" tidak ditemukan")
     llms = (ROOT / "llms.txt").read_text(encoding="utf-8")
+    index_text = (ROOT / "index.html").read_text(encoding="utf-8")
+    for rel, text in (("assets/js/main.js", js), ("llms.txt", llms), ("index.html", index_text)):
+        if OSS_PR not in text:
+            fail(f"{rel}: kontribusi open source ({OSS_PR}) tidak tercantum")
     index = (ROOT / "index.html").read_text(encoding="utf-8")
     summary = index[index.index('id="ringkasan"'):]
 

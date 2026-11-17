@@ -93,6 +93,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                             kembali.</p>
                         <p>Di bidang GIS, pekerjaan saya mencakup pengolahan data spasial (GeoJSON, shapefile, PostGIS) dan aplikasi peta
                             interaktif dengan MapLibre, Leaflet, dan OpenLayers, termasuk pengelolaan basemap tile dan kode wilayah administrasi.</p>
+                        <p>Kontribusi open source: perubahan dokumentasi relay pada Tor Project yang di-merge pada 2021.</p>
                         <p>Catatan teknis dari pekerjaan sehari-hari terbit di blog, mencakup security, operations, dan software engineering.</p>
                         <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
@@ -142,6 +143,10 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                     { name: 'koperasi-digital', stack: 'TypeScript', desc: 'Platform koperasi digital.' },
                     { name: 'wrt-gis', stack: 'Vue (Quasar)', desc: 'Kerangka WebGIS dengan OpenLayers, MapLibre, Turf.js, dan proj4.' }
                 ];
+                const ossProjects = [
+                    { name: 'torproject/community', url: 'https://github.com/torproject/community/pull/149',
+                      desc: 'Dokumentasi relay Tor: menambahkan rujukan ke FAQ Support Portal pada halaman Getting help untuk relay operator. Di-merge pada 2021.' }
+                ];
                 const otherProjects = [
                     { name: 'sirus-2022', stack: 'PHP', desc: 'Sistem Informasi Rumah Swadaya (SIRUS).' },
                     { name: 'bsps-api', stack: 'Laravel', desc: 'API Laravel untuk bantuan stimulan perumahan swadaya (BSPS), dengan koleksi Postman.' },
@@ -150,7 +155,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                     { name: 'aplikasi-web-skala-besar', stack: 'PHP, Vue', desc: 'Aplikasi web dengan kode dasar besar dan banyak kontributor, sekitar 300 commit saya di dalamnya.' },
                     { name: 'platform-webgis', stack: 'JavaScript, Vue', desc: 'Platform WebGIS dengan engine peta kustom: layer, proyeksi, dan pengolahan shapefile.' }
                 ];
-                output = `total ${projects.length + wrtProjects.length + otherProjects.length}<ul class="project-list">` +
+                output = `total ${projects.length + wrtProjects.length + otherProjects.length + ossProjects.length}<ul class="project-list">` +
                     projects.map(p => `<li><a class="term-link" href="${p.url}" target="_blank" rel="noopener noreferrer">${p.name}</a>
                         <span class="project-tag project-tag-${p.tag}">${p.tag}</span><br>${p.desc}</li>`).join('') +
                     `</ul><div>drwxr-xr-x wahana-reka-tekindo/ (repo privat, tanpa tautan)</div><ul class="project-list">` +
@@ -159,6 +164,9 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                     `</ul><div>drwxr-xr-x lainnya/ (repo privat, tanpa tautan)</div><ul class="project-list">` +
                     otherProjects.map(p => `<li>${p.name}
                         <span class="project-tag project-tag-private">${p.stack}</span><br>${p.desc}</li>`).join('') +
+                    `</ul><div>drwxr-xr-x open-source/ (kontribusi pada proyek orang lain)</div><ul class="project-list">` +
+                    ossProjects.map(p => `<li><a class="term-link" href="${p.url}" target="_blank" rel="noopener noreferrer">${p.name}</a>
+                        <span class="project-tag project-tag-oss">open source</span><br>${p.desc}</li>`).join('') +
                     `</ul><p>Perusahaan: <a class="term-link" href="https://wahanarekatekindo.co.id" target="_blank" rel="noopener noreferrer">wahanarekatekindo.co.id</a></p>` +
                     `<p>Selengkapnya: <a class="term-link" href="https://github.com/hadymaggot/" target="_blank" rel="noopener noreferrer">github.com/hadymaggot</a></p>`;
                 break;
