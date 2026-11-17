@@ -241,11 +241,9 @@ def check_consistency():
         if not sr_line or sorted(norm(sr_line.group(1).split(","))) != sorted(menu[key]):
             fail(f"index.html: skills {label} pada ringkasan tidak sama dengan assets/data/skills.json")
 
-    # setiap skill tampil tepat satu kali pada tahap alur atau jalur peta
     semua = [s for items in skills["grup"].values() for s in items]
-    tahap = [s for st in skills["alur"] + skills["peta"] for s in st["skills"]]
-    if sorted(semua) != sorted(tahap):
-        fail("assets/data/skills.json: skill pada grup dan pada tahap alur tidak sama: " + ", ".join(sorted(set(semua) ^ set(tahap))))
+    if len(semua) != len(set(semua)):
+        fail("assets/data/skills.json: ada skill yang muncul di lebih dari satu grup")
     for nama, info in skills["proyek"].items():
         for s in info["skills"]:
             if s not in semua:

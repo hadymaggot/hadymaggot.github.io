@@ -1,622 +1,594 @@
 {
- "alur": [
+ "skills": [
   {
-   "id": "kode",
-   "label": "Kode & Uji",
-   "ikon": "fa-code",
-   "ket": "Bahasa, framework, dan pengujian",
-   "skills": [
+   "n": "PHP",
+   "g": "dev",
+   "a": [
     {
-     "n": "PHP",
-     "a": [
-      {
-       "id": "container-zombie-process-init",
-       "t": "Zombie Process di Container: Mengapa PID 1 Perlu init"
-      },
-      {
-       "id": "mutex-scheduler-tertahan-redis",
-       "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
-      }
-     ],
-     "p": [],
-     "tag": null
+     "id": "container-zombie-process-init",
+     "t": "Zombie Process di Container: Mengapa PID 1 Perlu init"
     },
     {
-     "n": "Laravel",
-     "a": [
-      {
-       "id": "mutex-scheduler-tertahan-redis",
-       "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
-      }
-     ],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "JavaScript",
-     "a": [
-      {
-       "id": "legacy-handler-js-bukan-aturan-hidup",
-       "t": "Migrasi Legacy: Handler JS Belum Berarti Aturan Hidup"
-      },
-      {
-       "id": "basemap-tile-carto-dan-google-vt",
-       "t": "Basemap Tile: Watermark CARTO dan Larangan Google vt"
-      }
-     ],
-     "p": [
-      "hadymaggot.github.io"
-     ],
-     "tag": null
-    },
-    {
-     "n": "TypeScript",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "VueJS",
-     "a": [
-      {
-       "id": "type-check-hijau-bukan-bukti-runtime",
-       "t": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime"
-      }
-     ],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Quasar",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Python",
-     "a": [
-      {
-       "id": "ekspor-smart-dbf-utf8-dan-file-besar",
-       "t": "Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB"
-      },
-      {
-       "id": "docker-windows-crlf-dan-devnull",
-       "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
-      },
-      {
-       "id": "sql-ke-geojson-geometri-kosong",
-       "t": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan"
-      }
-     ],
-     "p": [
-      "security-audit-kit",
-      "sql_geojson",
-      "hadymaggot.github.io"
-     ],
-     "tag": "python"
-    },
-    {
-     "n": "Django",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "SQL",
-     "a": [
-      {
-       "id": "sql-ke-geojson-geometri-kosong",
-       "t": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan"
-      }
-     ],
-     "p": [
-      "sql_geojson"
-     ],
-     "tag": null
-    },
-    {
-     "n": "Bash",
-     "a": [
-      {
-       "id": "docker-windows-crlf-dan-devnull",
-       "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
-      }
-     ],
-     "p": [
-      "security-audit-kit",
-      "mailserver",
-      "private-tunneling",
-      "9hs-ubuntu-fancyprompt"
-     ],
-     "tag": null
-    },
-    {
-     "n": "PowerShell",
-     "a": [
-      {
-       "id": "docker-windows-crlf-dan-devnull",
-       "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
-      }
-     ],
-     "p": [
-      "security-audit-kit"
-     ],
-     "tag": null
-    },
-    {
-     "n": "R",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Playwright",
-     "a": [
-      {
-       "id": "type-check-hijau-bukan-bukti-runtime",
-       "t": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime"
-      }
-     ],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Git",
-     "a": [
-      {
-       "id": "gitleaks-celah-rename-detection",
-       "t": "Gitleaks Melewatkan Secret pada Commit Rename"
-      },
-      {
-       "id": "daftar-tugas-adalah-petunjuk",
-       "t": "Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode"
-      },
-      {
-       "id": "docker-windows-crlf-dan-devnull",
-       "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
-      }
-     ],
-     "p": [
-      "hadymaggot.github.io"
-     ],
-     "tag": null
+     "id": "mutex-scheduler-tertahan-redis",
+     "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
     }
-   ]
+   ],
+   "p": [],
+   "tag": null
   },
   {
-   "id": "pipeline",
-   "label": "Pipeline",
-   "ikon": "fa-code-branch",
-   "ket": "Build, uji, dan rilis otomatis",
-   "skills": [
+   "n": "Laravel",
+   "g": "dev",
+   "a": [
     {
-     "n": "GitHub Actions",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "GitLab CI",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Ansible",
-     "a": [
-      {
-       "id": "checklist-ops-sebelum-deploy",
-       "t": "Checklist Ops Sebelum Deploy ke Produksi"
-      }
-     ],
-     "p": [],
-     "tag": null
+     "id": "mutex-scheduler-tertahan-redis",
+     "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
     }
-   ]
+   ],
+   "p": [],
+   "tag": null
   },
   {
-   "id": "gerbang",
-   "label": "Gerbang Keamanan",
-   "ikon": "fa-shield-halved",
-   "gerbang": true,
-   "ket": "Pemindaian dan pengujian sebelum rilis",
-   "skills": [
+   "n": "JavaScript",
+   "g": "dev",
+   "a": [
     {
-     "n": "Penetration Testing",
-     "a": [
-      {
-       "id": "pentest-ke-test-otomatis",
-       "t": "Dari Temuan Pentest ke Test Otomatis di CI"
-      }
-     ],
-     "p": [
-      "security-audit-kit"
-     ],
-     "tag": null
+     "id": "legacy-handler-js-bukan-aturan-hidup",
+     "t": "Migrasi Legacy: Handler JS Belum Berarti Aturan Hidup"
     },
     {
-     "n": "OWASP ZAP",
-     "a": [],
-     "p": [
-      "security-audit-kit"
-     ],
-     "tag": null
-    },
-    {
-     "n": "Trivy",
-     "a": [
-      {
-       "id": "checklist-ops-sebelum-deploy",
-       "t": "Checklist Ops Sebelum Deploy ke Produksi"
-      }
-     ],
-     "p": [
-      "security-audit-kit"
-     ],
-     "tag": null
-    },
-    {
-     "n": "Semgrep",
-     "a": [],
-     "p": [
-      "security-audit-kit"
-     ],
-     "tag": null
-    },
-    {
-     "n": "Gitleaks",
-     "a": [
-      {
-       "id": "checklist-ops-sebelum-deploy",
-       "t": "Checklist Ops Sebelum Deploy ke Produksi"
-      },
-      {
-       "id": "gitleaks-celah-rename-detection",
-       "t": "Gitleaks Melewatkan Secret pada Commit Rename"
-      }
-     ],
-     "p": [
-      "security-audit-kit"
-     ],
-     "tag": null
-    },
-    {
-     "n": "Nmap",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "SIEM",
-     "a": [],
-     "p": [],
-     "tag": null
+     "id": "basemap-tile-carto-dan-google-vt",
+     "t": "Basemap Tile: Watermark CARTO dan Larangan Google vt"
     }
-   ]
+   ],
+   "p": [
+    "hadymaggot.github.io"
+   ],
+   "tag": null
   },
   {
-   "id": "platform",
-   "label": "Platform",
-   "ikon": "fa-cubes",
-   "ket": "Tempat aplikasi berjalan",
-   "skills": [
-    {
-     "n": "Linux",
-     "a": [
-      {
-       "id": "docker-windows-crlf-dan-devnull",
-       "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
-      }
-     ],
-     "p": [
-      "private-tunneling",
-      "9hs-ubuntu-fancyprompt"
-     ],
-     "tag": null
-    },
-    {
-     "n": "Docker",
-     "a": [
-      {
-       "id": "traefik-label-perlu-recreate",
-       "t": "Traefik: Route Baru Perlu Recreate Container"
-      },
-      {
-       "id": "redis-aof-korup-setelah-reboot",
-       "t": "Redis Crash-Loop karena AOF Korup Setelah Reboot"
-      },
-      {
-       "id": "container-zombie-process-init",
-       "t": "Zombie Process di Container: Mengapa PID 1 Perlu init"
-      },
-      {
-       "id": "mutex-scheduler-tertahan-redis",
-       "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
-      },
-      {
-       "id": "docker-windows-crlf-dan-devnull",
-       "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
-      },
-      {
-       "id": "cakupan-dependabot-image-compose",
-       "t": "Cakupan Dependabot: Image di docker-compose Luput Dipantau"
-      }
-     ],
-     "p": [
-      "mailserver"
-     ],
-     "tag": "docker"
-    },
-    {
-     "n": "Docker Compose",
-     "a": [
-      {
-       "id": "traefik-label-perlu-recreate",
-       "t": "Traefik: Route Baru Perlu Recreate Container"
-      },
-      {
-       "id": "redis-aof-korup-setelah-reboot",
-       "t": "Redis Crash-Loop karena AOF Korup Setelah Reboot"
-      },
-      {
-       "id": "container-zombie-process-init",
-       "t": "Zombie Process di Container: Mengapa PID 1 Perlu init"
-      },
-      {
-       "id": "docker-windows-crlf-dan-devnull",
-       "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
-      },
-      {
-       "id": "cakupan-dependabot-image-compose",
-       "t": "Cakupan Dependabot: Image di docker-compose Luput Dipantau"
-      }
-     ],
-     "p": [
-      "mailserver"
-     ],
-     "tag": null
-    },
-    {
-     "n": "Kubernetes",
-     "a": [
-      {
-       "id": "kubernetes-best-practices",
-       "t": "Kubernetes Best Practices for Production"
-      }
-     ],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Traefik",
-     "a": [
-      {
-       "id": "traefik-label-perlu-recreate",
-       "t": "Traefik: Route Baru Perlu Recreate Container"
-      }
-     ],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Cloudflare",
-     "a": [
-      {
-       "id": "security-headers-github-pages",
-       "t": "Security Headers di GitHub Pages: Apa yang Bisa dan Tidak"
-      }
-     ],
-     "p": [
-      "hadymaggot.github.io"
-     ],
-     "tag": null
-    },
-    {
-     "n": "PostgreSQL",
-     "a": [
-      {
-       "id": "import-track-postgis-detoast-materialized",
-       "t": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED"
-      }
-     ],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "MySQL",
-     "a": [
-      {
-       "id": "koordinat-dms-dan-validasi-lintang",
-       "t": "Koordinat DMS dan Validasi Lintang di Luar Bounding Box"
-      }
-     ],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Redis",
-     "a": [
-      {
-       "id": "redis-aof-korup-setelah-reboot",
-       "t": "Redis Crash-Loop karena AOF Korup Setelah Reboot"
-      },
-      {
-       "id": "mutex-scheduler-tertahan-redis",
-       "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
-      }
-     ],
-     "p": [],
-     "tag": "redis"
-    },
-    {
-     "n": "RabbitMQ",
-     "a": [],
-     "p": [],
-     "tag": null
-    }
-   ]
+   "n": "TypeScript",
+   "g": "dev",
+   "a": [],
+   "p": [],
+   "tag": null
   },
   {
-   "id": "observasi",
-   "label": "Observasi",
-   "ikon": "fa-chart-line",
-   "ket": "Memantau dan menjaga keandalan",
-   "skills": [
+   "n": "VueJS",
+   "g": "dev",
+   "a": [
     {
-     "n": "Prometheus",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Grafana",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Monitoring",
-     "a": [
-      {
-       "id": "basemap-tile-carto-dan-google-vt",
-       "t": "Basemap Tile: Watermark CARTO dan Larangan Google vt"
-      },
-      {
-       "id": "cakupan-dependabot-image-compose",
-       "t": "Cakupan Dependabot: Image di docker-compose Luput Dipantau"
-      },
-      {
-       "id": "kubernetes-best-practices",
-       "t": "Kubernetes Best Practices for Production"
-      }
-     ],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "SRE",
-     "a": [
-      {
-       "id": "checklist-ops-sebelum-deploy",
-       "t": "Checklist Ops Sebelum Deploy ke Produksi"
-      }
-     ],
-     "p": [],
-     "tag": null
+     "id": "type-check-hijau-bukan-bukti-runtime",
+     "t": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime"
     }
-   ]
-  }
- ],
- "peta": [
-  {
-   "id": "data",
-   "label": "Data",
-   "ikon": "fa-database",
-   "ket": "Format data spasial",
-   "skills": [
-    {
-     "n": "GeoJSON",
-     "a": [
-      {
-       "id": "sql-ke-geojson-geometri-kosong",
-       "t": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan"
-      }
-     ],
-     "p": [
-      "sql_geojson"
-     ],
-     "tag": null
-    },
-    {
-     "n": "Shapefile",
-     "a": [
-      {
-       "id": "ekspor-smart-dbf-utf8-dan-file-besar",
-       "t": "Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB"
-      }
-     ],
-     "p": [],
-     "tag": null
-    }
-   ]
+   ],
+   "p": [],
+   "tag": null
   },
   {
-   "id": "simpan",
-   "label": "Simpan",
-   "ikon": "fa-layer-group",
-   "ket": "Basis data spasial",
-   "skills": [
+   "n": "Python",
+   "g": "dev",
+   "a": [
     {
-     "n": "PostGIS",
-     "a": [
-      {
-       "id": "import-track-postgis-detoast-materialized",
-       "t": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED"
-      }
-     ],
-     "p": [
-      "sql_geojson"
-     ],
-     "tag": null
+     "id": "ekspor-smart-dbf-utf8-dan-file-besar",
+     "t": "Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB"
+    },
+    {
+     "id": "docker-windows-crlf-dan-devnull",
+     "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
+    },
+    {
+     "id": "sql-ke-geojson-geometri-kosong",
+     "t": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan"
     }
-   ]
+   ],
+   "p": [
+    "security-audit-kit",
+    "sql_geojson",
+    "hadymaggot.github.io"
+   ],
+   "tag": "python"
   },
   {
-   "id": "olah",
-   "label": "Olah & Sajikan",
-   "ikon": "fa-gears",
-   "ket": "Proyeksi, analisis, dan tile",
-   "skills": [
+   "n": "SQL",
+   "g": "dev",
+   "a": [
     {
-     "n": "proj4",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Turf.js",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Tile XYZ/WMS",
-     "a": [
-      {
-       "id": "basemap-tile-carto-dan-google-vt",
-       "t": "Basemap Tile: Watermark CARTO dan Larangan Google vt"
-      }
-     ],
-     "p": [],
-     "tag": null
+     "id": "sql-ke-geojson-geometri-kosong",
+     "t": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan"
     }
-   ]
+   ],
+   "p": [
+    "sql_geojson"
+   ],
+   "tag": null
   },
   {
-   "id": "tampil",
-   "label": "Tampil",
-   "ikon": "fa-map",
-   "ket": "Peta interaktif di browser",
-   "skills": [
+   "n": "Bash",
+   "g": "dev",
+   "a": [
     {
-     "n": "MapLibre GL",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "Leaflet",
-     "a": [],
-     "p": [],
-     "tag": null
-    },
-    {
-     "n": "OpenLayers",
-     "a": [],
-     "p": [],
-     "tag": null
+     "id": "docker-windows-crlf-dan-devnull",
+     "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
     }
-   ]
+   ],
+   "p": [
+    "security-audit-kit",
+    "mailserver",
+    "private-tunneling",
+    "9hs-ubuntu-fancyprompt"
+   ],
+   "tag": null
+  },
+  {
+   "n": "PowerShell",
+   "g": "dev",
+   "a": [
+    {
+     "id": "docker-windows-crlf-dan-devnull",
+     "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
+    }
+   ],
+   "p": [
+    "security-audit-kit"
+   ],
+   "tag": null
+  },
+  {
+   "n": "R",
+   "g": "dev",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Django",
+   "g": "dev",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Quasar",
+   "g": "dev",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Playwright",
+   "g": "dev",
+   "a": [
+    {
+     "id": "type-check-hijau-bukan-bukti-runtime",
+     "t": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Linux",
+   "g": "ops",
+   "a": [
+    {
+     "id": "docker-windows-crlf-dan-devnull",
+     "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
+    }
+   ],
+   "p": [
+    "private-tunneling",
+    "9hs-ubuntu-fancyprompt"
+   ],
+   "tag": null
+  },
+  {
+   "n": "Docker",
+   "g": "ops",
+   "a": [
+    {
+     "id": "traefik-label-perlu-recreate",
+     "t": "Traefik: Route Baru Perlu Recreate Container"
+    },
+    {
+     "id": "redis-aof-korup-setelah-reboot",
+     "t": "Redis Crash-Loop karena AOF Korup Setelah Reboot"
+    },
+    {
+     "id": "container-zombie-process-init",
+     "t": "Zombie Process di Container: Mengapa PID 1 Perlu init"
+    },
+    {
+     "id": "mutex-scheduler-tertahan-redis",
+     "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
+    },
+    {
+     "id": "docker-windows-crlf-dan-devnull",
+     "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
+    },
+    {
+     "id": "cakupan-dependabot-image-compose",
+     "t": "Cakupan Dependabot: Image di docker-compose Luput Dipantau"
+    }
+   ],
+   "p": [
+    "mailserver"
+   ],
+   "tag": "docker"
+  },
+  {
+   "n": "Docker Compose",
+   "g": "ops",
+   "a": [
+    {
+     "id": "traefik-label-perlu-recreate",
+     "t": "Traefik: Route Baru Perlu Recreate Container"
+    },
+    {
+     "id": "redis-aof-korup-setelah-reboot",
+     "t": "Redis Crash-Loop karena AOF Korup Setelah Reboot"
+    },
+    {
+     "id": "container-zombie-process-init",
+     "t": "Zombie Process di Container: Mengapa PID 1 Perlu init"
+    },
+    {
+     "id": "docker-windows-crlf-dan-devnull",
+     "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
+    },
+    {
+     "id": "cakupan-dependabot-image-compose",
+     "t": "Cakupan Dependabot: Image di docker-compose Luput Dipantau"
+    }
+   ],
+   "p": [
+    "mailserver"
+   ],
+   "tag": null
+  },
+  {
+   "n": "Kubernetes",
+   "g": "ops",
+   "a": [
+    {
+     "id": "kubernetes-best-practices",
+     "t": "Kubernetes Best Practices for Production"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Ansible",
+   "g": "ops",
+   "a": [
+    {
+     "id": "checklist-ops-sebelum-deploy",
+     "t": "Checklist Ops Sebelum Deploy ke Produksi"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Traefik",
+   "g": "ops",
+   "a": [
+    {
+     "id": "traefik-label-perlu-recreate",
+     "t": "Traefik: Route Baru Perlu Recreate Container"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Redis",
+   "g": "ops",
+   "a": [
+    {
+     "id": "redis-aof-korup-setelah-reboot",
+     "t": "Redis Crash-Loop karena AOF Korup Setelah Reboot"
+    },
+    {
+     "id": "mutex-scheduler-tertahan-redis",
+     "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
+    }
+   ],
+   "p": [],
+   "tag": "redis"
+  },
+  {
+   "n": "RabbitMQ",
+   "g": "ops",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "PostgreSQL",
+   "g": "ops",
+   "a": [
+    {
+     "id": "import-track-postgis-detoast-materialized",
+     "t": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "MySQL",
+   "g": "ops",
+   "a": [
+    {
+     "id": "koordinat-dms-dan-validasi-lintang",
+     "t": "Koordinat DMS dan Validasi Lintang di Luar Bounding Box"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Prometheus",
+   "g": "ops",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Grafana",
+   "g": "ops",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Cloudflare",
+   "g": "ops",
+   "a": [
+    {
+     "id": "security-headers-github-pages",
+     "t": "Security Headers di GitHub Pages: Apa yang Bisa dan Tidak"
+    }
+   ],
+   "p": [
+    "hadymaggot.github.io"
+   ],
+   "tag": null
+  },
+  {
+   "n": "Monitoring",
+   "g": "ops",
+   "a": [
+    {
+     "id": "basemap-tile-carto-dan-google-vt",
+     "t": "Basemap Tile: Watermark CARTO dan Larangan Google vt"
+    },
+    {
+     "id": "cakupan-dependabot-image-compose",
+     "t": "Cakupan Dependabot: Image di docker-compose Luput Dipantau"
+    },
+    {
+     "id": "kubernetes-best-practices",
+     "t": "Kubernetes Best Practices for Production"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "SRE",
+   "g": "ops",
+   "a": [
+    {
+     "id": "checklist-ops-sebelum-deploy",
+     "t": "Checklist Ops Sebelum Deploy ke Produksi"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Git",
+   "g": "ops",
+   "a": [
+    {
+     "id": "gitleaks-celah-rename-detection",
+     "t": "Gitleaks Melewatkan Secret pada Commit Rename"
+    },
+    {
+     "id": "daftar-tugas-adalah-petunjuk",
+     "t": "Daftar Tugas Adalah Petunjuk, Bukan Keadaan Kode"
+    },
+    {
+     "id": "docker-windows-crlf-dan-devnull",
+     "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
+    }
+   ],
+   "p": [
+    "hadymaggot.github.io"
+   ],
+   "tag": null
+  },
+  {
+   "n": "GitHub Actions",
+   "g": "ops",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "GitLab CI",
+   "g": "ops",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Penetration Testing",
+   "g": "security",
+   "a": [
+    {
+     "id": "pentest-ke-test-otomatis",
+     "t": "Dari Temuan Pentest ke Test Otomatis di CI"
+    }
+   ],
+   "p": [
+    "security-audit-kit"
+   ],
+   "tag": null
+  },
+  {
+   "n": "SIEM",
+   "g": "security",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "OWASP ZAP",
+   "g": "security",
+   "a": [],
+   "p": [
+    "security-audit-kit"
+   ],
+   "tag": null
+  },
+  {
+   "n": "Trivy",
+   "g": "security",
+   "a": [
+    {
+     "id": "checklist-ops-sebelum-deploy",
+     "t": "Checklist Ops Sebelum Deploy ke Produksi"
+    }
+   ],
+   "p": [
+    "security-audit-kit"
+   ],
+   "tag": null
+  },
+  {
+   "n": "Semgrep",
+   "g": "security",
+   "a": [],
+   "p": [
+    "security-audit-kit"
+   ],
+   "tag": null
+  },
+  {
+   "n": "Gitleaks",
+   "g": "security",
+   "a": [
+    {
+     "id": "checklist-ops-sebelum-deploy",
+     "t": "Checklist Ops Sebelum Deploy ke Produksi"
+    },
+    {
+     "id": "gitleaks-celah-rename-detection",
+     "t": "Gitleaks Melewatkan Secret pada Commit Rename"
+    }
+   ],
+   "p": [
+    "security-audit-kit"
+   ],
+   "tag": null
+  },
+  {
+   "n": "Nmap",
+   "g": "security",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "GeoJSON",
+   "g": "gis",
+   "a": [
+    {
+     "id": "sql-ke-geojson-geometri-kosong",
+     "t": "Konversi SQL ke GeoJSON: Geometri Kosong dan Perbaikan"
+    }
+   ],
+   "p": [
+    "sql_geojson"
+   ],
+   "tag": null
+  },
+  {
+   "n": "Shapefile",
+   "g": "gis",
+   "a": [
+    {
+     "id": "ekspor-smart-dbf-utf8-dan-file-besar",
+     "t": "Ekspor SMART Desktop: DBF UTF-8 dan File di Atas 2 GB"
+    }
+   ],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "PostGIS",
+   "g": "gis",
+   "a": [
+    {
+     "id": "import-track-postgis-detoast-materialized",
+     "t": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED"
+    }
+   ],
+   "p": [
+    "sql_geojson"
+   ],
+   "tag": null
+  },
+  {
+   "n": "MapLibre GL",
+   "g": "gis",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Leaflet",
+   "g": "gis",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "OpenLayers",
+   "g": "gis",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Turf.js",
+   "g": "gis",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "proj4",
+   "g": "gis",
+   "a": [],
+   "p": [],
+   "tag": null
+  },
+  {
+   "n": "Tile XYZ/WMS",
+   "g": "gis",
+   "a": [
+    {
+     "id": "basemap-tile-carto-dan-google-vt",
+     "t": "Basemap Tile: Watermark CARTO dan Larangan Google vt"
+    }
+   ],
+   "p": [],
+   "tag": null
   }
  ],
  "proyek": {
