@@ -230,15 +230,28 @@ def check_consistency():
     def norm(items):
         return [i.strip().lower().replace("vuejs", "vue").replace("tile xyz/wms", "xyz/wms tiles") for i in items]
 
-    groups = re.search(r"const skillGroups = \{(.*?)\n\s*\};", js, re.S).group(1)
-    menu = {name.lower(): norm(re.findall(r'"([^"]+)"', body)) for name, body in re.findall(r"'(\w+)/': \[(.*?)\]", groups)}
+    # sumber tunggal skill: assets/data/skills.json (kategori, tahap alur, alias, dan bukti proyek)
+    skills = json.loads((ROOT / "assets" / "data" / "skills.json").read_text(encoding="utf-8"))
+    menu = {name: norm(items) for name, items in skills["grup"].items()}
     for label, key in (("Dev", "dev"), ("Ops", "ops"), ("Security", "security"), ("GIS", "gis")):
         llms_line = re.search(rf"^- {label}: (.*)$", llms, re.M)
-        if not llms_line or norm(llms_line.group(1).split(",")) != menu[key]:
-            fail(f"llms.txt: baris skills {label} tidak sama dengan menu terminal")
+        if not llms_line or sorted(norm(llms_line.group(1).split(","))) != sorted(menu[key]):
+            fail(f"llms.txt: baris skills {label} tidak sama dengan assets/data/skills.json")
         sr_line = re.search(rf"<li>{label}: (.*?)\.</li>", summary)
-        if not sr_line or norm(sr_line.group(1).split(",")) != menu[key]:
-            fail(f"index.html: skills {label} pada ringkasan tidak sama dengan menu terminal")
+        if not sr_line or sorted(norm(sr_line.group(1).split(","))) != sorted(menu[key]):
+            fail(f"index.html: skills {label} pada ringkasan tidak sama dengan assets/data/skills.json")
+
+    # setiap skill tampil tepat satu kali pada tahap alur atau jalur peta
+    semua = [s for items in skills["grup"].values() for s in items]
+    tahap = [s for st in skills["alur"] + skills["peta"] for s in st["skills"]]
+    if sorted(semua) != sorted(tahap):
+        fail("assets/data/skills.json: skill pada grup dan pada tahap alur tidak sama: " + ", ".join(sorted(set(semua) ^ set(tahap))))
+    for nama, info in skills["proyek"].items():
+        for s in info["skills"]:
+            if s not in semua:
+                fail(f"assets/data/skills.json: proyek {nama} merujuk skill yang tidak ada: {s}")
+        if f"[{nama}](" not in llms and nama not in ("hadymaggot.github.io",):
+            fail(f"llms.txt: proyek {nama} pada bukti skill tidak tercantum")
 
     projects = re.search(r"const projects = \[(.*?)\n\s*\];", js, re.S).group(1)
     public = re.findall(r"name: '([^']+)'", projects)
