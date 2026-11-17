@@ -1,0 +1,289 @@
+{
+ "grup": {
+  "dev": [
+   "PHP",
+   "Laravel",
+   "JavaScript",
+   "TypeScript",
+   "VueJS",
+   "Python",
+   "SQL",
+   "Bash",
+   "PowerShell",
+   "R",
+   "Django",
+   "Quasar",
+   "Playwright"
+  ],
+  "ops": [
+   "Linux",
+   "Docker",
+   "Docker Compose",
+   "Kubernetes",
+   "Ansible",
+   "Traefik",
+   "Redis",
+   "RabbitMQ",
+   "PostgreSQL",
+   "MySQL",
+   "Prometheus",
+   "Grafana",
+   "Cloudflare",
+   "Monitoring",
+   "SRE",
+   "Git",
+   "GitHub Actions",
+   "GitLab CI"
+  ],
+  "security": [
+   "Penetration Testing",
+   "SIEM",
+   "OWASP ZAP",
+   "Trivy",
+   "Semgrep",
+   "Gitleaks",
+   "Nmap"
+  ],
+  "gis": [
+   "GeoJSON",
+   "Shapefile",
+   "PostGIS",
+   "MapLibre GL",
+   "Leaflet",
+   "OpenLayers",
+   "Turf.js",
+   "proj4",
+   "Tile XYZ/WMS"
+  ]
+ },
+ "alur": [
+  {
+   "id": "kode",
+   "label": "Kode & Uji",
+   "ikon": "fa-code",
+   "ket": "Bahasa, framework, dan pengujian",
+   "skills": [
+    "PHP",
+    "Laravel",
+    "JavaScript",
+    "TypeScript",
+    "VueJS",
+    "Quasar",
+    "Python",
+    "Django",
+    "SQL",
+    "Bash",
+    "PowerShell",
+    "R",
+    "Playwright",
+    "Git"
+   ]
+  },
+  {
+   "id": "pipeline",
+   "label": "Pipeline",
+   "ikon": "fa-code-branch",
+   "ket": "Build, uji, dan rilis otomatis",
+   "skills": [
+    "GitHub Actions",
+    "GitLab CI",
+    "Ansible"
+   ]
+  },
+  {
+   "id": "gerbang",
+   "label": "Gerbang Keamanan",
+   "ikon": "fa-shield-halved",
+   "gerbang": true,
+   "ket": "Pemindaian dan pengujian sebelum rilis",
+   "skills": [
+    "Penetration Testing",
+    "OWASP ZAP",
+    "Trivy",
+    "Semgrep",
+    "Gitleaks",
+    "Nmap",
+    "SIEM"
+   ]
+  },
+  {
+   "id": "platform",
+   "label": "Platform",
+   "ikon": "fa-cubes",
+   "ket": "Tempat aplikasi berjalan",
+   "skills": [
+    "Linux",
+    "Docker",
+    "Docker Compose",
+    "Kubernetes",
+    "Traefik",
+    "Cloudflare",
+    "PostgreSQL",
+    "MySQL",
+    "Redis",
+    "RabbitMQ"
+   ]
+  },
+  {
+   "id": "observasi",
+   "label": "Observasi",
+   "ikon": "fa-chart-line",
+   "ket": "Memantau dan menjaga keandalan",
+   "skills": [
+    "Prometheus",
+    "Grafana",
+    "Monitoring",
+    "SRE"
+   ]
+  }
+ ],
+ "peta": [
+  {
+   "id": "data",
+   "label": "Data",
+   "ikon": "fa-database",
+   "ket": "Format data spasial",
+   "skills": [
+    "GeoJSON",
+    "Shapefile"
+   ]
+  },
+  {
+   "id": "simpan",
+   "label": "Simpan",
+   "ikon": "fa-layer-group",
+   "ket": "Basis data spasial",
+   "skills": [
+    "PostGIS"
+   ]
+  },
+  {
+   "id": "olah",
+   "label": "Olah & Sajikan",
+   "ikon": "fa-gears",
+   "ket": "Proyeksi, analisis, dan tile",
+   "skills": [
+    "proj4",
+    "Turf.js",
+    "Tile XYZ/WMS"
+   ]
+  },
+  {
+   "id": "tampil",
+   "label": "Tampil",
+   "ikon": "fa-map",
+   "ket": "Peta interaktif di browser",
+   "skills": [
+    "MapLibre GL",
+    "Leaflet",
+    "OpenLayers"
+   ]
+  }
+ ],
+ "alias": {
+  "VueJS": [
+   "Vue",
+   "VueJS"
+  ],
+  "Quasar": [
+   "Quasar"
+  ],
+  "Docker Compose": [
+   "Docker Compose",
+   "compose"
+  ],
+  "OWASP ZAP": [
+   "OWASP ZAP",
+   "ZAP"
+  ],
+  "Penetration Testing": [
+   "penetration testing",
+   "pentest"
+  ],
+  "Monitoring": [
+   "monitoring"
+  ],
+  "GitLab CI": [
+   "GitLab CI",
+   "GitLab"
+  ],
+  "Tile XYZ/WMS": [
+   "tile",
+   "XYZ",
+   "WMS"
+  ],
+  "MapLibre GL": [
+   "MapLibre"
+  ],
+  "Turf.js": [
+   "Turf"
+  ],
+  "SRE": [
+   "SRE"
+  ],
+  "Shapefile": [
+   "shapefile"
+  ],
+  "GeoJSON": [
+   "GeoJSON"
+  ],
+  "Playwright": [
+   "Playwright"
+  ]
+ },
+ "proyek": {
+  "security-audit-kit": {
+   "url": "https://github.com/hadymaggot/security-audit-kit",
+   "skills": [
+    "Python",
+    "Bash",
+    "PowerShell",
+    "Penetration Testing",
+    "OWASP ZAP",
+    "Trivy",
+    "Semgrep",
+    "Gitleaks"
+   ]
+  },
+  "sql_geojson": {
+   "url": "https://github.com/hadymaggot/hadymaggot.github.io/tree/main/tools/sql_geojson",
+   "skills": [
+    "Python",
+    "SQL",
+    "PostGIS",
+    "GeoJSON"
+   ]
+  },
+  "mailserver": {
+   "url": "https://github.com/hadymaggot/mailserver",
+   "skills": [
+    "Bash",
+    "Docker",
+    "Docker Compose"
+   ]
+  },
+  "private-tunneling": {
+   "url": "https://github.com/hadymaggot/private-tunneling",
+   "skills": [
+    "Bash",
+    "Linux"
+   ]
+  },
+  "9hs-ubuntu-fancyprompt": {
+   "url": "https://github.com/hadymaggot/9hs-ubuntu-fancyprompt",
+   "skills": [
+    "Bash",
+    "Linux"
+   ]
+  },
+  "hadymaggot.github.io": {
+   "url": "https://github.com/hadymaggot/hadymaggot.github.io",
+   "skills": [
+    "JavaScript",
+    "Python",
+    "Cloudflare",
+    "Git"
+   ]
+  }
+ }
+}

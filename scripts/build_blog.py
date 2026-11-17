@@ -514,6 +514,52 @@ def injected_text(path, posts):
     return text
 
 
+# ---------------------------------------------------------------- bukti skill
+
+def load_skills():
+    return json.loads((ROOT / "assets" / "data" / "skills.json").read_text(encoding="utf-8"))
+
+
+def render_skills_evidence(posts):
+    """Data untuk halaman Skills: tiap skill beserta artikel yang menyebutnya dan proyek publik yang memakainya.
+
+    Artikel dicocokkan per kata utuh pada judul, ringkasan, tag, dan isi; skill satu huruf (R) hanya dicocokkan
+    lewat alias atau proyek supaya tidak menghasilkan kecocokan palsu.
+    """
+    data = load_skills()
+    alias = data["alias"]
+    tag_halaman = indexable_tags(posts)
+    dokumen = [(p, " ".join([p["title"], p["excerpt"], " ".join(p["tags"]), re.sub(r"<[^>]+>", " ", p["content"])]))
+               for p in posts]
+
+    def artikel_untuk(nama):
+        kata = alias.get(nama) or ([nama] if len(nama) > 1 else [])
+        if not kata:
+            return []
+        rx = re.compile(r"(?<![\w.])(" + "|".join(re.escape(k) for k in kata) + r")(?![\w])", re.I)
+        return [{"id": p["id"], "t": p["title"]} for p, teks in dokumen if rx.search(teks)]
+
+    def proyek_untuk(nama):
+        return [n for n, info in data["proyek"].items() if nama in info["skills"]]
+
+    total = berbukti = 0
+    lajur = {}
+    for kunci in ("alur", "peta"):
+        tahap = []
+        for st in data[kunci]:
+            skills = []
+            for nama in st["skills"]:
+                a, pr = artikel_untuk(nama), proyek_untuk(nama)
+                total += 1
+                berbukti += bool(a or pr)
+                skills.append({"n": nama, "a": a, "p": pr, "tag": slug(nama) if slug(nama) in tag_halaman else None})
+            tahap.append({k: v for k, v in st.items() if k != "skills"} | {"skills": skills})
+        lajur[kunci] = tahap
+    lajur["proyek"] = {n: info["url"] for n, info in data["proyek"].items()}
+    lajur["ringkas"] = {"skill": total, "berbukti": berbukti, "artikel": len(posts)}
+    return json.dumps(lajur, ensure_ascii=False, indent=1) + "\n"
+
+
 # ---------------------------------------------------------------- keluaran
 
 def generated_files(posts):
@@ -526,6 +572,7 @@ def generated_files(posts):
     files["feed.xml"] = render_feed(posts)
     files["sitemap.xml"] = render_sitemap(posts)
     files["llms-full.txt"] = render_llms_full(posts)
+    files["assets/data/skills-evidence.json"] = render_skills_evidence(posts)
     return files
 
 
