@@ -586,8 +586,11 @@ body {
         padding: 1rem 3%;
     }
 
+    /* Konten dimulai tepat di bawah navbar (tinggi sekitar 73px). Tanpa pemusatan vertikal, jaraknya tidak
+       melebar di layar yang tinggi. */
     .hero {
-        padding-top: 5rem;
+        padding-top: 5.25rem;
+        justify-content: flex-start;
     }
 }
 
