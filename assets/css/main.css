@@ -820,6 +820,22 @@ body {
     }
 }
 
+/* Di browser ponsel, 100vh setinggi layar tanpa bilah alamat sehingga halaman bisa di-scroll sedikit.
+   100dvh mengikuti area yang benar-benar terlihat. Blog melepas tinggi ini sendiri pada CSS inline-nya. */
+@supports (height: 100dvh) {
+    body,
+    .container,
+    .hero {
+        height: 100dvh;
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            height: 100dvh;
+        }
+    }
+}
+
 /* Cyberpunk Cursor */
 * {
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="%237AC55A" stroke="%23C3DB65" stroke-width="2"/><line x1="12" y1="0" x2="12" y2="24" stroke="%23C3DB65" stroke-width="2"/><line x1="0" y1="12" x2="24" y2="12" stroke="%23C3DB65" stroke-width="2"/></svg>'), auto;
