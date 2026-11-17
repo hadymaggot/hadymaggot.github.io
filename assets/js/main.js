@@ -190,6 +190,7 @@ function sembunyikanTab() {
 // cepat: pengetikan singkat untuk perpindahan tab.
 function showCommand(command, output, { cepat = false } = {}) {
     clearTypingTimeouts();
+    sembunyikanSkills();
     const terminalContent = document.querySelector('.terminal-content');
     terminalContent.innerHTML = `
         <div class="command-line">
@@ -248,6 +249,133 @@ document.addEventListener('DOMContentLoaded', () => {
     if (m && document.querySelector('.terminal-content')) bukaProjects(m[1]);
 });
 
+// Skills: alur kerja dari kode sampai produksi dan jalur data peta; skill menyala sesuai bukti publiknya
+let dataSkill = null;
+
+async function muatSkill() {
+    if (dataSkill !== null) return dataSkill;
+    try {
+        const res = await fetch('/assets/data/skills-evidence.json');
+        dataSkill = res.ok ? await res.json() : false;
+    } catch (e) {
+        dataSkill = false;
+    }
+    return dataSkill;
+}
+
+const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const jumlahBukti = (sk) => sk.a.length + sk.p.length;
+const tingkatBukti = (n) => (n >= 4 ? 3 : n >= 2 ? 2 : 1);
+const DETIK_PER_TAHAP = 1.6;
+
+function renderLajur(kunci, judul, tahap) {
+    const n = tahap.length;
+    const durasi = n * DETIK_PER_TAHAP;
+    const bobot = tahap.map(st => Math.max(0.9, 0.55 + 0.13 * st.skills.length));
+    const total = bobot.reduce((a, b) => a + b, 0);
+    const tengah = bobot.map((w, i) => (bobot.slice(0, i).reduce((a, b) => a + b, 0) + w / 2) / total);
+    const awal = tengah[0], akhir = tengah[n - 1];
+    const simpul = tahap.map((st, i) => `<button type="button" class="hud-node${st.gerbang ? ' is-gate' : ''}${i === 0 ? ' is-aktif' : ''}" ` +
+        `data-tahap="${st.id}" style="--d:${((tengah[i] - awal) / ((akhir - awal) || 1) * durasi).toFixed(2)}s" aria-label="Tahap ${i + 1}: ${esc(st.label)}" title="${esc(st.ket)}" ` +
+        `aria-pressed="${i === 0}"><span class="hud-no">${String(i + 1).padStart(2, '0')}</span><i class="fas ${st.ikon}" aria-hidden="true"></i></button>`).join('');
+    const kartu = tahap.map((st, i) => {
+        const chips = st.skills.map(sk => {
+            const j = jumlahBukti(sk);
+            return j
+                ? `<li><button type="button" class="chip" data-level="${tingkatBukti(j)}" data-lajur="${kunci}" data-tahap="${st.id}" data-skill="${esc(sk.n)}" aria-pressed="false">` +
+                  `${esc(sk.n)}<span class="chip-n">${j}</span></button></li>`
+                : `<li><span class="chip chip-kosong">${esc(sk.n)}</span></li>`;
+        }).join('');
+        return `<article class="hud-stage${st.gerbang ? ' is-gate' : ''}${i === 0 ? ' is-aktif' : ''}" data-tahap="${st.id}" style="--i:${i}">` +
+            `<h3>${esc(st.label)}</h3><ul class="hud-chips">${chips}</ul></article>`;
+    }).join('');
+    return `<section class="hud-lane${kunci === 'alur' ? ' is-aktif' : ''}" data-lajur="${kunci}" aria-label="${esc(judul)}" style="--n:${n};--T:${durasi}s;--cols:${bobot.map(w => w.toFixed(2) + 'fr').join(' ')};--ini:${(awal * 100).toFixed(2)}%;--fim:${(akhir * 100).toFixed(2)}%">` +
+        `<div class="hud-lane-label">${esc(judul)}</div>` +
+        `<div class="hud-rail">${simpul}<span class="hud-paket" aria-hidden="true"></span><span class="hud-paket" style="--w:-${(durasi / 2).toFixed(1)}s" aria-hidden="true"></span></div>` +
+        `<div class="hud-stages">${kartu}</div></section>`;
+}
+
+const DETAIL_AWAL = 'Skill yang menyala punya tulisan atau proyek publik. Pilih satu untuk melihat buktinya.';
+
+function buatHud(data) {
+    const hud = document.createElement('section');
+    hud.id = 'skill-hud';
+    hud.className = 'skill-hud';
+    hud.hidden = true;
+    hud.setAttribute('aria-label', 'Skill sebagai alur kerja');
+    if (!data) {
+        hud.innerHTML = '<p class="hud-detail">Data skill tidak dapat dimuat. Daftar lengkapnya ada di <a href="/llms.txt">llms.txt</a>.</p>';
+        return hud;
+    }
+    const r = data.ringkas;
+    hud.innerHTML = `<span class="hud-scan" aria-hidden="true"></span>` +
+        `<header class="hud-head"><span class="hud-title"><i class="fas fa-diagram-project" aria-hidden="true"></i> skill.flow</span>` +
+        `<span class="hud-meta">${r.berbukti} dari ${r.skill} skill berbukti &middot; ${r.artikel} artikel</span></header>` +
+        `<div class="hud-lanebar" role="group" aria-label="Pilih jalur"><button type="button" class="hud-lanebtn is-aktif" data-lajur="alur">Alur kerja</button>` +
+        `<button type="button" class="hud-lanebtn" data-lajur="peta">Data peta</button></div>` +
+        renderLajur('alur', 'Alur kerja: dari kode sampai produksi', data.alur) +
+        renderLajur('peta', 'Data peta: dari berkas sampai tampilan', data.peta) +
+        `<footer class="hud-detail" role="status" aria-live="polite">${DETAIL_AWAL}</footer>`;
+
+    const cariSkill = (lajur, tahap, nama) => data[lajur].find(t => t.id === tahap).skills.find(x => x.n === nama);
+
+    hud.addEventListener('click', (e) => {
+        const chip = e.target.closest('.chip[data-skill]');
+        const simpul = e.target.closest('.hud-node');
+        const lane = e.target.closest('.hud-lanebtn');
+        if (chip) {
+            hud.querySelectorAll('.chip[aria-pressed="true"]').forEach(c => c.setAttribute('aria-pressed', 'false'));
+            chip.setAttribute('aria-pressed', 'true');
+            tampilkanBukti(hud, cariSkill(chip.dataset.lajur, chip.dataset.tahap, chip.dataset.skill), data);
+        } else if (simpul) {
+            const lajur = simpul.closest('.hud-lane');
+            lajur.querySelectorAll('.hud-node, .hud-stage').forEach(el => el.classList.toggle('is-aktif', el.dataset.tahap === simpul.dataset.tahap));
+            lajur.querySelectorAll('.hud-node').forEach(el => el.setAttribute('aria-pressed', String(el === simpul)));
+        } else if (lane) {
+            hud.querySelectorAll('.hud-lanebtn, .hud-lane').forEach(el => el.classList.toggle('is-aktif', (el.dataset.lajur) === lane.dataset.lajur));
+        }
+    });
+    return hud;
+}
+
+function tampilkanBukti(hud, sk, data) {
+    const kotak = hud.querySelector('.hud-detail');
+    const bagian = [`<strong>${esc(sk.n)}</strong>`];
+    if (sk.a.length) {
+        const daftar = sk.a.slice(0, 3).map(a => `<a href="/blog/${esc(a.id)}/">${esc(a.t)}</a>`).join(' &middot; ');
+        const semua = sk.tag ? ` &middot; <a href="/blog/tag/${esc(sk.tag)}/">semua artikel &rarr;</a>` : '';
+        bagian.push(`${sk.a.length} artikel: ${daftar}${semua}`);
+    }
+    if (sk.p.length) {
+        bagian.push('proyek: ' + sk.p.map(n => `<a href="${esc(data.proyek[n])}" target="_blank" rel="noopener noreferrer">${esc(n)}</a>`).join(', '));
+    }
+    kotak.innerHTML = bagian.join(' &mdash; ');
+}
+
+async function bukaSkills() {
+    clearTypingTimeouts();
+    sembunyikanTab();
+    const terminal = document.querySelector('.terminal');
+    if (!terminal) return;
+    let hud = document.getElementById('skill-hud');
+    if (!hud) {
+        hud = buatHud(await muatSkill());
+        terminal.insertAdjacentElement('afterend', hud);
+    }
+    terminal.hidden = true;
+    hud.hidden = false;
+    hud.classList.remove('is-masuk');
+    void hud.offsetWidth; // ulang animasi masuk
+    hud.classList.add('is-masuk');
+}
+
+function sembunyikanSkills() {
+    const hud = document.getElementById('skill-hud');
+    if (hud) hud.hidden = true;
+    const terminal = document.querySelector('.terminal');
+    if (terminal) terminal.hidden = false;
+}
+
 // Add event listeners for navigation links
 document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', function(e) {
@@ -291,20 +419,8 @@ document.querySelectorAll('.nav-links a').forEach(link => {
                         <p>Pengujian keamanan hanya dilakukan pada sistem milik sendiri atau dengan izin tertulis.</p>`;
                 break;
             case 'skills':
-                command = 'ls -la skills/';
-                const skillGroups = {
-                    'dev/': ["PHP", "Laravel", "JavaScript", "TypeScript", "VueJS", "Python", "SQL", "Bash", "PowerShell", "R", "Django", "Quasar", "Playwright"],
-                    'ops/': ["Linux", "Docker", "Docker Compose", "Kubernetes", "Ansible", "Traefik", "Redis", "RabbitMQ", "PostgreSQL", "MySQL", "Prometheus", "Grafana", "Cloudflare", "Monitoring", "SRE", "Git", "GitHub Actions", "GitLab CI"],
-                    'security/': ["Penetration Testing", "SIEM", "OWASP ZAP", "Trivy", "Semgrep", "Gitleaks", "Nmap"],
-                    'gis/': ["GeoJSON", "Shapefile", "PostGIS", "MapLibre GL", "Leaflet", "OpenLayers", "Turf.js", "proj4", "Tile XYZ/WMS"]
-                };
-                output = `total ${Object.keys(skillGroups).length}` +
-                    Object.entries(skillGroups).map(([group, list]) =>
-                        `<div>drwxr-xr-x ${group}</div><div class="skill-list">` +
-                        list.map(skill => `<span class="skill-tag">${skill}</span>`).join('') +
-                        `</div>`
-                    ).join('');
-                break;
+                bukaSkills();
+                return;
             case 'projects':
                 command = projectTabs[0].cmd;
                 output = renderProjects(projectTabs[0].key);
