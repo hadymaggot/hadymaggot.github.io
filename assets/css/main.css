@@ -576,8 +576,9 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* Banner "optimized for desktop view" disembunyikan; elemennya dipertahankan karena main.js memasang handler padanya */
     .mobile-notice {
-        display: flex; 
+        display: none;
     }
 
     .navbar {
