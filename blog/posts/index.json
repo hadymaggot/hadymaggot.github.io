@@ -1,6 +1,10 @@
 {
   "posts": [
     {
+      "file": "2026-11-18-postgresql-docker-desktop-windows-named-volume.json",
+      "featured": false
+    },
+    {
       "file": "2026-11-16-pentest-ke-test-otomatis.json",
       "featured": true
     },

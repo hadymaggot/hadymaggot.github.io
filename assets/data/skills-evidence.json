@@ -125,6 +125,10 @@
    "g": "dev",
    "a": [
     {
+     "id": "postgresql-docker-desktop-windows-named-volume",
+     "t": "PostgreSQL di Docker Desktop Windows: Pakai Named Volume"
+    },
+    {
      "id": "docker-windows-crlf-dan-devnull",
      "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
     }
@@ -172,6 +176,10 @@
    "g": "ops",
    "a": [
     {
+     "id": "postgresql-docker-desktop-windows-named-volume",
+     "t": "PostgreSQL di Docker Desktop Windows: Pakai Named Volume"
+    },
+    {
      "id": "docker-windows-crlf-dan-devnull",
      "t": "Gotcha Docker di Windows: CRLF pada Bind Mount dan /dev/null"
     }
@@ -186,6 +194,10 @@
    "n": "Docker",
    "g": "ops",
    "a": [
+    {
+     "id": "postgresql-docker-desktop-windows-named-volume",
+     "t": "PostgreSQL di Docker Desktop Windows: Pakai Named Volume"
+    },
     {
      "id": "traefik-label-perlu-recreate",
      "t": "Traefik: Route Baru Perlu Recreate Container"
@@ -309,6 +321,10 @@
    "n": "PostgreSQL",
    "g": "ops",
    "a": [
+    {
+     "id": "postgresql-docker-desktop-windows-named-volume",
+     "t": "PostgreSQL di Docker Desktop Windows: Pakai Named Volume"
+    },
     {
      "id": "import-track-postgis-detoast-materialized",
      "t": "Mempercepat Import Track PostGIS dengan CTE MATERIALIZED"
@@ -602,6 +618,6 @@
  "ringkas": {
   "skill": 47,
   "berbukti": 31,
-  "artikel": 23
+  "artikel": 24
  }
 }
