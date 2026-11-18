@@ -35,6 +35,7 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 
 <!--ARTICLES:START-->
 - [Blog](https://hadymaggot.github.io/blog.html): daftar semua artikel; RSS di https://hadymaggot.github.io/feed.xml; seluruh artikel dalam satu berkas Markdown di https://hadymaggot.github.io/llms-full.txt
+- [PostgreSQL di Docker Desktop Windows: Pakai Named Volume](https://hadymaggot.github.io/blog/postgresql-docker-desktop-windows-named-volume/): Bind mount dari path Windows tidak menjamin fsync, sehingga PGDATA PostgreSQL di Docker Desktop gagal atau tidak tersimpan. Pakai named volume.
 - [Security Headers di GitHub Pages: Apa yang Bisa dan Tidak](https://hadymaggot.github.io/blog/security-headers-github-pages/): GitHub Pages tidak mengizinkan header HTTP kustom. Berikut yang tetap dapat dilakukan, dan kapan proxy diperlukan.
 - [Dari Temuan Pentest ke Test Otomatis di CI](https://hadymaggot.github.io/blog/pentest-ke-test-otomatis/): Laporan pentest yang berhenti sebagai PDF mudah terlupakan. Setiap temuan dijadikan test yang gagal selama celahnya ada, lalu dijalankan terus di CI.
 - [Checklist Ops Sebelum Deploy ke Produksi](https://hadymaggot.github.io/blog/checklist-ops-sebelum-deploy/): Daftar periksa sebelum rilis: dry-run, rollback, backup yang teruji, pengelolaan secret, dan observability.
