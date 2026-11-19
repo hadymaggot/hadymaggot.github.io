@@ -57,6 +57,9 @@ def local_target(ref):
         return None
     else:
         path = parsed.path
+    # Situs project yang di-deploy terpisah di subpath domain yang sama -> eksternal.
+    if path == "/security-audit-kit" or path.startswith("/security-audit-kit/"):
+        return None
     if not path.startswith("/"):
         return None
     path = path[1:] or "index.html"
