@@ -58,6 +58,10 @@
    "g": "dev",
    "a": [
     {
+     "id": "layout-responsif-uji-tiga-lebar-400-1366-2560",
+     "t": "Layout Responsif: Uji di 400px, 1366px, dan 2560px"
+    },
+    {
      "id": "type-check-hijau-bukan-bukti-runtime",
      "t": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime"
     }
@@ -163,6 +167,10 @@
    "n": "Playwright",
    "g": "dev",
    "a": [
+    {
+     "id": "layout-responsif-uji-tiga-lebar-400-1366-2560",
+     "t": "Layout Responsif: Uji di 400px, 1366px, dan 2560px"
+    },
     {
      "id": "type-check-hijau-bukan-bukti-runtime",
      "t": "Type Check dan Test Hijau Tidak Membuktikan Perilaku Runtime"
@@ -618,6 +626,6 @@
  "ringkas": {
   "skill": 47,
   "berbukti": 31,
-  "artikel": 24
+  "artikel": 25
  }
 }

@@ -1,6 +1,10 @@
 {
   "posts": [
     {
+      "file": "2026-11-24-layout-responsif-uji-tiga-lebar-400-1366-2560.json",
+      "featured": false
+    },
+    {
       "file": "2026-11-18-postgresql-docker-desktop-windows-named-volume.json",
       "featured": false
     },
