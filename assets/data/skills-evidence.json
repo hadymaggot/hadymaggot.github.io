@@ -5,6 +5,10 @@
    "g": "dev",
    "a": [
     {
+     "id": "entrypoint-tanpa-set-e-container-naik-migration-gagal",
+     "t": "Entrypoint Tanpa set -e: Container Naik, Migration Gagal"
+    },
+    {
      "id": "container-zombie-process-init",
      "t": "Zombie Process di Container: Mengapa PID 1 Perlu init"
     },
@@ -21,12 +25,16 @@
    "g": "dev",
    "a": [
     {
+     "id": "entrypoint-tanpa-set-e-container-naik-migration-gagal",
+     "t": "Entrypoint Tanpa set -e: Container Naik, Migration Gagal"
+    },
+    {
      "id": "mutex-scheduler-tertahan-redis",
      "t": "Mutex Scheduler Laravel yang Tertahan di Redis"
     }
    ],
    "p": [],
-   "tag": null
+   "tag": "laravel"
   },
   {
    "n": "JavaScript",
@@ -202,6 +210,10 @@
    "n": "Docker",
    "g": "ops",
    "a": [
+    {
+     "id": "entrypoint-tanpa-set-e-container-naik-migration-gagal",
+     "t": "Entrypoint Tanpa set -e: Container Naik, Migration Gagal"
+    },
     {
      "id": "postgresql-docker-desktop-windows-named-volume",
      "t": "PostgreSQL di Docker Desktop Windows: Pakai Named Volume"
@@ -626,6 +638,6 @@
  "ringkas": {
   "skill": 47,
   "berbukti": 31,
-  "artikel": 25
+  "artikel": 26
  }
 }
