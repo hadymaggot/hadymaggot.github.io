@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami | Ahadizapto</title>
+    <meta name="description" content="Join lewat entitas dan periode menghasilkan selisih palsu saat rekonsiliasi data legacy. Telusuri legacy_id baris rinciannya agar pembanding tepat.">
+    <link rel="canonical" href="https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/">
+    <link rel="alternate" type="text/markdown" href="https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/index.md">
+    <link rel="icon" href="/assets/images/ico2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="alternate" type="application/rss+xml" title="Blog Ahadizapto" href="/feed.xml">
+    <meta name="theme-color" content="#7AC55A">
+    <meta name="author" content="Sapto Hadi">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="keywords" content="Database, Data, Legacy, Troubleshooting">
+    <meta property="og:site_name" content="Ahadizapto">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami">
+    <meta property="og:description" content="Join lewat entitas dan periode menghasilkan selisih palsu saat rekonsiliasi data legacy. Telusuri legacy_id baris rinciannya agar pembanding tepat.">
+    <meta property="og:url" content="https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/">
+    <meta property="og:image" content="https://hadymaggot.github.io/assets/images/og/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami">
+    <meta property="article:published_time" content="2026-11-26">
+    <meta property="article:author" content="https://hadymaggot.github.io/">
+    <meta property="article:tag" content="Database">
+    <meta property="article:tag" content="Data">
+    <meta property="article:tag" content="Legacy">
+    <meta property="article:tag" content="Troubleshooting">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@hadymaggot">
+    <meta name="twitter:creator" content="@hadymaggot">
+    <meta name="twitter:title" content="Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami">
+    <meta name="twitter:description" content="Join lewat entitas dan periode menghasilkan selisih palsu saat rekonsiliasi data legacy. Telusuri legacy_id baris rinciannya agar pembanding tepat.">
+    <meta name="twitter:image" content="https://hadymaggot.github.io/assets/images/og/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami.png">
+    <style>
+        body { background-color: var(--dark-color); color: var(--text-color); font-family: 'Poppins', sans-serif; margin: 0; height: auto; min-height: 100vh; }
+        .post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+        .post-nav { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; gap: 1rem; margin: -2rem -1rem 1.5rem; padding: 0.9rem 1rem; background: rgba(18, 18, 18, 0.9); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(122, 197, 90, 0.2); font-family: 'JetBrains Mono', monospace; }
+        .post-nav a, .post-body a, .post-page a { color: var(--primary-color); }
+        .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 1rem; }
+        .breadcrumb a { text-decoration: none; }
+        .post-page h1 { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.3; }
+        .post-meta { display: flex; flex-wrap: wrap; gap: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+        .post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .post-tags a, .post-tags span { color: var(--primary-color); padding: 0.1rem 0.5rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 4px; text-decoration: none; }
+        .post-body { line-height: 1.8; }
+        .post-body p, .post-body ul, .post-body ol { margin: 0 0 1rem; }
+        .post-body ul, .post-body ol { padding-left: 1.5rem; }
+        .post-body li { margin-bottom: 0.35rem; }
+        .post-body h3 { margin: 2rem 0 0.75rem; color: var(--secondary-color); }
+        .post-body pre { overflow-x: auto; padding: 1rem; background: var(--terminal-bg); border-radius: 4px; }
+        .post-body code { font-family: 'JetBrains Mono', monospace; }
+        .post-author { margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 6px; line-height: 1.7; }
+        .post-related { margin-top: 2rem; }
+        .post-related h2 { font-size: 1.2rem; color: var(--secondary-color); }
+        .post-related ul { list-style: none; padding: 0; margin: 0; }
+        .post-related li { margin-bottom: 0.7rem; }
+        .post-related span { display: block; opacity: 0.75; font-size: 0.9rem; }
+        .post-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .post-pager a { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.8rem 1rem; border: 1px solid rgba(122, 197, 90, 0.3); border-radius: 8px; text-decoration: none; transition: border-color 0.2s ease; }
+        .post-pager a:hover, .post-pager a:focus-visible { border-color: var(--primary-color); }
+        .pager-next { text-align: right; align-items: flex-end; }
+        .pager-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--primary-color); }
+        .pager-title { color: var(--text-color); line-height: 1.4; }
+        @media (max-width: 600px) { .post-pager { grid-template-columns: 1fr; } .pager-next { text-align: left; align-items: flex-start; } }
+        .post-back { margin-top: 2rem; font-family: 'JetBrains Mono', monospace; }
+        .code-block { margin: 1rem 0; border: 1px solid rgba(122, 197, 90, 0.25); border-radius: 8px; overflow: hidden; background: var(--terminal-bg); }
+        .code-head { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0.75rem; background: rgba(122, 197, 90, 0.1); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--secondary-color); }
+        .code-copy { background: transparent; color: var(--primary-color); border: 1px solid rgba(122, 197, 90, 0.4); border-radius: 4px; padding: 0.15rem 0.6rem; font: inherit; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+        .code-copy:hover, .code-copy:focus-visible { background: var(--primary-color); color: var(--dark-color); }
+        .code-block pre { margin: 0; border-radius: 0; background: transparent; font-size: 0.85rem; line-height: 1.6; }
+        .hljs { background: transparent; color: #e6e6e6; }
+        .hljs-comment, .hljs-quote { color: #7f8c8d; font-style: italic; }
+        .hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: #ff7b72; }
+        .hljs-string, .hljs-regexp, .hljs-addition { color: #e9c46a; }
+        .hljs-number, .hljs-symbol, .hljs-bullet { color: #f4a261; }
+        .hljs-title, .hljs-section, .hljs-function .hljs-title { color: #7aa2f7; }
+        .hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #bb9af7; }
+        .hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable, .hljs-params { color: #7dcfff; }
+        .hljs-meta, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #c3db65; }
+        .hljs-deletion { color: #ff7b72; background: rgba(255, 123, 114, 0.12); }
+        .hljs-addition { background: rgba(122, 197, 90, 0.12); }
+    </style>
+    <script src="/assets/js/vendor/highlight.min.js" defer></script>
+    <script src="/assets/js/code.js" defer></script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "@id": "https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/#article", "headline": "Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami", "description": "Join lewat entitas dan periode menghasilkan selisih palsu saat rekonsiliasi data legacy. Telusuri legacy_id baris rinciannya agar pembanding tepat.", "image": ["https://hadymaggot.github.io/assets/images/og/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami.png"], "datePublished": "2026-11-26", "dateModified": "2026-11-26", "inLanguage": "id", "wordCount": 379, "keywords": "Database, Data, Legacy, Troubleshooting", "articleSection": "Database", "url": "https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/"}, "author": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "publisher": {"@type": "Person", "@id": "https://hadymaggot.github.io/#person", "name": "Sapto Hadi", "alternateName": ["Ahadizapto", "hadymaggot"], "url": "https://hadymaggot.github.io/"}, "isPartOf": {"@id": "https://hadymaggot.github.io/blog.html#blog"}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://hadymaggot.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hadymaggot.github.io/blog.html"}, {"@type": "ListItem", "position": 3, "name": "Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami", "item": "https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/"}]}</script>
+</head>
+
+<body>
+    <main class="post-page">
+        <nav class="post-nav" aria-label="Navigasi">
+            <a href="/">~/ahadizapto</a>
+            <a href="/blog.html">/blog</a>
+            <a href="/feed.xml">rss</a>
+        </nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Beranda</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami</nav>
+        <article>
+            <h1>Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami</h1>
+            <div class="post-meta">
+                <span><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2026-11-26">26 November 2026</time></span>
+                <span><i class="far fa-clock" aria-hidden="true"></i> 3 menit baca</span>
+            </div>
+            <div class="post-tags"><a href="/blog/tag/database/">Database</a><a href="/blog/tag/data/">Data</a><a href="/blog/tag/legacy/">Legacy</a><a href="/blog/tag/troubleshooting/">Troubleshooting</a></div>
+            <div class="post-body">
+                <p>Setelah data dipindahkan dari database legacy ke schema baru, langkah berikutnya adalah rekonsiliasi: membandingkan total setiap laporan di sistem baru dengan record asalnya. Query pembanding yang paling cepat ditulis biasanya memakai kunci alami, yaitu entitas pemilik laporan ditambah periode. Pasangan itu tampak setara dengan identitas laporan, padahal tidak selalu demikian.</p><h3>Gejala: selisih yang tidak pernah hilang</h3><p>Pada satu rekonsiliasi atas sekitar 48 ribu laporan, join lewat entitas dan tahun melaporkan tujuh laporan yang totalnya berbeda, bahkan setelah script penyelaras dijalankan. Penelusuran satu contoh sampai ke record asalnya menunjukkan bahwa angka di sistem baru persis sama dengan angka legacy. Data sudah benar, sedangkan pembandingnya mengambil record legacy yang keliru.</p><h3>Penyebab: entitas hasil merge dan relokasi</h3><p>Di sistem legacy, sebagian entitas pernah digabung atau dipindahkan. Laporan yang di schema baru melekat pada entitas A ternyata tersimpan di legacy sebagai record milik entitas B. Kolom <code>legacy_id</code> pada tabel entitas menunjuk ke A, sehingga join lewat entitas dan periode menemukan record lain atau tidak menemukan apa pun. Kunci alami hanya sah selama relasi entitas tidak pernah berubah, dan asumsi itu jarang bertahan pada data berumur belasan tahun.</p><h3>Perbaikan: ikuti rantai legacy_id baris rincian</h3><p>Baris rincian laporan menyimpan <code>legacy_id</code> yang menunjuk langsung ke baris asalnya, dan baris asal itu memegang foreign key ke record laporan legacy. Rantai tersebut tidak bergantung pada entitas mana yang kini memiliki laporan.</p><pre><code class="language-sql">SELECT r.id, r.total AS total_baru, l.total AS total_legacy
+FROM reports r
+JOIN (
+  SELECT report_id, MIN(legacy_id) AS legacy_item_id
+  FROM report_items
+  GROUP BY report_id
+) i ON i.report_id = r.id
+JOIN legacy_items li ON li.id = i.legacy_item_id
+JOIN legacy_reports l ON l.id = li.report_id
+WHERE r.total IS DISTINCT FROM l.total;</code></pre><p>Dengan rantai ini, rekonsiliasi yang sama menghasilkan nol selisih. Dua aturan kerja mengikuti dari sini:</p><ul><li>Jika script penyelaras sudah memiliki mode verifikasi dengan rantai yang benar, output mode itu lebih layak dipercaya daripada join ad-hoc yang ditulis ulang.</li><li>Sebelum melaporkan bahwa masih ada sejumlah selisih, satu contoh perlu ditelusuri sampai ke record asalnya untuk memastikan temuan itu bukan positif palsu.</li></ul><p>Akibat melanggar aturan ini tidak berhenti pada laporan yang keliru. Selisih palsu mendorong perbaikan atas data yang sudah benar, dan perbaikan semacam itu menimpa nilai yang sah dengan nilai dari record yang salah. Kerusakan baru kemudian terdeteksi sebagai selisih sungguhan pada rekonsiliasi berikutnya, tanpa jejak yang menjelaskan asalnya.</p>
+            </div>
+            <aside class="post-author">Ditulis oleh <a href="/">Saya</a></aside>
+        </article>
+        <section class="post-related">
+            <h2>Artikel terkait</h2>
+            <ul><li><a href="/blog/postgresql-docker-desktop-windows-named-volume/">PostgreSQL di Docker Desktop Windows: Pakai Named Volume</a><span>Bind mount dari path Windows tidak menjamin fsync, sehingga PGDATA PostgreSQL di Docker Desktop gagal atau…</span></li><li><a href="/blog/backup-dan-idempotent-bulk-update/">Bulk Update Data: Backup Dulu dan Pastikan Script Idempotent</a><span>Data yang tampak salah belum tentu salah, dan script perbaikan yang dijalankan dua kali tidak boleh merusak…</span></li><li><a href="/blog/entrypoint-tanpa-set-e-container-naik-migration-gagal/">Entrypoint Tanpa set -e: Container Naik, Migration Gagal</a><span>Entrypoint shell tanpa set -e membiarkan container tetap naik meskipun migration gagal, sehingga aplikasi…</span></li></ul>
+        </section>
+        <nav class="post-pager" aria-label="Artikel sebelum dan sesudah"><a class="pager-prev" href="/blog/entrypoint-tanpa-set-e-container-naik-migration-gagal/" rel="prev"><span class="pager-label">&larr; Sebelumnya</span><span class="pager-title">Entrypoint Tanpa set -e: Container Naik, Migration Gagal</span></a><span></span></nav>
+        <p class="post-back"><a href="/blog.html">&larr; Semua artikel</a></p>
+    </main>
+</body>
+
+</html>
