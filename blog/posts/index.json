@@ -1,6 +1,10 @@
 {
   "posts": [
     {
+      "file": "2026-11-26-rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami.json",
+      "featured": false
+    },
+    {
       "file": "2026-11-25-entrypoint-tanpa-set-e-container-naik-migration-gagal.json",
       "featured": false
     },

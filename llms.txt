@@ -35,6 +35,7 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 
 <!--ARTICLES:START-->
 - [Blog](https://hadymaggot.github.io/blog.html): daftar semua artikel; RSS di https://hadymaggot.github.io/feed.xml; seluruh artikel dalam satu berkas Markdown di https://hadymaggot.github.io/llms-full.txt
+- [Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami](https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/): Join lewat entitas dan periode menghasilkan selisih palsu saat rekonsiliasi data legacy. Telusuri legacy_id baris rinciannya agar pembanding tepat.
 - [Entrypoint Tanpa set -e: Container Naik, Migration Gagal](https://hadymaggot.github.io/blog/entrypoint-tanpa-set-e-container-naik-migration-gagal/): Entrypoint shell tanpa set -e membiarkan container tetap naik meskipun migration gagal, sehingga aplikasi berjalan di atas schema yang setengah jadi.
 - [Layout Responsif: Uji di 400px, 1366px, dan 2560px](https://hadymaggot.github.io/blog/layout-responsif-uji-tiga-lebar-400-1366-2560/): Komponen layout system-wide wajib diuji di 400px, 1366px, dan 2560px. Pola flex-wrap, min-w-0 + truncate, dan grid per breakpoint mencegah meluber.
 - [PostgreSQL di Docker Desktop Windows: Pakai Named Volume](https://hadymaggot.github.io/blog/postgresql-docker-desktop-windows-named-volume/): Bind mount dari path Windows tidak menjamin fsync, sehingga PGDATA PostgreSQL di Docker Desktop gagal atau tidak tersimpan. Pakai named volume.
