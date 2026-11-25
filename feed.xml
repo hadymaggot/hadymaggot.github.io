@@ -6,7 +6,31 @@
     <atom:link href="https://hadymaggot.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Catatan teknis seputar security, operations, dan software engineering.</description>
     <language>id</language>
-    <lastBuildDate>Tue, 24 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 25 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Entrypoint Tanpa set -e: Container Naik, Migration Gagal</title>
+      <link>https://hadymaggot.github.io/blog/entrypoint-tanpa-set-e-container-naik-migration-gagal/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/entrypoint-tanpa-set-e-container-naik-migration-gagal/</guid>
+      <pubDate>Wed, 25 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Docker</category>
+      <category>Laravel</category>
+      <category>DevOps</category>
+      <category>Troubleshooting</category>
+      <description>Entrypoint shell tanpa set -e membiarkan container tetap naik meskipun migration gagal, sehingga aplikasi berjalan di atas schema yang setengah jadi.</description>
+      <content:encoded><![CDATA[<p>Sebuah aplikasi Laravel di dalam container berstatus sehat: proses web berjalan, halaman depan menjawab 200, dan pipeline deploy selesai tanpa error. Namun login gagal dengan pesan bahwa sebuah kolom tidak ditemukan di tabel. Container naik di atas database yang baru setengah termigrasi, dan tidak ada satu pun tahap deploy yang melaporkannya.</p><h3>Penyebab: exit code yang diabaikan</h3><p>Script entrypoint menjalankan migration lalu menyerahkan kendali ke proses utama. Shell secara default melanjutkan ke baris berikutnya walaupun sebuah perintah keluar dengan status bukan nol. Tanpa <code>set -e</code> dan tanpa pemeriksaan hasil, kegagalan <code>php artisan migrate --force</code> hanya menjadi beberapa baris log, sedangkan web server tetap dijalankan.</p><pre><code class="language-bash">#!/bin/sh
+php artisan migrate --force
+exec "$@"</code></pre><p>Migration yang berhenti di tengah meninggalkan sebagian tabel pada schema baru dan sebagian pada schema lama. Kode aplikasi sudah mengharapkan schema baru, sehingga error hanya muncul pada fitur yang menyentuh tabel yang tertinggal.</p><h3>Cara diagnosis</h3><p>Status container tidak dapat dijadikan bukti, karena proses utamanya memang hidup. Bukti yang relevan ada pada log awal container dan pada status migration itu sendiri.</p><pre><code class="language-bash">docker logs &lt;container&gt; 2&gt;&amp;1 | head -n 50
+docker exec &lt;container&gt; php artisan migrate:status</code></pre><p>Baris berstatus Pending pada container yang sudah melayani request menandakan bahwa entrypoint melewati kegagalan migration.</p><h3>Perbaikan</h3><p>Entrypoint harus berhenti pada kegagalan pertama, sehingga container keluar dengan status bukan nol dan orchestrator atau pipeline mencatatnya sebagai deploy yang gagal.</p><pre><code class="language-bash">#!/bin/sh
+set -e
+
+if ! php artisan migrate --force; then
+  echo "migration gagal, container dihentikan" &gt;&amp;2
+  exit 1
+fi
+
+exec "$@"</code></pre><p>Opsi <code>set -e</code> memiliki pengecualian: perintah di dalam kondisi <code>if</code>, di sisi kiri <code>&amp;&amp;</code> atau <code>||</code>, dan di dalam pipeline selain perintah terakhir tidak menghentikan script. Karena itu langkah kritis seperti migration layak diperiksa secara eksplisit. Healthcheck yang hanya memeriksa halaman statis juga tidak menangkap keadaan ini. Healthcheck perlu menyentuh database, atau pipeline perlu menjalankan <code>migrate:status</code> setelah deploy dan gagal jika masih ada migration yang tertunda.</p><h3>Akibat jika dibiarkan</h3><p>Gejala dapat hilang dengan sendirinya ketika deploy berikutnya berhasil menjalankan migration, tetapi perangkapnya tetap terbuka. Selama entrypoint mengabaikan exit code, setiap migration yang gagal menghasilkan container yang tampak sehat dengan schema yang tidak konsisten. Kegagalan itu baru ditemukan oleh orang yang mencoba login, bukan oleh pipeline, dan data yang telanjur ditulis pada schema campuran mempersulit rollback.</p>]]></content:encoded>
+    </item>
     <item>
       <title>Layout Responsif: Uji di 400px, 1366px, dan 2560px</title>
       <link>https://hadymaggot.github.io/blog/layout-responsif-uji-tiga-lebar-400-1366-2560/</link>
