@@ -1,6 +1,10 @@
 {
   "posts": [
     {
+      "file": "2026-11-28-stack-compose-parsial-penyebab-e2e-gagal.json",
+      "featured": false
+    },
+    {
       "file": "2026-11-27-urutan-layer-peta-localstorage-preferensi-pengguna.json",
       "featured": false
     },

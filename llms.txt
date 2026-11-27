@@ -35,6 +35,7 @@ This file helps AI assistants and crawlers describe and recommend Sapto Hadi acc
 
 <!--ARTICLES:START-->
 - [Blog](https://hadymaggot.github.io/blog.html): daftar semua artikel; RSS di https://hadymaggot.github.io/feed.xml; seluruh artikel dalam satu berkas Markdown di https://hadymaggot.github.io/llms-full.txt
+- [Stack Compose Parsial: Penyebab E2E Gagal Berulang](https://hadymaggot.github.io/blog/stack-compose-parsial-penyebab-e2e-gagal/): Test e2e yang gagal berulang sering berasal dari stack compose setengah jadi. Nyalakan semua service dengan file compose eksplisit.
 - [Urutan Layer Peta: localStorage untuk Preferensi Pengguna](https://hadymaggot.github.io/blog/urutan-layer-peta-localstorage-preferensi-pengguna/): Urutan tampilan layer adalah preferensi per pengguna. Simpan di localStorage, bukan endpoint server, dan uji drag-and-drop dengan mouse bertahap.
 - [Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami](https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/): Join lewat entitas dan periode menghasilkan selisih palsu saat rekonsiliasi data legacy. Telusuri legacy_id baris rinciannya agar pembanding tepat.
 - [Entrypoint Tanpa set -e: Container Naik, Migration Gagal](https://hadymaggot.github.io/blog/entrypoint-tanpa-set-e-container-naik-migration-gagal/): Entrypoint shell tanpa set -e membiarkan container tetap naik meskipun migration gagal, sehingga aplikasi berjalan di atas schema yang setengah jadi.

@@ -215,6 +215,10 @@
    "g": "ops",
    "a": [
     {
+     "id": "stack-compose-parsial-penyebab-e2e-gagal",
+     "t": "Stack Compose Parsial: Penyebab E2E Gagal Berulang"
+    },
+    {
      "id": "entrypoint-tanpa-set-e-container-naik-migration-gagal",
      "t": "Entrypoint Tanpa set -e: Container Naik, Migration Gagal"
     },
@@ -256,6 +260,10 @@
    "n": "Docker Compose",
    "g": "ops",
    "a": [
+    {
+     "id": "stack-compose-parsial-penyebab-e2e-gagal",
+     "t": "Stack Compose Parsial: Penyebab E2E Gagal Berulang"
+    },
     {
      "id": "traefik-label-perlu-recreate",
      "t": "Traefik: Route Baru Perlu Recreate Container"
@@ -642,6 +650,6 @@
  "ringkas": {
   "skill": 47,
   "berbukti": 31,
-  "artikel": 28
+  "artikel": 29
  }
 }
