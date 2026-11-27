@@ -176,6 +176,10 @@
    "g": "dev",
    "a": [
     {
+     "id": "urutan-layer-peta-localstorage-preferensi-pengguna",
+     "t": "Urutan Layer Peta: localStorage untuk Preferensi Pengguna"
+    },
+    {
      "id": "layout-responsif-uji-tiga-lebar-400-1366-2560",
      "t": "Layout Responsif: Uji di 400px, 1366px, dan 2560px"
     },
@@ -638,6 +642,6 @@
  "ringkas": {
   "skill": 47,
   "berbukti": 31,
-  "artikel": 27
+  "artikel": 28
  }
 }

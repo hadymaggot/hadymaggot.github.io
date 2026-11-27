@@ -6,7 +6,43 @@
     <atom:link href="https://hadymaggot.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Catatan teknis seputar security, operations, dan software engineering.</description>
     <language>id</language>
-    <lastBuildDate>Thu, 26 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Urutan Layer Peta: localStorage untuk Preferensi Pengguna</title>
+      <link>https://hadymaggot.github.io/blog/urutan-layer-peta-localstorage-preferensi-pengguna/</link>
+      <guid isPermaLink="true">https://hadymaggot.github.io/blog/urutan-layer-peta-localstorage-preferensi-pengguna/</guid>
+      <pubDate>Fri, 27 Nov 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Sapto Hadi</dc:creator>
+      <category>Frontend</category>
+      <category>Web Development</category>
+      <category>Testing</category>
+      <description>Urutan tampilan layer adalah preferensi per pengguna. Simpan di localStorage, bukan endpoint server, dan uji drag-and-drop dengan mouse bertahap.</description>
+      <content:encoded><![CDATA[<p>Panel layer pada aplikasi peta menentukan layer mana yang digambar di atas dan mana yang di bawah. Pertanyaan desainnya adalah apakah urutan itu pengaturan bersama atau preferensi tiap pengguna. Jika satu pengguna menyeret layer lalu hasilnya disimpan lewat endpoint ke database, semua pengguna lain melihat peta dengan susunan yang berubah tanpa mereka minta. Endpoint itu juga menuntut aturan authorization: siapa yang boleh mengubah dan apakah perubahan perlu dicatat.</p><h3>Simpan di localStorage, bukan di server</h3><p>Urutan tampilan adalah preferensi, sehingga cukup disimpan di browser pemiliknya. Tidak ada endpoint, tidak ada tabel tambahan, dan tidak ada migration. Yang disimpan hanya daftar id layer dalam urutan yang dipilih. Layer baru yang belum ada di daftar tersimpan jatuh ke urutan default, dan id yang sudah tidak ada diabaikan.</p><pre><code class="language-javascript">const KEY = 'map.layerOrder';
+
+export function loadOrder() {
+  try { return JSON.parse(localStorage.getItem(KEY)) ?? []; }
+  catch { return []; }
+}
+
+export function saveOrder(ids) {
+  localStorage.setItem(KEY, JSON.stringify(ids));
+}
+
+export function sortLayers(layers, saved) {
+  const rank = new Map(saved.map((id, i) =&gt; [id, i]));
+  const r = (l) =&gt; rank.get(l.id) ?? saved.length;
+  return [...layers].sort((a, b) =&gt; r(a) - r(b) || a.order - b.order);
+}</code></pre><p>Konsekuensinya perlu diterima sejak awal: susunan hanya berlaku di satu browser, hilang jika data situs dihapus, dan tidak ikut berpindah ke perangkat lain. Untuk preferensi tampilan, batasan itu wajar. Baris teratas di panel digambar paling atas, dan aturan ini cukup diterapkan di satu fungsi pengurut agar peta dan panel tidak berselisih.</p><h3>Nomor urut default tetap di server</h3><p>Urutan bawaan yang berlaku bagi semua orang sebaiknya otomatis dan unik. Nomor diisi saat penyimpanan sebagai nilai maksimum ditambah satu, sehingga form tidak perlu menyediakan isian nomor.</p><pre><code class="language-python">def save(self, *args, **kwargs):
+    if self.order is None:
+        last = type(self).objects.aggregate(m=Max('order'))['m'] or 0
+        self.order = last + 1
+    super().save(*args, **kwargs)</code></pre><p>Data lama yang nomornya bentrok atau berlubang dinomori ulang lewat satu migration. Pola maksimum ditambah satu tidak aman terhadap dua penyimpanan bersamaan, jadi constraint unique pada kolom itu tetap diperlukan sebagai pengaman.</p><h3>Menguji drag-and-drop di Playwright</h3><p>Drag-and-drop bawaan HTML memakai event dragstart, dragover, dan drop. Method dragTo pada Playwright sering tidak memicu rangkaian event itu pada elemen draggable. Gerakan mouse manual dengan langkah bertahap memicunya.</p><pre><code class="language-javascript">const from = await rows.nth(2).boundingBox();
+const to = await rows.nth(0).boundingBox();
+await page.mouse.move(from.x + 10, from.y + 10);
+await page.mouse.down();
+await page.mouse.move(to.x + 10, to.y + 5, { steps: 10 });
+await page.mouse.up();</code></pre><p>Parameter steps penting karena browser perlu menerima beberapa event pergerakan sebelum menganggap gerakan itu sebagai drag. API drag-and-drop HTML juga tidak bekerja pada layar sentuh tanpa tambahan library atau penanganan touch event, sehingga dukungan perangkat mobile harus dicatat sebagai pekerjaan terpisah.</p>]]></content:encoded>
+    </item>
     <item>
       <title>Rekonsiliasi Data Legacy: Jangan Join lewat Kunci Alami</title>
       <link>https://hadymaggot.github.io/blog/rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami/</link>
