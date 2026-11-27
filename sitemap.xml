@@ -2,15 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
       <loc>https://hadymaggot.github.io/</loc>
-      <lastmod>2026-11-27</lastmod>
+      <lastmod>2026-11-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>1.0</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog.html</loc>
-      <lastmod>2026-11-27</lastmod>
+      <lastmod>2026-11-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.9</priority>
+   </url>
+   <url>
+      <loc>https://hadymaggot.github.io/blog/stack-compose-parsial-penyebab-e2e-gagal/</loc>
+      <lastmod>2026-11-28</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/urutan-layer-peta-localstorage-preferensi-pengguna/</loc>
@@ -206,7 +212,7 @@
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/tag/docker/</loc>
-      <lastmod>2026-11-25</lastmod>
+      <lastmod>2026-11-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
    </url>
@@ -272,13 +278,13 @@
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/tag/testing/</loc>
-      <lastmod>2026-11-27</lastmod>
+      <lastmod>2026-11-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
    </url>
    <url>
       <loc>https://hadymaggot.github.io/blog/tag/troubleshooting/</loc>
-      <lastmod>2026-11-26</lastmod>
+      <lastmod>2026-11-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
    </url>
