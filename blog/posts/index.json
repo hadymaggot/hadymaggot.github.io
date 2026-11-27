@@ -1,6 +1,10 @@
 {
   "posts": [
     {
+      "file": "2026-11-27-urutan-layer-peta-localstorage-preferensi-pengguna.json",
+      "featured": false
+    },
+    {
       "file": "2026-11-26-rekonsiliasi-data-legacy-jangan-join-lewat-kunci-alami.json",
       "featured": false
     },
